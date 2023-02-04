@@ -5,6 +5,7 @@ ATT&CK Sync...
 - [ATT\&CK Sync](#attck-sync)
   - [Pre-requisites](#pre-requisites)
   - [Run Locally](#run-locally)
+  - [Samples](#samples)
   - [Wiki](#wiki)
   - [Notice](#notice)
   - [License](#license)
@@ -32,6 +33,13 @@ ATT&CK Sync...
   # Create Excel file based on previous ATT&CK mapping in output/mapping_diff_attack_v<old_version>-v<new_version>.xlsx
   python generate_mapping_excel.py
 ```
+
+## Samples
+
+There is some sample output in the [samples](samples/) directory which includes the following:
+
+- `samples/attack-changes/v10.1-v12.1/`: Output from `create_attack_changelogs.py` for ATT&CK v10.1 and v12.1
+- `samples/mapping_diff_attack_v10.1-v12.1.xlsx`: Output from `generate_mapping_excel.py`
 
 ## Wiki
 
