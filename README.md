@@ -15,8 +15,8 @@ ATT&CK Sync...
 
 - Python 3.10 or later is recommended for running the scripts in this repository.
 - The following files need to be downloaded and placed in the `data/` directory
-  - `nist800-53-r4-mappings.xlsx` from [here](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings/tree/main/frameworks/attack_10_1/nist800_53_r4)
-  - `nist800-53-r5-mappings.xlsx` from [here](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings/tree/main/frameworks/attack_10_1/nist800_53_r5)
+  - `nist800-53-r4-mappings.xlsx` from the [center-for-threat-informed-defense/attack-control-framework-mappings](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings/tree/main/frameworks/attack_10_1/nist800_53_r4) repository.
+  - `nist800-53-r5-mappings.xlsx` from the [center-for-threat-informed-defense/attack-control-framework-mappings](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings/tree/main/frameworks/attack_10_1/nist800_53_r5) repository.
 
 ## Run Locally
 
