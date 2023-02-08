@@ -1,0 +1,973 @@
+<div style='max-width: 55em;margin: auto;margin-top:20px;font-family: "Roboto", sans-serif;'><meta charset='utf-8'><h1 style='text-align:center;'>ATT&CK Changes Between v9.0 and v10.1</h1><h2>Key</h2>
+<ul>
+<li>New objects: ATT&amp;CK objects which are present in the new STIX data but not the old.</li>
+<li>Major version changes: ATT&amp;CK objects that have a major version change. (e.g. 1.0 → 2.0)</li>
+<li>Minor version changes: ATT&amp;CK objects that have a minor version change. (e.g. 1.0 → 1.1)</li>
+<li>Other version changes: ATT&amp;CK objects that have an unexpected version change. (e.g. 1.0 → 1.3)</li>
+<li>Metadata changes: ATT&amp;CK objects that have at least one field changed, but not the version.</li>
+<li>Unknown changes: ATT&amp;CK objects that have changed while the modified time stayed the same.</li>
+<li>Object revocations: ATT&amp;CK objects which are revoked by a different object.</li>
+<li>Object deprecations: ATT&amp;CK objects which are deprecated and no longer in use, and not replaced.</li>
+<li>Object deletions: ATT&amp;CK objects which are no longer found in the STIX data.</li>
+</ul>
+<h2>Techniques</h2>
+<h3>Enterprise</h3>
+<h4>New Techniques</h4>
+<ul>
+<li>Boot or Logon Autostart Execution: <a href="/techniques/T1547/015">Login Items</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1619">Cloud Storage Object Discovery</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Data from Information Repositories: <a href="/techniques/T1213/003">Code Repositories</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1615">Group Policy Discovery</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Hide Artifacts: <a href="/techniques/T1564/008">Email Hiding Rules</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Hide Artifacts: <a href="/techniques/T1564/009">Resource Forking</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Impair Defenses: <a href="/techniques/T1562/010">Downgrade Attack</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Impair Defenses: <a href="/techniques/T1562/009">Safe Mode Boot</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Masquerading: <a href="/techniques/T1036/007">Double File Extension</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Obfuscated Files or Information: <a href="/techniques/T1027/006">HTML Smuggling</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1620">Reflective Code Loading</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Server Software Component: <a href="/techniques/T1505/004">IIS Components</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Signed Binary Proxy Execution: <a href="/techniques/T1218/014">MMC</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Signed Binary Proxy Execution: <a href="/techniques/T1218/013">Mavinject</a> <small style="color:#929393">(v1.0)</small></li>
+<li>System Location Discovery: <a href="/techniques/T1614/001">System Language Discovery</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h4>Major Version Changes</h4>
+<ul>
+<li><a href="/techniques/T1557">Adversary-in-the-Middle</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/techniques/T1185">Browser Session Hijacking</a> <small style="color:#929393">(v1.0&#8594;v2.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li>Access Token Manipulation: <a href="/techniques/T1134/002">Create Process with Token</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Account Discovery: <a href="/techniques/T1087/001">Local Account</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li>Account Manipulation: <a href="/techniques/T1098/002">Exchange Email Delegate Permissions</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1583">Acquire Infrastructure</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1583/001">Domains</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1583/004">Server</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1583/003">Virtual Private Server</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1583/006">Web Services</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li>Adversary-in-the-Middle: <a href="/techniques/T1557/002">ARP Cache Poisoning</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Automated Exfiltration: <a href="/techniques/T1020/001">Traffic Duplication</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Boot or Logon Autostart Execution: <a href="/techniques/T1547/006">Kernel Modules and Extensions</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li>Boot or Logon Autostart Execution: <a href="/techniques/T1547/011">Plist Modification</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1110">Brute Force</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small></li>
+<li><a href="/techniques/T1612">Build Image on Host</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1580">Cloud Infrastructure Discovery</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1059">Command and Scripting Interpreter</a> <small style="color:#929393">(v2.1&#8594;v2.2)</small><ul>
+<li><a href="/techniques/T1059/007">JavaScript</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/techniques/T1059/008">Network Device CLI</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1059/001">PowerShell</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1059/004">Unix Shell</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1059/005">Visual Basic</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1059/003">Windows Command Shell</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1586">Compromise Accounts</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1586/001">Social Media Accounts</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1584">Compromise Infrastructure</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1584/002">DNS Server</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1584/001">Domains</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1584/004">Server</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1584/003">Virtual Private Server</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1584/006">Web Services</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li>Create Account: <a href="/techniques/T1136/001">Local Account</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Create or Modify System Process: <a href="/techniques/T1543/004">Launch Daemon</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1486">Data Encrypted for Impact</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1213">Data from Information Repositories</a> <small style="color:#929393">(v3.1&#8594;v3.2)</small></li>
+<li><a href="/techniques/T1005">Data from Local System</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1025">Data from Removable Media</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1587">Develop Capabilities</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1587/002">Code Signing Certificates</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1587/003">Digital Certificates</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1587/001">Malware</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1189">Drive-by Compromise</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1114">Email Collection</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small><ul>
+<li><a href="/techniques/T1114/003">Email Forwarding Rule</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1611">Escape to Host</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1585">Establish Accounts</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1585/001">Social Media Accounts</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li>Event Triggered Execution: <a href="/techniques/T1546/004">Unix Shell Configuration Modification</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li>Event Triggered Execution: <a href="/techniques/T1546/003">Windows Management Instrumentation Event Subscription</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1048">Exfiltration Over Alternative Protocol</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small><ul>
+<li><a href="/techniques/T1048/002">Exfiltration Over Asymmetric Encrypted Non-C2 Protocol</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1048/003">Exfiltration Over Unencrypted/Obfuscated Non-C2 Protocol</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1041">Exfiltration Over C2 Channel</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/techniques/T1052">Exfiltration Over Physical Medium</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1052/001">Exfiltration over USB</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1567">Exfiltration Over Web Service</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1203">Exploitation for Client Execution</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1133">External Remote Services</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small></li>
+<li>File and Directory Permissions Modification: <a href="/techniques/T1222/002">Linux and Mac File and Directory Permissions Modification</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1606">Forge Web Credentials</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1606/002">SAML Tokens</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1606/001">Web Cookies</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1592">Gather Victim Host Information</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1592/004">Client Configurations</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1592/001">Hardware</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1592/002">Software</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1591">Gather Victim Org Information</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1591/001">Determine Physical Locations</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1200">Hardware Additions</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1564">Hide Artifacts</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1564/002">Hidden Users</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1564/006">Run Virtual Instance</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1564/007">VBA Stomping</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li>Hijack Execution Flow: <a href="/techniques/T1574/011">Services Registry Permissions Weakness</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1562">Impair Defenses</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1562/002">Disable Windows Event Logging</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1562/001">Disable or Modify Tools</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li>Input Capture: <a href="/techniques/T1056/002">GUI Input Capture</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1559">Inter-Process Communication</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1559/001">Component Object Model</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1559/002">Dynamic Data Exchange</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1570">Lateral Tool Transfer</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Masquerading: <a href="/techniques/T1036/004">Masquerade Task or Service</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Masquerading: <a href="/techniques/T1036/002">Right-to-Left Override</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1106">Native API</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/techniques/T1135">Network Share Discovery</a> <small style="color:#929393">(v3.0&#8594;v3.1)</small></li>
+<li><a href="/techniques/T1003">OS Credential Dumping</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small><ul>
+<li><a href="/techniques/T1003/001">LSASS Memory</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1027">Obfuscated Files or Information</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1027/001">Binary Padding</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1027/002">Software Packing</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1027/003">Steganography</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1588">Obtain Capabilities</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1588/003">Code Signing Certificates</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1588/004">Digital Certificates</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1588/001">Malware</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1588/002">Tool</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1137">Office Application Startup</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small><ul>
+<li><a href="/techniques/T1137/006">Add-ins</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1137/001">Office Template Macros</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1137/002">Office Test</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1137/003">Outlook Forms</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1137/004">Outlook Home Page</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1137/005">Outlook Rules</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1201">Password Policy Discovery</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1069">Permission Groups Discovery</a> <small style="color:#929393">(v2.3&#8594;v2.4)</small><ul>
+<li><a href="/techniques/T1069/003">Cloud Groups</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1566">Phishing</a> <small style="color:#929393">(v2.1&#8594;v2.2)</small><ul>
+<li><a href="/techniques/T1566/001">Spearphishing Attachment</a> <small style="color:#929393">(v2.1&#8594;v2.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1055">Process Injection</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1055/004">Asynchronous Procedure Call</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1055/001">Dynamic-link Library Injection</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1055/002">Portable Executable Injection</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1055/012">Process Hollowing</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1055/008">Ptrace System Calls</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1055/003">Thread Execution Hijacking</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1055/005">Thread Local Storage</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1021">Remote Services</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1021/003">Distributed Component Object Model</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1021/004">SSH</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1021/005">VNC</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1021/006">Windows Remote Management</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1018">Remote System Discovery</a> <small style="color:#929393">(v3.1&#8594;v3.2)</small></li>
+<li><a href="/techniques/T1091">Replication Through Removable Media</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Scheduled Task/Job: <a href="/techniques/T1053/001">At (Linux)</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Scheduled Task/Job: <a href="/techniques/T1053/007">Container Orchestration Job</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Scheduled Task/Job: <a href="/techniques/T1053/003">Cron</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Scheduled Task/Job: <a href="/techniques/T1053/006">Systemd Timers</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1505">Server Software Component</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1505/003">Web Shell</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1129">Shared Modules</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li>Signed Binary Proxy Execution: <a href="/techniques/T1218/005">Mshta</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Signed Binary Proxy Execution: <a href="/techniques/T1218/011">Rundll32</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li>Signed Script Proxy Execution: <a href="/techniques/T1216/001">PubPrn</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1608">Stage Capabilities</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1608/004">Drive-by Target</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1608/003">Install Digital Certificate</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1608/005">Link Target</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1608/001">Upload Malware</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1608/002">Upload Tool</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1539">Steal Web Session Cookie</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1558">Steal or Forge Kerberos Tickets</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1553">Subvert Trust Controls</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1553/001">Gatekeeper Bypass</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1553/004">Install Root Certificate</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1082">System Information Discovery</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small></li>
+<li><a href="/techniques/T1016">System Network Configuration Discovery</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1033">System Owner/User Discovery</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1007">System Service Discovery</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1569">System Services</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small><ul>
+<li><a href="/techniques/T1569/001">Launchctl</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1569/002">Service Execution</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1080">Taint Shared Content</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li>Trusted Developer Utilities Proxy Execution: <a href="/techniques/T1127/001">MSBuild</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1550">Use Alternate Authentication Material</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small><ul>
+<li><a href="/techniques/T1550/004">Web Session Cookie</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1204">User Execution</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small><ul>
+<li><a href="/techniques/T1204/002">Malicious File</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1204/003">Malicious Image</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1078">Valid Accounts</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small><ul>
+<li><a href="/techniques/T1078/004">Cloud Accounts</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/techniques/T1078/002">Domain Accounts</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1078/003">Local Accounts</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1497">Virtualization/Sandbox Evasion</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small><ul>
+<li><a href="/techniques/T1497/001">System Checks</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/techniques/T1497/003">Time Based Evasion</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1497/002">User Activity Based Checks</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1047">Windows Management Instrumentation</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+<h4>Other Version Changes</h4>
+<ul>
+<li>Adversary-in-the-Middle: <a href="/techniques/T1557/001">LLMNR/NBT-NS Poisoning and SMB Relay</a> <small style="color:#eb6635">(v1.0&#8594;v1.2)</small></li>
+<li>Create or Modify System Process: <a href="/techniques/T1543/001">Launch Agent</a> <small style="color:#eb6635">(v1.0&#8594;v1.3)</small></li>
+</ul>
+<h4>Metadata-only Changes</h4>
+<ul>
+<li><a href="/techniques/T1134">Access Token Manipulation</a> <small style="color:#929393">(v2.0)</small></li>
+<li><a href="/techniques/T1087">Account Discovery</a> <small style="color:#929393">(v2.3)</small><ul>
+<li><a href="/techniques/T1087/002">Domain Account</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1098">Account Manipulation</a> <small style="color:#929393">(v2.2)</small></li>
+<li><a href="/techniques/T1020">Automated Exfiltration</a> <small style="color:#929393">(v1.2)</small></li>
+<li><a href="/techniques/T1547">Boot or Logon Autostart Execution</a> <small style="color:#929393">(v1.1)</small></li>
+<li>Command and Scripting Interpreter: <a href="/techniques/T1059/006">Python</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1554">Compromise Client Software Binary</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1136">Create Account</a> <small style="color:#929393">(v2.2)</small></li>
+<li><a href="/techniques/T1543">Create or Modify System Process</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1555">Credentials from Password Stores</a> <small style="color:#929393">(v1.0)</small><ul>
+<li><a href="/techniques/T1555/005">Password Managers</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+</li>
+<li>Data from Information Repositories: <a href="/techniques/T1213/001">Confluence</a> <small style="color:#929393">(v1.0)</small></li>
+<li>Data from Information Repositories: <a href="/techniques/T1213/002">Sharepoint</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1546">Event Triggered Execution</a> <small style="color:#929393">(v1.1)</small></li>
+<li><a href="/techniques/T1480">Execution Guardrails</a> <small style="color:#929393">(v1.1)</small><ul>
+<li><a href="/techniques/T1480/001">Environmental Keying</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1190">Exploit Public-Facing Application</a> <small style="color:#929393">(v2.3)</small></li>
+<li><a href="/techniques/T1083">File and Directory Discovery</a> <small style="color:#929393">(v1.3)</small></li>
+<li><a href="/techniques/T1222">File and Directory Permissions Modification</a> <small style="color:#929393">(v2.1)</small></li>
+<li><a href="/techniques/T1574">Hijack Execution Flow</a> <small style="color:#929393">(v1.1)</small><ul>
+<li><a href="/techniques/T1574/012">COR_PROFILER</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1070">Indicator Removal on Host</a> <small style="color:#929393">(v1.2)</small></li>
+<li><a href="/techniques/T1056">Input Capture</a> <small style="color:#929393">(v1.2)</small></li>
+<li><a href="/techniques/T1036">Masquerading</a> <small style="color:#929393">(v1.4)</small></li>
+<li><a href="/techniques/T1556">Modify Authentication Process</a> <small style="color:#929393">(v2.0)</small><ul>
+<li><a href="/techniques/T1556/003">Pluggable Authentication Modules</a> <small style="color:#929393">(v2.0)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1090">Proxy</a> <small style="color:#929393">(v3.1)</small></li>
+<li><a href="/techniques/T1053">Scheduled Task/Job</a> <small style="color:#929393">(v2.1)</small></li>
+<li>Server Software Component: <a href="/techniques/T1505/002">Transport Agent</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1218">Signed Binary Proxy Execution</a> <small style="color:#929393">(v2.1)</small><ul>
+<li><a href="/techniques/T1218/007">Msiexec</a> <small style="color:#929393">(v1.1)</small></li>
+</ul>
+</li>
+<li><a href="/techniques/T1216">Signed Script Proxy Execution</a> <small style="color:#929393">(v1.1)</small></li>
+<li>Steal or Forge Kerberos Tickets: <a href="/techniques/T1558/004">AS-REP Roasting</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1614">System Location Discovery</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1127">Trusted Developer Utilities Proxy Execution</a> <small style="color:#929393">(v1.2)</small></li>
+<li>Use Alternate Authentication Material: <a href="/techniques/T1550/001">Application Access Token</a> <small style="color:#929393">(v1.2)</small></li>
+<li>Use Alternate Authentication Material: <a href="/techniques/T1550/002">Pass the Hash</a> <small style="color:#929393">(v1.1)</small></li>
+<li>Use Alternate Authentication Material: <a href="/techniques/T1550/003">Pass the Ticket</a> <small style="color:#929393">(v1.1)</small></li>
+</ul>
+<h4>Deprecations</h4>
+<ul>
+<li>Scheduled Task/Job: <a href="/techniques/T1053/004">Launchd</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h3>Mobile</h3>
+<h4>New Techniques</h4>
+<ul>
+<li><a href="/techniques/T1616">Call Control</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1617">Hooking</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/techniques/T1618">User Evasion</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/techniques/T1449">Exploit SS7 to Redirect Phone Calls/SMS</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/techniques/T1463">Manipulate Device Communication</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/techniques/T1451">SIM Card Swap</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+<h4>Metadata-only Changes</h4>
+<ul>
+<li><a href="/techniques/T1478">Install Insecure or Malicious Configuration</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h3>ICS</h3>
+<h4>New Techniques</h4>
+<ul>
+<li><a href="/Technique/T0864">Transient Cyber Asset</a> <small style="color:#eb6635">(v0.0)</small></li>
+</ul>
+<h4>Metadata-only Changes</h4>
+<ul>
+<li><a href="/Technique/T0800">Activate Firmware Update Mode</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0878">Alarm Suppression</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0802">Automated Collection</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0803">Block Command Message</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0804">Block Reporting Message</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0805">Block Serial COM</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0806">Brute Force I/O</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0858">Change Operating Mode</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0807">Command-Line Interface</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0885">Commonly Used Port</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0884">Connection Proxy</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0879">Damage to Property</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0809">Data Destruction</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0811">Data from Information Repositories</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0812">Default Credentials</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0814">Denial of Service</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0868">Detect Operating Mode</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0816">Device Restart/Shutdown</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0817">Drive-by Compromise</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0871">Execution through API</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0819">Exploit Public-Facing Application</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0820">Exploitation for Evasion</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0890">Exploitation for Privilege Escalation</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0866">Exploitation of Remote Services</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0822">External Remote Services</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0823">Graphical User Interface</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0874">Hooking</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0877">I/O Image</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0872">Indicator Removal on Host</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0883">Internet Accessible Device</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0867">Lateral Tool Transfer</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0826">Loss of Availability</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0828">Loss of Productivity and Revenue</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0880">Loss of Safety</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0829">Loss of View</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0830">Man in the Middle</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T835">Manipulate I/O Image</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0831">Manipulation of Control</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0832">Manipulation of View</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0849">Masquerading</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0838">Modify Alarm Settings</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0821">Modify Controller Tasking</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0836">Modify Parameter</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0889">Modify Program</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0839">Module Firmware</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0801">Monitor Process State</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0834">Native API</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0840">Network Connection Enumeration</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0842">Network Sniffing</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0861">Point &amp; Tag Identification</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0843">Program Download</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0845">Program Upload</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0873">Project File Infection</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0886">Remote Services</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0846">Remote System Discovery</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0888">Remote System Information Discovery</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0847">Replication Through Removable Media</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0848">Rogue Master</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0851">Rootkit</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0852">Screen Capture</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0853">Scripting</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0881">Service Stop</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0865">Spearphishing Attachment</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0856">Spoof Reporting Message</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0869">Standard Application Layer Protocol</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0862">Supply Chain Compromise</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0857">System Firmware</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0882">Theft of Operational Information</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0855">Unauthorized Command Message</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0863">User Execution</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0859">Valid Accounts</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0860">Wireless Compromise</a> <small style="color:#929393">(v0.0)</small></li>
+</ul>
+<h4>Deprecations</h4>
+<ul>
+<li><a href="/Technique/T0810">Data Historian Compromise</a> <small style="color:#929393">(v0.0)</small></li>
+<li><a href="/Technique/T0818">Engineering Workstation Compromise</a> <small style="color:#929393">(v0.0)</small></li>
+</ul>
+<h2>Software</h2>
+<h3>Enterprise</h3>
+<h4>New Software</h4>
+<ul>
+<li><a href="/software/S0622">AppleSeed</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0640">Avaddon</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0642">BADFLICK</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0657">BLUELIGHT</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0638">Babuk</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0606">Bad Rabbit</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0635">BoomBox</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0651">BoxCaon</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0631">Chaes</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0611">Clop</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0608">Conficker</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0614">CostaBricks</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0625">Cuba</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0616">DEATHRANSOM</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0605">EKANS</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0624">Ecipekac</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0634">EnvyScout</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0618">FIVEHANDS</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0628">FYAnti</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0632">GrimAgent</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0617">HELLOKITTY</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0604">Industroyer</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0648">JSS Loader</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0607">KillDisk</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0641">Kobalos</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0513">LiteDuke</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0652">MarkiRAT</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0637">NativeZone</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0630">Nebulae</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0644">ObliqueRAT</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0626">P8RAT</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0613">PS1</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0643">Peppy</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0654">ProLock</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0650">QakBot</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0629">RainyDay</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0649">SMOKEDHAM</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0639">Seth-Locker</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0610">SideTwist</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0623">Siloscape</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0633">Sliver</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0627">SodaMaster</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0615">SombRAT</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0646">SpicyOmelette</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0603">Stuxnet</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0609">TRITON</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0647">Turian</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0636">VaporRage</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0612">WastedLocker</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0645">Wevtutil</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0658">XCSSET</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0653">xCaon</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h4>Major Version Changes</h4>
+<ul>
+<li><a href="/software/S0234">Bandook</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/software/S0281">Dok</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/software/S0384">Dridex</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/software/S0561">GuLoader</a> <small style="color:#929393">(v1.0&#8594;v2.0)</small></li>
+<li><a href="/software/S0585">Kerrdown</a> <small style="color:#929393">(v1.0&#8594;v2.0)</small></li>
+<li><a href="/software/S0447">Lokibot</a> <small style="color:#929393">(v1.0&#8594;v2.0)</small></li>
+<li><a href="/software/S0455">Metamorfo</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/software/S0340">Octopus</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/software/S0011">Taidoor</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/software/S0266">TrickBot</a> <small style="color:#929393">(v1.4&#8594;v2.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/software/S0456">Aria-body</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0534">Bazar</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0268">Bisonal</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0521">BloodHound</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0482">Bundlore</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0484">Carberp</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0020">China Chopper</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small></li>
+<li><a href="/software/S0154">Cobalt Strike</a> <small style="color:#929393">(v1.6&#8594;v1.7)</small></li>
+<li><a href="/software/S0575">Conti</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0115">Crimson</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0547">DropBook</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0082">Emissary</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0363">Empire</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/software/S0512">FatDuke</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0601">Hildegard</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0357">Impacket</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0276">Keydnap</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0599">Kinsing</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0349">LaZagne</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/software/S0451">LoudMiner</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0532">Lucifer</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0449">Maze</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0179">MimiPenguin</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0002">Mimikatz</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/software/S0051">MiniDuke</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/software/S0198">NETWIRE</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/software/S0039">Net</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small></li>
+<li><a href="/software/S0359">Nltest</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0402">OSX/Shlayer</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0352">OSX_OCEANLOTUS.D</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/software/S0072">OwaAuth</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0012">PoisonIvy</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/software/S0194">PowerSploit</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/software/S0029">PsExec</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0262">QuasarRAT</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0496">REvil</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0258">RGDoor</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0446">Ryuk</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0559">SUNBURST</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/software/S0546">SharpStage</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0543">Spark</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0242">SynAck</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/software/S0595">ThiefQuest</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0330">Zeus Panda</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0160">certutil</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0404">esentutl</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+<h4>Metadata-only Changes</h4>
+<ul>
+<li><a href="/software/S0128">BADNEWS</a> <small style="color:#929393">(v1.2)</small></li>
+<li><a href="/software/S0114">BOOTRASH</a> <small style="color:#929393">(v1.1)</small></li>
+<li><a href="/software/S0014">BS2005</a> <small style="color:#929393">(v1.1)</small></li>
+<li><a href="/software/S0593">ECCENTRICBANDWAGON</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0554">Egregor</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0009">Hikit</a> <small style="color:#929393">(v1.2)</small></li>
+<li><a href="/software/S0398">HyperBro</a> <small style="color:#929393">(v1.1)</small></li>
+<li><a href="/software/S0075">Reg</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0466">WindTail</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0350">zwShell</a> <small style="color:#929393">(v1.1)</small></li>
+</ul>
+<h3>Mobile</h3>
+<h4>New Software</h4>
+<ul>
+<li><a href="/software/S0655">BusyGasper</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/software/S0422">Anubis</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/software/S0529">CarbonSteal</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/software/S0407">Monokle</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+<h3>ICS</h3>
+<h4>New Software</h4>
+<ul>
+<li><a href="/software/S0606">Bad Rabbit</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0608">Conficker</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0605">EKANS</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0604">Industroyer</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0607">KillDisk</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/software/S0603">Stuxnet</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/software/S0496">REvil</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/software/S0446">Ryuk</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+</ul>
+<h4>Deletions</h4>
+<ul>
+<li>Bad Rabbit <small style="color:#eb6635">(v1.0)</small></li>
+<li>Conficker <small style="color:#eb6635">(v1.0)</small></li>
+<li>EKANS <small style="color:#eb6635">(v1.0)</small></li>
+<li>Industroyer <small style="color:#eb6635">(v1.0)</small></li>
+<li>Killdisk <small style="color:#eb6635">(v1.0)</small></li>
+<li>Stuxnet <small style="color:#eb6635">(v1.0)</small></li>
+</ul>
+<h2>Groups</h2>
+<h3>Enterprise</h3>
+<h4>New Groups</h4>
+<ul>
+<li><a href="/groups/G0138">Andariel</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0135">BackdoorDiplomacy</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0132">CostaRicto</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0137">Ferocious Kitten</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0136">IndigoZebra</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0133">Nomadic Octopus</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0139">TeamTNT</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0131">Tonto Team</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/groups/G0134">Transparent Tribe</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h4>Major Version Changes</h4>
+<ul>
+<li><a href="/groups/G0067">APT37</a> <small style="color:#929393">(v1.5&#8594;v2.0)</small></li>
+<li><a href="/groups/G0082">APT38</a> <small style="color:#929393">(v1.2&#8594;v2.0)</small></li>
+<li><a href="/groups/G0096">APT41</a> <small style="color:#929393">(v2.0&#8594;v3.0)</small></li>
+<li><a href="/groups/G0008">Carbanak</a> <small style="color:#929393">(v1.2&#8594;v2.0)</small></li>
+<li><a href="/groups/G0080">Cobalt Group</a> <small style="color:#929393">(v1.3&#8594;v2.0)</small></li>
+<li><a href="/groups/G0046">FIN7</a> <small style="color:#929393">(v1.5&#8594;v2.0)</small></li>
+<li><a href="/groups/G0119">Indrik Spider</a> <small style="color:#929393">(v1.0&#8594;v2.0)</small></li>
+<li><a href="/groups/G0094">Kimsuky</a> <small style="color:#929393">(v2.0&#8594;v3.0)</small></li>
+<li><a href="/groups/G0032">Lazarus Group</a> <small style="color:#929393">(v1.5&#8594;v2.0)</small></li>
+<li><a href="/groups/G0065">Leviathan</a> <small style="color:#929393">(v2.1&#8594;v3.0)</small></li>
+<li><a href="/groups/G0059">Magic Hound</a> <small style="color:#929393">(v3.0&#8594;v4.0)</small></li>
+<li><a href="/groups/G0019">Naikon</a> <small style="color:#929393">(v1.1&#8594;v2.0)</small></li>
+<li><a href="/groups/G0049">OilRig</a> <small style="color:#929393">(v2.0&#8594;v3.0)</small></li>
+<li><a href="/groups/G0102">Wizard Spider</a> <small style="color:#929393">(v1.3&#8594;v2.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/groups/G0099">APT-C-36</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0006">APT1</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0073">APT19</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0007">APT28</a> <small style="color:#929393">(v3.1&#8594;v3.2)</small></li>
+<li><a href="/groups/G0016">APT29</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0022">APT3</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0050">APT32</a> <small style="color:#929393">(v2.4&#8594;v2.5)</small></li>
+<li><a href="/groups/G0064">APT33</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0087">APT39</a> <small style="color:#929393">(v3.0&#8594;v3.1)</small></li>
+<li><a href="/groups/G0060">BRONZE BUTLER</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0108">Blue Mockingbird</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0114">Chimera</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0003">Cleaver</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0052">CopyKittens</a> <small style="color:#929393">(v1.4&#8594;v1.5)</small></li>
+<li><a href="/groups/G0070">Dark Caracal</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0079">DarkHydrus</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0105">DarkVishnya</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0035">Dragonfly</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0074">Dragonfly 2.0</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0051">FIN10</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0085">FIN4</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/groups/G0053">FIN5</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/groups/G0037">FIN6</a> <small style="color:#929393">(v3.1&#8594;v3.2)</small></li>
+<li><a href="/groups/G0061">FIN8</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/groups/G0101">Frankenstein</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0078">Gorgon Group</a> <small style="color:#929393">(v1.4&#8594;v1.5)</small></li>
+<li><a href="/groups/G0100">Inception</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0004">Ke3chang</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0077">Leafminer</a> <small style="color:#929393">(v2.2&#8594;v2.3)</small></li>
+<li><a href="/groups/G0129">Mustang Panda</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0014">Night Dragon</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0040">Patchwork</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0011">PittyTiger</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/groups/G0034">Sandworm Team</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0091">Silence</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0092">TA505</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0127">TA551</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0088">TEMP.Veles</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0027">Threat Group-3390</a> <small style="color:#929393">(v1.4&#8594;v1.5)</small></li>
+<li><a href="/groups/G0076">Thrip</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/groups/G0010">Turla</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0090">WIRTE</a> <small style="color:#929393">(v1.1&#8594;v1.2)</small></li>
+<li><a href="/groups/G0107">Whitefly</a> <small style="color:#929393">(v1.0&#8594;v1.1)</small></li>
+<li><a href="/groups/G0045">menuPass</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+</ul>
+<h4>Metadata-only Changes</h4>
+<ul>
+<li><a href="/groups/G0095">Machete</a> <small style="color:#929393">(v2.0)</small></li>
+<li><a href="/groups/G0071">Orangeworm</a> <small style="color:#929393">(v1.1)</small></li>
+<li><a href="/groups/G0044">Winnti Group</a> <small style="color:#929393">(v1.1)</small></li>
+</ul>
+<h4>Revocations</h4>
+<ul>
+<li>Stolen Pencil (revoked by <a href="/groups/G0094">Kimsuky</a>) <small style="color:#929393">(v0.0)</small></li>
+</ul>
+<h4>Deprecations</h4>
+<ul>
+<li><a href="/groups/G0015">Taidoor</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h3>Mobile</h3>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/groups/G0007">APT28</a> <small style="color:#929393">(v3.1&#8594;v3.2)</small></li>
+<li><a href="/groups/G0070">Dark Caracal</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+<li><a href="/groups/G0034">Sandworm Team</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+</ul>
+<h3>ICS</h3>
+<h4>Major Version Changes</h4>
+<ul>
+<li><a href="/groups/G0032">Lazarus Group</a> <small style="color:#929393">(v1.5&#8594;v2.0)</small></li>
+<li><a href="/groups/G0049">OilRig</a> <small style="color:#929393">(v2.0&#8594;v3.0)</small></li>
+</ul>
+<h4>Minor Version Changes</h4>
+<ul>
+<li><a href="/groups/G0064">APT33</a> <small style="color:#929393">(v1.3&#8594;v1.4)</small></li>
+<li><a href="/groups/G0035">Dragonfly</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0034">Sandworm Team</a> <small style="color:#929393">(v2.0&#8594;v2.1)</small></li>
+<li><a href="/groups/G0088">TEMP.Veles</a> <small style="color:#929393">(v1.2&#8594;v1.3)</small></li>
+</ul>
+<h4>Other Version Changes</h4>
+<ul>
+<li><a href="/groups/G0074">Dragonfly 2.0</a> <small style="color:#eb6635">(v1.3&#8594;v2.1)</small></li>
+</ul>
+<h2>Campaigns</h2>
+<h3>Enterprise</h3>
+<h3>Mobile</h3>
+<h3>ICS</h3>
+<h2>Mitigations</h2>
+<h3>Enterprise</h3>
+<h4>New Mitigations</h4>
+<ul>
+<li><a href="/mitigations/M1057">Data Loss Prevention</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h3>Mobile</h3>
+<h3>ICS</h3>
+<h2>Data Sources</h2>
+<h3>Enterprise</h3>
+<h4>New Data Sources</h4>
+<ul>
+<li><a href="/datasources/DS0026">Active Directory</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0015">Application Log</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0037">Certificate</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0025">Cloud Service</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010">Cloud Storage</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0031">Cluster</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0017">Command</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0032">Container</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0038">Domain Name</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0016">Drive</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0027">Driver</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0022">File</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0018">Firewall</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0001">Firmware</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0036">Group</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0007">Image</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030">Instance</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0035">Internet Scan</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0008">Kernel</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0028">Logon Session</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0004">Malware Repository</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0011">Module</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0023">Named Pipe</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0033">Network Share</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0029">Network Traffic</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0021">Persona</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0014">Pod</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009">Process</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0003">Scheduled Job</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0012">Script</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0013">Sensor Health</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0019">Service</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0020">Snapshot</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0002">User Account</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0034">Volume</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0005">WMI</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0006">Web Credential</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0024">Windows Registry</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h3>Mobile</h3>
+<h3>ICS</h3>
+<h2>Data Components</h2>
+<h3>Enterprise</h3>
+<h4>New Data Components</h4>
+<ul>
+<li><a href="/datasources/DS0038/#Active%20DNS">Active DNS</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0026/#Active%20Directory%20Credential%20Request">Active Directory Credential Request</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0026/#Active%20Directory%20Object%20Access">Active Directory Object Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0026/#Active%20Directory%20Object%20Creation">Active Directory Object Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0026/#Active%20Directory%20Object%20Deletion">Active Directory Object Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0026/#Active%20Directory%20Object%20Modification">Active Directory Object Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0015/#Application%20Log%20Content">Application Log Content</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0037/#Certificate%20Registration">Certificate Registration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0025/#Cloud%20Service%20Disable">Cloud Service Disable</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0025/#Cloud%20Service%20Enumeration">Cloud Service Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0025/#Cloud%20Service%20Metadata">Cloud Service Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0025/#Cloud%20Service%20Modification">Cloud Service Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010/#Cloud%20Storage%20Access">Cloud Storage Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010/#Cloud%20Storage%20Creation">Cloud Storage Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010/#Cloud%20Storage%20Deletion">Cloud Storage Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010/#Cloud%20Storage%20Enumeration">Cloud Storage Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010/#Cloud%20Storage%20Metadata">Cloud Storage Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0010/#Cloud%20Storage%20Modification">Cloud Storage Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0031/#Cluster%20Metadata">Cluster Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0017/#Command%20Execution">Command Execution</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0032/#Container%20Creation">Container Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0032/#Container%20Enumeration">Container Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0032/#Container%20Metadata">Container Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0032/#Container%20Start">Container Start</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0038/#Domain%20Registration">Domain Registration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0016/#Drive%20Access">Drive Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0016/#Drive%20Creation">Drive Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0016/#Drive%20Modification">Drive Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0027/#Driver%20Load">Driver Load</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0027/#Driver%20Metadata">Driver Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0022/#File%20Access">File Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0022/#File%20Creation">File Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0022/#File%20Deletion">File Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0022/#File%20Metadata">File Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0022/#File%20Modification">File Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0018/#Firewall%20Disable">Firewall Disable</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0018/#Firewall%20Enumeration">Firewall Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0018/#Firewall%20Metadata">Firewall Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0018/#Firewall%20Rule%20Modification">Firewall Rule Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0001/#Firmware%20Modification">Firmware Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0036/#Group%20Enumeration">Group Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0036/#Group%20Metadata">Group Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0036/#Group%20Modification">Group Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0013/#Host%20Status">Host Status</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0007/#Image%20Creation">Image Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0007/#Image%20Deletion">Image Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0007/#Image%20Metadata">Image Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0007/#Image%20Modification">Image Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Creation">Instance Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Deletion">Instance Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Enumeration">Instance Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Metadata">Instance Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Modification">Instance Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Start">Instance Start</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0030/#Instance%20Stop">Instance Stop</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0008/#Kernel%20Module%20Load">Kernel Module Load</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0028/#Logon%20Session%20Creation">Logon Session Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0028/#Logon%20Session%20Metadata">Logon Session Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0004/#Malware%20Content">Malware Content</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0004/#Malware%20Metadata">Malware Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0011/#Module%20Load">Module Load</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0023/#Named%20Pipe%20Metadata">Named Pipe Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0029/#Network%20Connection%20Creation">Network Connection Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0033/#Network%20Share%20Access">Network Share Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0029/#Network%20Traffic%20Content">Network Traffic Content</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0029/#Network%20Traffic%20Flow">Network Traffic Flow</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009/#OS%20API%20Execution">OS API Execution</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0038/#Passive%20DNS">Passive DNS</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0014/#Pod%20Creation">Pod Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0014/#Pod%20Enumeration">Pod Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0014/#Pod%20Metadata">Pod Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0014/#Pod%20Modification">Pod Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009/#Process%20Access">Process Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009/#Process%20Creation">Process Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009/#Process%20Metadata">Process Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009/#Process%20Modification">Process Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0009/#Process%20Termination">Process Termination</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0035/#Response%20Content">Response Content</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0035/#Response%20Metadata">Response Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0003/#Scheduled%20Job%20Creation">Scheduled Job Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0003/#Scheduled%20Job%20Metadata">Scheduled Job Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0003/#Scheduled%20Job%20Modification">Scheduled Job Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0012/#Script%20Execution">Script Execution</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0019/#Service%20Creation">Service Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0019/#Service%20Metadata">Service Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0019/#Service%20Modification">Service Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0020/#Snapshot%20Creation">Snapshot Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0020/#Snapshot%20Deletion">Snapshot Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0020/#Snapshot%20Enumeration">Snapshot Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0020/#Snapshot%20Metadata">Snapshot Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0020/#Snapshot%20Modification">Snapshot Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0021/#Social%20Media">Social Media</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0002/#User%20Account%20Authentication">User Account Authentication</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0002/#User%20Account%20Creation">User Account Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0002/#User%20Account%20Deletion">User Account Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0002/#User%20Account%20Metadata">User Account Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0002/#User%20Account%20Modification">User Account Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0034/#Volume%20Creation">Volume Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0034/#Volume%20Deletion">Volume Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0034/#Volume%20Enumeration">Volume Enumeration</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0034/#Volume%20Metadata">Volume Metadata</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0034/#Volume%20Modification">Volume Modification</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0005/#WMI%20Creation">WMI Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0006/#Web%20Credential%20Creation">Web Credential Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0006/#Web%20Credential%20Usage">Web Credential Usage</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0024/#Windows%20Registry%20Key%20Access">Windows Registry Key Access</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0024/#Windows%20Registry%20Key%20Creation">Windows Registry Key Creation</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0024/#Windows%20Registry%20Key%20Deletion">Windows Registry Key Deletion</a> <small style="color:#929393">(v1.0)</small></li>
+<li><a href="/datasources/DS0024/#Windows%20Registry%20Key%20Modification">Windows Registry Key Modification</a> <small style="color:#929393">(v1.0)</small></li>
+</ul>
+<h3>Mobile</h3>
+<h3>ICS</h3>
+<h2>Contributors to this release</h2>
+<ul>
+<li>@ionstorm</li>
+<li>Achute Sharma, Keysight</li>
+<li>Arnim Rupp, Deutsche Lufthansa AG</li>
+<li>Atul Nair, Qualys</li>
+<li>Austin Clark</li>
+<li>Ayan Saha, Keysight</li>
+<li>Center for Threat-Informed Defense (CTID)</li>
+<li>Christoffer Strömblad</li>
+<li>Christopher Glyer, Mandiant, @cglyer</li>
+<li>Cody Thomas, SpecterOps</li>
+<li>Dan Borges, @1njection</li>
+<li>Daniel Prizmant, Palo Alto Networks</li>
+<li>Daniyal Naeem, BT Security</li>
+<li>Dor Edry, Microsoft</li>
+<li>Edward Millington</li>
+<li>Eli Salem, @elisalem9</li>
+<li>ExtraHop</li>
+<li>Gaetan van Diemen, ThreatFabric</li>
+<li>Gareth Phillips, Seek Ltd.</li>
+<li>Gordon Long, Box, Inc., @ethicalhax</li>
+<li>Harshal Tupsamudre, Qualys</li>
+<li>Hiroki Nagahama, NEC Corporation</li>
+<li>Isif Ibrahima</li>
+<li>Itamar Mizrahi, Cymptom</li>
+<li>Ivan Sinyakov</li>
+<li>Janantha Marasinghe</li>
+<li>Jaron Bradley @jbradley89</li>
+<li>Jeff Felling, Red Canary</li>
+<li>Jen Burns, HubSpot</li>
+<li>Joas Antonio dos Santos, @C0d3Cr4zy</li>
+<li>Johann Rehberger</li>
+<li>Jon Sheedy</li>
+<li>Jon Sternstein, Stern Security</li>
+<li>Jonathan Boucher, @crash_wave, Bank of Canada</li>
+<li>Jonhnathan Ribeiro, 3CORESec, @_w0rk3r</li>
+<li>Jorell Magtibay, National Australia Bank Limited</li>
+<li>Jorge Orchilles, SCYTHE</li>
+<li>Jose Luis Sánchez Martinez</li>
+<li>Josh Liburdi, @jshlbrd</li>
+<li>João Paulo de A. Filho, @Hug1nN__</li>
+<li>Jörg Abraham, EclecticIQ</li>
+<li>Karim Hasanen, @_karimhasanen</li>
+<li>Kiyohito Yamamoto, RedLark, NTT Communications</li>
+<li>Kyaw Pyiyt Htet, @KyawPyiytHtet</li>
+<li>Kyoung-ju Kwak (S2W)</li>
+<li>Lior Ribak, SentinelOne</li>
+<li>Manikantan Srinivasan, NEC Corporation India</li>
+<li>Maril Vernon @shewhohacks</li>
+<li>Matt Brenton, Zurich Global Information Security</li>
+<li>Microsoft Detection and Response Team (DART)</li>
+<li>Microsoft Security</li>
+<li>Mike Burns, Mandiant</li>
+<li>Mnemonic AS</li>
+<li>Naveen Vijayaraghavan, Nilesh Dherange (Gurucul)</li>
+<li>Nick Carr, Mandiant</li>
+<li>Omkar Gudhate</li>
+<li>Patrick Sungbahadoor</li>
+<li>Pooja Natarajan, NEC Corporation India</li>
+<li>Prasanth Sadanala, Cigna Information Protection (CIP) - Threat Response Engineering Team</li>
+<li>Regina Elwell</li>
+<li>Rex Guo, @Xiaofei_REX, Confluera</li>
+<li>Rick Cole, Mandiant</li>
+<li>Ruben Dodge, @shotgunner101</li>
+<li>Shlomi Salem, SentinelOne</li>
+<li>SOCCRATES</li>
+<li>Stan Hegt, Outflank</li>
+<li>Ted Samuels, Rapid7</li>
+<li>Tim (Wadhwa-)Brown</li>
+<li>Toby Kohlenberg</li>
+<li>Vadim Khrykov</li>
+<li>Viren Chaudhari, Qualys</li>
+<li>Wes Hurd</li>
+<li>Will Thomas, Cyjax</li>
+<li>William Cain</li>
+<li>Yoshihiro Kori, NEC Corporation</li>
+<li>Yossi Nisani, Cymptom</li>
+<li>Yusuke Kubo, RedLark, NTT Communications</li>
+<li>Yuval Avrahami, Palo Alto Networks</li>
+<li>Zaw Min Htun, @Z3TAE</li>
+<li>Ziv Kaspersky, Cymptom</li>
+</ul></div>
