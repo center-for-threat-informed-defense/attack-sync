@@ -1,11 +1,15 @@
+from difflib import SequenceMatcher
 import json
 import re
 from pathlib import Path
+from string import whitespace
 from typing import Dict
 
 from loguru import logger
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
+from openpyxl.cell.rich_text import TextBlock, CellRichText
+from openpyxl.cell.text import InlineFont
 from openpyxl.utils.cell import get_column_letter
 
 
@@ -56,17 +60,19 @@ def main():
     mapping_workbook = load_workbook(filename=original_mapping_file)
     mapping_sheet = mapping_workbook["Sheet1"]
     initial_cols = 5
-    cols_per_change = 3
+    cols_per_change = 2
     num_changes = 5 # there are 5 hard coded checks for changes below
     added_cols = cols_per_change * num_changes
     total_cols = initial_cols + added_cols
 
-    def write_change(change_type, old_value, new_value):
+    add_style = InlineFont(b=True, color="339933")
+    del_style = InlineFont(strike=True, color="cc0000")
+
+    def write_change(change_type, change_value):
         nonlocal start_col
         row[start_col].value = change_type
-        row[start_col+1].value = old_value
-        row[start_col+2].value = new_value
-        start_col += 3
+        row[start_col+1].value = change_value
+        start_col += cols_per_change
 
     logger.debug("Providing context for ATT&CK Techniques that have changed")
     for row in mapping_sheet.iter_rows(max_col=total_cols):
@@ -77,7 +83,7 @@ def main():
         # The first row needs column headers
         if control_id == "Control ID":
             for _ in range(5):
-                write_change("Change", "Old Value", "New Value")
+                write_change("Change Type", "Change Value")
             continue
 
         if technique_id in changed_techniques:
@@ -98,14 +104,29 @@ def main():
                             the_rest = matches.group("the_rest")
                             stix_field = f"{top_stix_key}{the_rest}"
 
-                            old_value = values["old_value"]
-                            new_value = values["new_value"]
+                            old_text = values["old_value"].split(" ")
+                            new_text = values["new_value"].split(" ")
+                            cell_contents = list()
+                            diff = SequenceMatcher(None, old_text, new_text, autojunk=False)
+
+                            for opcode, old_start, old_end, new_start, new_end in diff.get_opcodes():
+                                old = " " + " ".join(old_text[old_start:old_end]) + " "
+                                new = " " + " ".join(new_text[new_start:new_end]) + " "
+                                match opcode:
+                                    case "replace":
+                                        cell_contents.append(TextBlock(del_style, old))
+                                        cell_contents.append(TextBlock(add_style, new))
+                                    case "delete":
+                                        cell_contents.append(TextBlock(del_style, old))
+                                    case "insert":
+                                        cell_contents.append(TextBlock(add_style, new))
+                                    case "equal":
+                                        cell_contents.append(new)
 
                             if stix_field == "description":
                                 write_change(
                                     "Modified Description",
-                                    old_value,
-                                    new_value,
+                                    CellRichText(cell_contents),
                                 )
 
             changelog_mitigations = changed_technique.get("changelog_mitigations")
@@ -116,8 +137,7 @@ def main():
                         new_value += f"{new_mitigation}\n"
                     write_change(
                         "New Mitigations",
-                        "",
-                        new_value.strip(),
+                        CellRichText([TextBlock(add_style, new_value.strip())]),
                     )
                 if changelog_mitigations["dropped"]:
                     new_value = ""
@@ -125,8 +145,7 @@ def main():
                         new_value += f"{dropped_mitigation}\n"
                     write_change(
                         "Dropped Mitigations",
-                        "",
-                        new_value.strip(),
+                        CellRichText([TextBlock(del_style, new_value.strip())]),
                     )
             changelog_detections = changed_technique.get("changelog_detections")
             if changelog_detections:
@@ -136,8 +155,7 @@ def main():
                         new_value += f"{new_detection}\n"
                     write_change(
                         "New Detections",
-                        "",
-                        new_value.strip(),
+                        CellRichText([TextBlock(add_style, new_value.strip())]),
                     )
                 if changelog_detections["dropped"]:
                     new_value = ""
@@ -145,8 +163,7 @@ def main():
                         new_value += f"{dropped_detections}\n"
                     write_change(
                         "Dropped Detections",
-                        "",
-                        new_value.strip(),
+                        CellRichText([TextBlock(del_style, new_value.strip())]),
                     )
 
     ###########
@@ -155,10 +172,8 @@ def main():
     logger.debug("Widening new columns...")
     for i in range(0, num_changes):
         col_idx = initial_cols + 1 + i * cols_per_change
-        print("set ", get_column_letter(col_idx), "to 18")
         mapping_sheet.column_dimensions[get_column_letter(col_idx)].width = 18
         for j in range(1, cols_per_change):
-            print("set ", get_column_letter(col_idx+j), "to 100")
             mapping_sheet.column_dimensions[get_column_letter(col_idx + j)].width = 100
 
     # Wrap text
