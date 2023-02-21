@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Dict
 
 from loguru import logger
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
 from openpyxl.styles import Alignment
-from openpyxl.worksheet.table import Table, TableStyleInfo
+from openpyxl.utils.cell import get_column_letter
 
 
 def get_attack_id(changelog_attack_object: dict):
@@ -55,19 +55,29 @@ def main():
     logger.debug(f"Loading: {original_mapping_file}")
     mapping_workbook = load_workbook(filename=original_mapping_file)
     mapping_sheet = mapping_workbook["Sheet1"]
+    initial_cols = 5
+    cols_per_change = 3
+    num_changes = 5 # there are 5 hard coded checks for changes below
+    added_cols = cols_per_change * num_changes
+    total_cols = initial_cols + added_cols
 
-    mapping_diff_workbook = Workbook()
-    mapping_diff_worksheet = mapping_diff_workbook.active
-
-    rows_to_insert = []
+    def write_change(change_type, old_value, new_value):
+        nonlocal start_col
+        row[start_col].value = change_type
+        row[start_col+1].value = old_value
+        row[start_col+2].value = new_value
+        start_col += 3
 
     logger.debug("Providing context for ATT&CK Techniques that have changed")
-    for row in mapping_sheet.rows:
+    for row in mapping_sheet.iter_rows(max_col=total_cols):
         control_id = row[0].value
         technique_id = row[3].value
+        start_col = 5
 
-        # skip parsing header
+        # The first row needs column headers
         if control_id == "Control ID":
+            for _ in range(5):
+                write_change("Change", "Old Value", "New Value")
             continue
 
         if technique_id in changed_techniques:
@@ -92,14 +102,10 @@ def main():
                             new_value = values["new_value"]
 
                             if stix_field == "description":
-                                rows_to_insert.append(
-                                    {
-                                        "A": control_id,
-                                        "B": technique_id,
-                                        "C": "Description",
-                                        "D": old_value,
-                                        "E": new_value,
-                                    }
+                                write_change(
+                                    "Modified Description",
+                                    old_value,
+                                    new_value,
                                 )
 
             changelog_mitigations = changed_technique.get("changelog_mitigations")
@@ -108,108 +114,64 @@ def main():
                     new_value = ""
                     for new_mitigation in changelog_mitigations["new"]:
                         new_value += f"{new_mitigation}\n"
-                    rows_to_insert.append(
-                        {
-                            "A": control_id,
-                            "B": technique_id,
-                            "C": "New Mitigations",
-                            "D": "",
-                            "E": new_value.strip(),
-                        }
+                    write_change(
+                        "New Mitigations",
+                        "",
+                        new_value.strip(),
                     )
                 if changelog_mitigations["dropped"]:
                     new_value = ""
                     for dropped_mitigation in changelog_mitigations["dropped"]:
                         new_value += f"{dropped_mitigation}\n"
-                    rows_to_insert.append(
-                        {
-                            "A": control_id,
-                            "B": technique_id,
-                            "C": "Dropped Mitigations",
-                            "D": "",
-                            "E": new_value.strip(),
-                        }
+                    write_change(
+                        "Dropped Mitigations",
+                        "",
+                        new_value.strip(),
                     )
-
             changelog_detections = changed_technique.get("changelog_detections")
             if changelog_detections:
                 if changelog_detections["new"]:
                     new_value = ""
                     for new_detection in changelog_detections["new"]:
                         new_value += f"{new_detection}\n"
-                    rows_to_insert.append(
-                        {
-                            "A": control_id,
-                            "B": technique_id,
-                            "C": "New Detections",
-                            "D": "",
-                            "E": new_value.strip(),
-                        }
+                    write_change(
+                        "New Detections",
+                        "",
+                        new_value.strip(),
                     )
                 if changelog_detections["dropped"]:
                     new_value = ""
                     for dropped_detections in changelog_detections["dropped"]:
                         new_value += f"{dropped_detections}\n"
-                    rows_to_insert.append(
-                        {
-                            "A": control_id,
-                            "B": technique_id,
-                            "C": "Dropped Detections",
-                            "D": "",
-                            "E": new_value.strip(),
-                        }
+                    write_change(
+                        "Dropped Detections",
+                        "",
+                        new_value.strip(),
                     )
-
-    logger.debug("Sorting by ATT&CK Technique ID")
-    sorted_rows = sorted(rows_to_insert, key=lambda x: x["B"])
-
-    mapping_diff_worksheet.append(
-        {
-            "A": "Control ID",
-            "B": "ATT&CK Technique ID",
-            "C": "Technique Field Change",
-            "D": f"ATT&CK v{old_version}",
-            "E": f"ATT&CK v{new_version}",
-        }
-    )
-
-    logger.debug(f"Writing data to: {final_workbook}")
-    for row in sorted_rows:
-        mapping_diff_worksheet.append(row)
 
     ###########
     # Style it!
     ###########
-    logger.debug("Widening columns D & E")
-    mapping_diff_worksheet.column_dimensions["D"].width = 100
-    mapping_diff_worksheet.column_dimensions["E"].width = 100
+    logger.debug("Widening new columns...")
+    for i in range(0, num_changes):
+        col_idx = initial_cols + 1 + i * cols_per_change
+        print("set ", get_column_letter(col_idx), "to 18")
+        mapping_sheet.column_dimensions[get_column_letter(col_idx)].width = 18
+        for j in range(1, cols_per_change):
+            print("set ", get_column_letter(col_idx+j), "to 100")
+            mapping_sheet.column_dimensions[get_column_letter(col_idx + j)].width = 100
 
-    # display data as an Excel table
-    final_cell = None
-    logger.debug("Wrapping text for Columns D & E")
-    for row in mapping_diff_worksheet.rows:
-        final_cell = row[4]
-        row[3].alignment = Alignment(wrap_text=True)
-        row[4].alignment = Alignment(wrap_text=True)
-
-    logger.debug("Setting data as an Excel Table")
-    tab = Table(displayName="Table1", ref=f"A1:{final_cell.coordinate}")
-    style = TableStyleInfo(
-        name="TableStyleLight10",
-        showFirstColumn=False,
-        showLastColumn=False,
-        showRowStripes=True,
-        showColumnStripes=True,
-    )
-    tab.tableStyleInfo = style
-    mapping_diff_worksheet.add_table(tab)
+    # Wrap text
+    logger.debug("Wrapping text for new columns...")
+    for row in mapping_sheet.rows:
+        for col_idx in range(initial_cols + 1, total_cols):
+            row[col_idx].alignment = Alignment(wrap_text=True)
 
     logger.debug(f"Creating output directory: {output_dir}")
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-    # save workbook
     logger.debug(f"Saving file: {final_workbook}")
-    mapping_diff_workbook.save(filename=final_workbook)
+    mapping_workbook.save(filename=final_workbook)
 
 
 if __name__ == "__main__":
