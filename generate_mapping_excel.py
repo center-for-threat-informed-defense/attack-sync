@@ -1,5 +1,6 @@
 from difflib import SequenceMatcher
 import json
+import operator
 import re
 from pathlib import Path
 from string import whitespace
@@ -7,10 +8,13 @@ from typing import Dict
 
 from loguru import logger
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment, Font
 from openpyxl.cell.rich_text import TextBlock, CellRichText
 from openpyxl.cell.text import InlineFont
 from openpyxl.utils.cell import get_column_letter
+
+
+TID_RE = re.compile(r'^T\d\d\d\d(\.\d\d\d)?$')
 
 
 def get_attack_id(changelog_attack_object: dict):
@@ -47,9 +51,9 @@ def main():
     old_version = "10.1"
     new_version = "12.1"
     changelog_json_file = f"data/attack-changelog-v{old_version}-v{new_version}.json"
-    original_mapping_file = "data/nist800-53-r4-mappings.xlsx"
+    original_mapping_file = "data/nist800-53-r5-mappings.xlsx"
     output_dir = "output"
-    final_workbook = f"{output_dir}/mapping_diff_attack_v{old_version}-v{new_version}.xlsx"
+    final_workbook = f"{output_dir}/nist800-53-r5-mappings-v{old_version}-v{new_version}.xlsx"
 
     with open(changelog_json_file, "r") as file:
         changelog = json.load(file)
@@ -67,6 +71,14 @@ def main():
 
     add_style = InlineFont(b=True, color="339933")
     del_style = InlineFont(strike=True, color="cc0000")
+    strike_font = Font(strike=True, color="cc0000")
+
+    def get_tid_from_ext_refs(external_refs):
+        for external_ref in external_refs:
+            external_id = external_ref.get("external_id", "")
+            if TID_RE.match(external_id):
+                return external_id
+        raise Exception(f"No technique ID found in externals refs: {external_refs}")
 
     def write_change(change_type, change_value):
         nonlocal start_col
@@ -93,6 +105,19 @@ def main():
             if change_type == "additions":
                 continue
 
+            revoked = changed_technique.get("revoked")
+            if revoked:
+                revoked_by = changed_technique.get("revoked_by")
+                if revoked_by:
+                    revoked_by_tid = get_tid_from_ext_refs(revoked_by["external_references"])
+                    revocation = f'Superseded by "{revoked_by_tid} {revoked_by["name"]}" - {revoked_by["description"]}'
+                else:
+                    revocation = "No superseding technique."
+                write_change("Revoked By", revocation)
+                # Strike out the technique ID/name columns
+                row[4].font = strike_font
+                row[5].font = strike_font
+
             detailed_diff = json.loads(changed_technique.get("detailed_diff", "{}"))
             if detailed_diff:
                 regex = r"^root\['(?P<top_stix_key>[^\']*)'\](?P<the_rest>.*)$"
@@ -104,8 +129,8 @@ def main():
                             the_rest = matches.group("the_rest")
                             stix_field = f"{top_stix_key}{the_rest}"
 
-                            old_text = values["old_value"].split(" ")
-                            new_text = values["new_value"].split(" ")
+                            old_text = str(values["old_value"]).split(" ")
+                            new_text = str(values["new_value"]).split(" ")
                             cell_contents = list()
                             diff = SequenceMatcher(None, old_text, new_text, autojunk=False)
 
@@ -165,6 +190,12 @@ def main():
                         "Dropped Detections",
                         CellRichText([TextBlock(del_style, new_value.strip())]),
                     )
+
+    additions = {tid:technique for (tid, technique) in changed_techniques.items()
+                  if technique["CHANGE_TYPE"] == "additions"}
+    for tid, addition in sorted(additions.items()):
+        mapping_sheet.append(("", "", "", tid, addition["name"],
+                             "New Technique", addition["description"]))
 
     ###########
     # Style it!
