@@ -1360,7 +1360,7 @@ def get_attack_object_version(stix_obj: dict) -> Optional[float]:
     version = stix_obj.get("x_mitre_version", 0)
     return float(version)
 
-
+here = Path(__file__).parent
 def markdown_to_html(outfile: str, content: str, diffStix: DiffStix):
     """Convert the markdown string passed in to HTML and store in index.html of indicated output file path.
 
@@ -1373,11 +1373,27 @@ def markdown_to_html(outfile: str, content: str, diffStix: DiffStix):
     diffStix : DiffStix
         An instance of a DiffStix object.
     """
+
+    # template_loader = FileSystemLoader(here/ "templates")
+    # templates = Environment.get_template("heading.html")
+    environment = Environment(loader=FileSystemLoader("templates/"))
+    template = environment.get_template("heading.html")
+
+    # top of the changelog detailed file
     logger.info("Writing HTML to file")
     old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
     new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
+    logger.info("before adding header")
+
     if new_version:
-        header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
+        header = template.render(
+            dark = false,
+            title="heading"
+
+        )
+        logger.info("finished adding header")
+
+        # header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
     else:
         header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and new content</h1>"
 
@@ -1426,8 +1442,26 @@ def write_detailed_html(html_file_detailed: str, diffStix: DiffStix):
     old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
     new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
 
+    environment = Environment(loader=FileSystemLoader("templates/"))
+    template = environment.get_template("nav.html")
+
+    navbar = template.render(
+        oldVersion = old_version,
+        newVersion = new_version,
+    )
+
+    template = environment.get_template("heading.html")
+
     if new_version:
-        header = f"<h1>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
+        header = template.render(
+            theme = "light",
+            oldVersion = old_version,
+            newVersion = new_version,
+            title="ATT&CK Changes"
+        )
+        logger.info("after adding header")
+
+        # header = f"<h1>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
     else:
         header = f"<h1>ATT&CK Changes Between v{old_version} and new content</h1>"
 
@@ -1453,7 +1487,6 @@ def write_detailed_html(html_file_detailed: str, diffStix: DiffStix):
         """
         ),
         header,
-        markdown.markdown(diffStix.get_md_key()),
         textwrap.dedent(
             """\
         

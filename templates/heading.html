@@ -32,17 +32,21 @@
     }
 </style>
 <!-- variables: 
-    - dark: whether or not background is dark
+    - theme: whether or not background is dark
     - eyebrowText
     - title
     - highlightText
- -->
 
-{% if dark %}
+
+     if theme="dark"
     <h4 class="eyebrow dark">Version 10.1 to 12.1</h4>
     <h1 class="dark">{{title}} <span>{{highlightText}}</span></h1>
-{% endif %}
-{% if !dark %}
-    <h4 class="eyebrow">Version 10.1 to 12.1</h4>
-    <h1>{{title}}</h1>
-{% endif %}
+ -->
+
+
+{% block content %}
+    {% if theme %}
+        <h4 class="eyebrow">Version {{oldVersion}} to {{newVersion}}</h4>
+        <h1>{{title}}</h1>
+    {% endif %}
+{% endblock %}
