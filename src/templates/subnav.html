@@ -1,0 +1,48 @@
+<style>
+    body {
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+    }
+    .subnav a {
+        color: black;
+        text-decoration: none;
+    }
+    .subnav ul {
+        display: flex;
+        margin-left: -20px;
+        padding-inline-start: 0;
+    }
+    .subnav li {
+        text-transform: uppercase;
+        display: inline-block;
+        font-weight: bold;
+        padding: 10px 0px;
+        margin: 0px 20px;
+        text-align: left;
+        border-bottom: white solid 4px;
+    }
+    .subnav li:hover, .subnav li:active {
+        border-bottom: #6241c5 solid 4px;
+    }
+</style>
+<!-- takes as input:
+    - category: Techniques, software, groups, campaigns, mitigations, data sources/data components
+    - product: enterprise, mobile, ics
+    - newItems, changedItems, revokedItems, deprecatedItems
+-->
+<div class="subnav">
+    <ul>
+        {% if newItems %}
+        <li><a href="#{{category}}_{{product}}_new">New {{ category }}</a></li>
+        {% endif %}
+        {% if changedItems %}
+        <li><a href="#{{category}}_{{product}}_changed">Changed {{ category }}</a></li>
+        {% endif %}
+        {% if revokedItems %}
+        <li><a href="#{{category}}_{{product}}_revoked">Revoked {{ category }}</a></li>
+        {% endif %}
+        {% if deprecatedItems %}
+        <li><a href="#{{category}}_{{product}}_deprecated">Deprecated {{ category }}</a></li>
+        {% endif %}
+    </ul>
+</div>
