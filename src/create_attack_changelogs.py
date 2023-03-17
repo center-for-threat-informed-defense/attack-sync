@@ -28,7 +28,7 @@ def main():
         print(output_folder)
 
         get_new_changelog_md(
-            domains=["enterprise-attack", "mobile-attack", "ics-attack"],
+            domains=["enterprise-attack", "mobile-attack", "ics-attack"], #can create for loop here to only select one domain at a time
             layers=[
                 f"{output_folder}/layer-enterprise.json",
                 f"{output_folder}/layer-mobile.json",
@@ -36,7 +36,7 @@ def main():
             ],
             old=f"attack-releases/stix-2.0/v{old_version}",
             new=f"attack-releases/stix-2.0/v{new_version}",
-            show_key=True,
+            show_key=True, #don't want the key anymore
             verbose=True,
             include_contributors=True,
             markdown_file=f"{output_folder}/changelog.md",
