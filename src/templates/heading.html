@@ -1,0 +1,48 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500&display=swap');
+
+    body {
+        margin: 0;
+        font-family: "Barlow Condensed", "Roboto", sans-serif;
+    }
+    .light-purple {
+        color: #BCA9DD;
+    }
+    .purple {
+        color: #6241c5;
+    }
+    h1 {
+        margin-top: 0;
+    }
+    h1, h4 {
+        text-transform: uppercase;
+    }
+    h1.dark {
+        color: white;
+    }
+    h4.eyebrow {
+        color: #6241c5;
+        margin-bottom: 0;
+    }
+    h4.eyebrow.dark {
+        color: #C2EAF6;
+    }
+    .dark h1 span {
+        color: #BAA2E2;
+    }
+</style>
+<!-- variables: 
+    - dark: whether or not background is dark
+    - eyebrowText
+    - title
+    - highlightText
+ -->
+
+{% if dark %}
+    <h4 class="eyebrow dark">Version 10.1 to 12.1</h4>
+    <h1 class="dark">{{title}} <span>{{highlightText}}</span></h1>
+{% endif %}
+{% if !dark %}
+    <h4 class="eyebrow">Version 10.1 to 12.1</h4>
+    <h1>{{title}}</h1>
+{% endif %}
