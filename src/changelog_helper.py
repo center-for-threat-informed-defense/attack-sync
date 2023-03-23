@@ -1393,6 +1393,7 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     """
     old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
     new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
+    title = "ATT&CK Changes"
 
     environment = Environment(loader=FileSystemLoader("templates/"))
     template = environment.get_template("nav.html")
@@ -1404,23 +1405,20 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
 
     template = environment.get_template("heading.html")
 
+    if len(diffStix.domains) < 2:
+        title = diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK Changes"
+    if len(diffStix.types) < 2:
+        title = title + " - " + diffStix.attack_type_to_title[diffStix.types[0]]
+        
     frontmatter = [
         textwrap.dedent(
-            """\
+            f"""\
         <!DOCTYPE html>
         <html>
             <head>
-                <title>ATT&CK Changes</title>
+                <title>{title}</title>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-                <style type="text/css">
-                    table.diff {font-family:Courier; border:medium;}
-                    .diff_header {background-color:#e0e0e0}
-                    td.diff_header {text-align:right}
-                    .diff_next {background-color:#c0c0c0}
-                    .diff_add {background-color:#aaffaa}
-                    .diff_chg {background-color:#ffff77}
-                    .diff_sub {background-color:#ffaaaa}
-                </style>
+
             </head>
             <body>
         """
@@ -1439,7 +1437,7 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
             oldVersion = old_version,
             newVersion = new_version,
             # title="ATT&CK Changes"
-            title= diffStix.domains[0]
+            title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
         )
         else:
             header = template.render(
@@ -1462,13 +1460,13 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
                 for domain, change_types in domain_data.items():
                     # add subnav underneath each  domain
                     template = environment.get_template("subnav.html")
-
+                    category = diffStix.attack_type_to_title[object_type].lower()
                     subnav = template.render(
-                        newItems = change_types.items(),
-                        changedItems = change_types.items(),
-                        revokedItems = change_types.items(),
-                        deprecatedItems = change_types.items(),
-                        category=diffStix.attack_type_to_title[object_type],
+                        newItems = change_types["additions"],
+                        changedItems = change_types["version_changes"],
+                        revokedItems = change_types["revocations"],
+                        deprecatedItems = change_types["deprecations"],
+                        category=category,
                         domain=domain
                     )
                     lines.append(subnav)
@@ -1483,7 +1481,7 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
 
                         if change_data:
                                     # for object_type, domain_data in diffStix.data["changes"].items():
-                            lines.append(f'<h4 id="{domain}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
+                            lines.append(f'<h4 id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
 
                             # lines.append(f'<h4 id="{object_type}_{domain}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
                             # lines.append("<details>")

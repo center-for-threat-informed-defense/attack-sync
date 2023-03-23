@@ -1,22 +1,16 @@
-
-<!-- takes as input:
-    - category: Techniques, software, groups, campaigns, mitigations, data sources/data components
-    - product: enterprise, mobile, ics
-    - newItems, changedItems, revokedItems, deprecatedItems
--->
 <div class="subnav">
     <ul>
         {% if newItems %}
-        <li><a href="#{{category.lower()}}_{{domain}}_additions">New {{ category }}</a></li>
+        <li><a href="#{{domain}}_{{category}}_additions">New {{ category }}</a></li>
         {% endif %}
         {% if changedItems %}
-        <li><a href="#{{category}}_{{domain}}_changed">Changed {{ category }}</a></li>
+        <li><a href="#{{domain}}_{{category}}_version_changes">Changed {{ category }}</a></li>
         {% endif %}
         {% if revokedItems %}
-        <li><a href="#{{category}}_{{domain}}_revoked">Revoked {{ category }}</a></li>
+        <li><a href="#{{domain}}_{{category}}_revocations">Revoked {{ category }}</a></li>
         {% endif %}
         {% if deprecatedItems %}
-        <li><a href="#{{category}}_{{domain}}_deprecated">Deprecated {{ category }}</a></li>
+        <li><a href="#{{domain}}_{{category}}_deprecated">Deprecated {{ category }}</a></li>
         {% endif %}
     </ul>
 </div>
