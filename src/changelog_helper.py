@@ -24,6 +24,7 @@ from tqdm import tqdm
 from jinja2 import Environment, FileSystemLoader, Template
 
 from mitreattack import release_info
+from create_accordian import buildParseAccordian, buildAccordianItem
 
 # explanation of modification types to data objects for legend in layer files
 date = datetime.datetime.today()
@@ -42,6 +43,7 @@ class DiffStix(object):
     def __init__(
         self,
         domains: List[str] = ["enterprise-attack", "mobile-attack", "ics-attack"],
+        types: List[str] = ["techniques", "software", "groups", "campaigns","mitigations", "data"],
         layers: List[str] = None,
         unchanged: bool = False,
         old: str = "old",
@@ -79,6 +81,7 @@ class DiffStix(object):
         """
         self.domains = domains
         self.layers = layers
+        self.types = types
         self.unchanged = unchanged
         self.old = old
         self.new = new
@@ -106,11 +109,7 @@ class DiffStix(object):
 
         self.section_descriptions = {
             "additions": "ATT&CK objects which are present in the new STIX data but not the old.",
-            "major_version_changes": "ATT&CK objects that have a major version change. (e.g. 1.0 → 2.0)",
-            "minor_version_changes": "ATT&CK objects that have a minor version change. (e.g. 1.0 → 1.1)",
-            "other_version_changes": "ATT&CK objects that have an unexpected version change. (e.g. 1.0 → 1.3)",
-            "metadata_changes": "ATT&CK objects that have at least one field changed, but not the version.",
-            "unknown_changes": "ATT&CK objects that have changed while the modified time stayed the same.",
+            "version_changes": "ATT&CK objects that have a change",
             "revocations": "ATT&CK objects which are revoked by a different object.",
             "deprecations": "ATT&CK objects which are deprecated and no longer in use, and not replaced.",
             "deletions": "ATT&CK objects which are no longer found in the STIX data.",
@@ -121,11 +120,7 @@ class DiffStix(object):
         for object_type in self.types:
             self.section_headers[object_type] = {
                 "additions": f"New {self.attack_type_to_title[object_type]}",
-                "major_version_changes": "Major Version Changes",
-                "minor_version_changes": "Minor Version Changes",
-                "other_version_changes": "Other Version Changes",
-                "metadata_changes": "Metadata-only Changes",
-                "unknown_changes": "Unknown Changes",
+                "version_changes": f"Changed {self.attack_type_to_title[object_type]}",
                 "deprecations": "Deprecations",
                 "revocations": "Revocations",
                 "deletions": "Deletions",
@@ -145,11 +140,7 @@ class DiffStix(object):
                 #     "enterprise-attack": {
                 #         "additions": [],
                 #         "deletions": [],
-                #         "major_version_changes": [],
-                #         "minor_version_changes": [],
-                #         "other_version_changes": [],
-                #         "metadata_changes": [],
-                #         "unknown_changes": [],
+                #         "version_changes": [],
                 #         "revocations": [],
                 #         "deprecations": [],
                 #         "unchanged": [],
@@ -161,23 +152,24 @@ class DiffStix(object):
         }
 
         for domain in self.domains:
-            for datastore_version in ["old", "new"]:
-                self.data[datastore_version][domain] = {
-                    "attack_objects": {
-                        # self.types
-                        # "techniques": {},
-                        # ...
-                    },
-                    "attack_release_version": None,  # "X.Y"
-                    "stix_datastore": None,  # <stix.MemoryStore>
-                    "relationships": {
-                        "subtechniques": {},
-                        "revoked-by": {},
-                    },
-                }
+            for types in self.types:
+                for datastore_version in ["old", "new"]:
+                    self.data[datastore_version][domain] = {
+                        "attack_objects": {
+                            # self.types
+                            # "techniques": {},
+                            # ...
+                        },
+                        "attack_release_version": None,  # "X.Y"
+                        "stix_datastore": None,  # <stix.MemoryStore>
+                        "relationships": {
+                            "subtechniques": {},
+                            "revoked-by": {},
+                        },
+                    }
 
-                for _type in self.types:
-                    self.data[datastore_version][domain]["attack_objects"][_type] = {}
+                    for _type in self.types:
+                        self.data[datastore_version][domain]["attack_objects"][_type] = {}
 
         self.load_data()
 
@@ -187,7 +179,7 @@ class DiffStix(object):
             self.load_domain(domain=domain)
 
         for domain in track(self.domains, description="Finding changes by domain"):
-            for obj_type in self.types:
+            for obj_type in track(self.types, description="Finding changes by type"):
                 logger.debug(f"Loading: [{domain:17}]/{obj_type}")
 
                 old_attack_objects = self.data["old"][domain]["attack_objects"][obj_type]
@@ -198,11 +190,7 @@ class DiffStix(object):
                 deletions = old_attack_objects.keys() - new_attack_objects.keys()
 
                 # sets to store the ids of objects for each section
-                major_version_changes = set()
-                minor_version_changes = set()
-                other_version_changes = set()
-                metadata_changes = set()
-                unknown_changes = set()
+                version_changes = set()
                 revocations = set()
                 deprecations = set()
                 unchanged = set()
@@ -267,23 +255,14 @@ class DiffStix(object):
                             old_date = dateparser.parse(old_stix_obj["modified"])
                             new_date = dateparser.parse(new_stix_obj["modified"])
                             if new_date != old_date:
-                                metadata_changes.add(stix_id)
+                                version_changes.add(stix_id)
                             else:
                                 unchanged.add(stix_id)
 
                         # Version number changed
                         ########################
                         else:
-                            if is_major_version_change(old_version=old_version, new_version=new_version):
-                                major_version_changes.add(stix_id)
-                            elif is_minor_version_change(old_version=old_version, new_version=new_version):
-                                minor_version_changes.add(stix_id)
-                            else:
-                                other_version_changes.add(stix_id)
-                                logger.warning(
-                                    f"{stix_id} - Unexpected version increase {old_version} → {new_version}. [{attack_id}] {new_stix_obj['name']}"
-                                )
-
+                            version_changes.add(stix_id)
                             new_stix_obj["version_change"] = f"{old_version} → {new_version}"
 
                         # Description changes
@@ -295,17 +274,12 @@ class DiffStix(object):
                         df1 = [x for x in new_lines if x not in old_lines]
 
                         if df != [] or df1 != []:
-                            if (
-                                (stix_id not in major_version_changes)
-                                and (stix_id not in minor_version_changes)
-                                and (stix_id not in metadata_changes)
-                                and (stix_id not in other_version_changes)
-                            ):
+                            if(stix_id not in version_changes):
                                 logger.error(
                                     f"{stix_id} - Somehow {attack_id} has a description change "
                                     "without the version being incremented or the last modified date changing"
                                 )
-                                unknown_changes.add(stix_id)
+                                version_changes.add(stix_id)
 
                             html_diff = difflib.HtmlDiff(wrapcolumn=60)
                             html_diff._legend = ""
@@ -355,24 +329,8 @@ class DiffStix(object):
                         [new_attack_objects[stix_id] for stix_id in additions],
                         key=lambda stix_object: stix_object["name"],
                     ),
-                    "major_version_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in major_version_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "minor_version_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in minor_version_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "other_version_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in other_version_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "metadata_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in metadata_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "unknown_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in unknown_changes],
+                    "version_changes": sorted(
+                        [new_attack_objects[stix_id] for stix_id in version_changes],
                         key=lambda stix_object: stix_object["name"],
                     ),
                     "revocations": sorted(
@@ -916,7 +874,7 @@ class DiffStix(object):
         Returns
         -------
         str
-            Key for change types used in Markdown output.
+            Key for change types used in Markdown output
         """
         # end first line with \ to avoid the empty line from dedent()
         key = textwrap.dedent(
@@ -924,11 +882,7 @@ class DiffStix(object):
             ## Key
 
             * New objects: {self.section_descriptions["additions"]}
-            * Major version changes: {self.section_descriptions["major_version_changes"]}
-            * Minor version changes: {self.section_descriptions["minor_version_changes"]}
-            * Other version changes: {self.section_descriptions["other_version_changes"]}
-            * Metadata changes: {self.section_descriptions["metadata_changes"]}
-            * Unknown changes: {self.section_descriptions["unknown_changes"]}
+            * Changes: {self.section_descriptions["version_changes"]}
             * Object revocations: {self.section_descriptions["revocations"]}
             * Object deprecations: {self.section_descriptions["deprecations"]}
             * Object deletions: {self.section_descriptions["deletions"]}
@@ -1393,7 +1347,6 @@ def markdown_to_html(outfile: str, content: str, diffStix: DiffStix):
         )
         logger.info("finished adding header")
 
-        # header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
     else:
         header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and new content</h1>"
 
@@ -1747,6 +1700,15 @@ def get_parsed_args():
     )
 
     parser.add_argument(
+        "--types",
+        type=str,
+        nargs="+",
+        choices=["techniques", "software", "groups", "campaigns","mitigations", "data"],
+        default=["techniques", "software", "groups", "campaigns","mitigations", "data"],
+        help="Which type of changes to report on. Choices (and defaults) are %(choices)s",
+    )
+
+    parser.add_argument(
         "--markdown-file",
         type=str,
         help="Create a markdown file reporting changes.",
@@ -1852,6 +1814,7 @@ def get_parsed_args():
 def get_new_changelog_md(
     domains: List[str] = ["enterprise-attack", "mobile-attack", "ics-attack"],
     layers: List[str] = layer_defaults,
+    types: List[str] = ["techniques", "software", "groups", "campaigns","mitigations", "data"],
     unchanged: bool = False,
     old: str = None,
     new: str = "new",
@@ -1920,6 +1883,7 @@ def get_new_changelog_md(
     diffStix = DiffStix(
         domains=domains,
         layers=layers,
+        types=types,
         unchanged=unchanged,
         old=old,
         new=new,
@@ -1978,6 +1942,7 @@ def main():
     get_new_changelog_md(
         domains=args.domains,
         layers=args.layers,
+        types=args.types,
         unchanged=args.unchanged,
         old=args.old,
         new=args.new,
