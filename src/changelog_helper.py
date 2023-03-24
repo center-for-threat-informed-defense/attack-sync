@@ -1405,6 +1405,8 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     navbar = template.render(
         oldVersion = old_version,
         newVersion = new_version,
+        typeList = ["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        domainList = ["enterprise-attack", "mobile-attack", "ics-attack"]
     )
 
     template = environment.get_template("heading.html")
@@ -1484,16 +1486,13 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
 
                         if change_data:
                             # build accordian for each change
-                            lines.append(f'<h4 id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
+                            lines.append(f'<h4 class="change-type" id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
                             lines.append(f'<div class="accordion accordion-flush" id="accordionFlush_{domain}_{change_type}">')
                             index = 0
 
                             template = environment.get_template("accordian-item.html")
-                            
                         for stix_object in change_data:
-                            # this is the loop that iterates through each change object
                             attack_id = get_attack_id(stix_object)
-                            object_version = get_attack_object_version(stix_obj=stix_object)
 
                             if stix_object["type"] == "x-mitre-data-component" or stix_object.get(
                                 "x_mitre_is_subtechnique"
@@ -1511,12 +1510,14 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
 
                             lines.append(buildAccordianItem(stix_object, nameplate, domain, change_type, object_type, index))
                             index = index + 1                           
+                        if change_data:
+                            lines.append("</div>")
 
-                        lines.append("</div>")
 
         lines.append(
             """
             </div>
+            <div style="height: 100px"></div>
             </body>
         </html>
         """
@@ -1562,8 +1563,8 @@ def get_parsed_args():
         "--types",
         type=str,
         nargs="+",
-        choices=["techniques", "software", "groups", "campaigns","mitigations", "data"],
-        default=["techniques", "software", "groups", "campaigns","mitigations", "data"],
+        choices=["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        default=["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
         help="Which type of changes to report on. Choices (and defaults) are %(choices)s",
     )
 
@@ -1673,7 +1674,7 @@ def get_parsed_args():
 def get_new_changelog_md(
     domains: List[str] = ["enterprise-attack", "mobile-attack", "ics-attack"],
     layers: List[str] = layer_defaults,
-    types: List[str] = ["techniques", "software", "groups", "campaigns","mitigations", "data"],
+    types: List[str] = ["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
     unchanged: bool = False,
     old: str = None,
     new: str = "new",
