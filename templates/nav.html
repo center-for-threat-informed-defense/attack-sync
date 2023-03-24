@@ -22,11 +22,25 @@
     h4 {
         font-size: 20px;
     }
+    h4.change-type {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
     .light-purple {
         color: #BCA9DD;
     }
     .purple {
         color: #6241c5;
+    }
+    .nav li{
+      text-transform: uppercase;
+    }
+    .nav {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      right: 0;
+      width: 100%;
     }
     .subnav ul {
         display: flex;
@@ -134,30 +148,15 @@
         border: none;
         color: #BCA9DD;
       }
-      
-      .link {
-        display: flex;
-        border-bottom: #005B94 solid 2px;
-        width: 30%;
-        text-decoration: none;
-        padding-bottom: 10px;
-        padding-top: 30px;
-    }
-    .link h4 {
-        font-size: 18px;
-        color: #005B94;
-    }
-    .link svg {
-        height: 18px;
-        margin: auto;
-        margin-right: 0;
-        margin-left: auto;
-    }
     .accordion-button:not(.collapsed) {
         color: inherit;
         background-color: white !important;
         box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
         border-bottom: none;
+    }
+    .accordion-item.panel {
+      border-left: none;
+      border-right: none;
     }
     .details-table td, .details-table th {
       font-size: smaller;
@@ -170,78 +169,34 @@
     .accordion-button::after {
         margin-left: 10px !important;
     }
+    summary {
+      margin-top: 8px;
+    }
+    .nav-item.dropdown#techniques {
+      margin-left: auto;
+    }
 </style>
-
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/index">ATT&CK SYNC</a>
-      <button class="navbar-brand" href="/index" >{{ oldVersion }} → {{ newVersion }}</button>
-
+      <a class="navbar-brand" href="/index.html">ATT&CK SYNC</a>
+      <button class="navbar-brand" href="/index.html" >{{ oldVersion }} → {{ newVersion }}</button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto mb-2 mb-lg-0 ml-auto">
-          <li class="nav-item dropdown" style="margin-left: auto;">
-            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Techniques
+          {% for type in typeList %}
+          <li class="nav-item dropdown" id={{type}}>
+            <a class="nav-link dropdown-toggle active" href="/v{{oldVersion}}-v{{newVersion}}/{{type}}/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{type}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
+              {% for domain in domainList %}
+                <li><a class="dropdown-item" href="/v{{oldVersion}}-v{{newVersion}}/{{type}}/{{domain}}/index.html">{{domain.split("-")[0].upper()}} ATT&CK</a></li>
+              {% endfor %}
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Software
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Groups
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/campaigns" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Campaigns
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/campaigns/enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="/campaigns/mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="/campaigns/ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Mitigations
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Data Sources/Data Components
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
+          {% endfor %}
         </ul>
       </div>
     </div>
