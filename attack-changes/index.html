@@ -1,134 +1,157 @@
 <!DOCTYPE html>
 <html>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500&display=swap');
+  </style>
   <body>
+    <style>
+      body {
+        font-family: 'Barlow Condensed', sans-serif;
+        margin: 0;
+      }
+      p {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        line-height: 34px;
+      }
+      .right {
+        width: 50vw;
+        display: inline-block;
+        margin: 0 auto;
+      }
+      .home {
+        display: flex;
+      }
+      .blue {
+        width: 50vw;
+        height: 100vh;
+        background-color: #0F1538;
+        overflow: hidden;
+        display: inline-block;
+      }
+      .blue-content {
+        width: 50%;
+        margin: auto;
+        margin-top: 30%;
+      }
+      .blue h1, p {
+        color: white;
+      }
+      h1, h4 {
+        text-transform: uppercase;
+        margin: 0px;
+        padding: 0px;
+      }
+      h1 {
+        font-size: 64px;
 
-    <h1>ATT&CK Diffs</h1>
-    <p>Here are a bunch of diffs between versions of ATT&CK.</p>
+      }
+      h4 {
+        font-size: 28px;
+      }
+      .blue h1 span {
+        color: #BAA2E2;
+      }
+      .blue h4 {
+        text-transform: uppercase;
+        color: #C2EAF6;
+      }
+      .link {
+        display: flex;
+        border-bottom: #C2EAF6 solid 2px;
+        width: 50%;
+        text-decoration: none;
+        padding-bottom: 10px;
+      }
+      .link svg {
+        height: 18px;
+        margin: auto;
+        margin-right: 0;
+        margin-left: auto;
+      }
+      select {
+        width: 100%;
+        border-radius: 0px;
+        padding: 10px 20px;
+      }
+      .right h5 {
+        font-size: 20px;
+        margin: 0;
+        padding: 10px 0px;
+        font-style: normal;
+        font-weight: 200;
+        text-transform: uppercase;
+      }
+      .form {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30%;
+      }
+      button.purple {
+        text-transform: uppercase;
+        background-color: #5D42BE;
+        color: white;
+        width: 100%;
+        padding: 15px;
+        margin-top: 30px;
+        border: none;
 
-    <h2>Changes between official releases</h2>
-    <ul>
-      <li><a href="v8.0-v8.1/changelog-detailed.html">v8.0 - v8.1</a></li>
-      <li><a href="v8.1-v8.2/changelog-detailed.html">v8.1 - v8.2</a></li>
-      <li><a href="v8.2-v9.0/changelog-detailed.html">v8.2 - v9.0</a></li>
-      <li><a href="v9.0-v10.0/changelog-detailed.html">v9.0 - v10.0</a></li>
-      <li><a href="v10.0-v10.1/changelog-detailed.html">v10.0 - v10.1</a></li>
-      <li><a href="v10.1-v11.0/changelog-detailed.html">v10.1 - v11.0</a></li>
-      <li><a href="v11.0-v11.1/changelog-detailed.html">v11.0 - v11.1</a></li>
-      <li><a href="v11.1-v11.2/changelog-detailed.html">v11.1 - v11.2</a></li>
-      <li><a href="v11.2-v11.3/changelog-detailed.html">v11.2 - v11.3</a></li>
-      <li><a href="v11.3-v12.0/changelog-detailed.html">v11.3 - v12.0</a></li>
-      <li><a href="v12.0-v12.1/changelog-detailed.html">v12.0 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v8.0</h2>
-    <ul>
-      <li><a href="v8.0-v8.1/changelog-detailed.html">v8.0 - v8.1</a></li>
-      <li><a href="v8.0-v8.2/changelog-detailed.html">v8.0 - v8.2</a></li>
-      <li><a href="v8.0-v9.0/changelog-detailed.html">v8.0 - v9.0</a></li>
-      <li><a href="v8.0-v10.0/changelog-detailed.html">v8.0 - v10.0</a></li>
-      <li><a href="v8.0-v10.1/changelog-detailed.html">v8.0 - v10.1</a></li>
-      <li><a href="v8.0-v11.0/changelog-detailed.html">v8.0 - v11.0</a></li>
-      <li><a href="v8.0-v11.1/changelog-detailed.html">v8.0 - v11.1</a></li>
-      <li><a href="v8.0-v11.2/changelog-detailed.html">v8.0 - v11.2</a></li>
-      <li><a href="v8.0-v11.3/changelog-detailed.html">v8.0 - v11.3</a></li>
-      <li><a href="v8.0-v12.0/changelog-detailed.html">v8.0 - v12.0</a></li>
-      <li><a href="v8.0-v12.1/changelog-detailed.html">v8.0 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v8.1</h2>
-    <ul>
-      <li><a href="v8.1-v8.2/changelog-detailed.html">v8.1 - v8.2</a></li>
-      <li><a href="v8.1-v9.0/changelog-detailed.html">v8.1 - v9.0</a></li>
-      <li><a href="v8.1-v10.0/changelog-detailed.html">v8.1 - v10.0</a></li>
-      <li><a href="v8.1-v10.1/changelog-detailed.html">v8.1 - v10.1</a></li>
-      <li><a href="v8.1-v11.0/changelog-detailed.html">v8.1 - v11.0</a></li>
-      <li><a href="v8.1-v11.1/changelog-detailed.html">v8.1 - v11.1</a></li>
-      <li><a href="v8.1-v11.2/changelog-detailed.html">v8.1 - v11.2</a></li>
-      <li><a href="v8.1-v11.3/changelog-detailed.html">v8.1 - v11.3</a></li>
-      <li><a href="v8.1-v12.0/changelog-detailed.html">v8.1 - v12.0</a></li>
-      <li><a href="v8.1-v12.1/changelog-detailed.html">v8.1 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v8.2</h2>
-    <ul>
-      <li><a href="v8.2-v9.0/changelog-detailed.html">v8.2 - v9.0</a></li>
-      <li><a href="v8.2-v10.0/changelog-detailed.html">v8.2 - v10.0</a></li>
-      <li><a href="v8.2-v10.1/changelog-detailed.html">v8.2 - v10.1</a></li>
-      <li><a href="v8.2-v11.0/changelog-detailed.html">v8.2 - v11.0</a></li>
-      <li><a href="v8.2-v11.1/changelog-detailed.html">v8.2 - v11.1</a></li>
-      <li><a href="v8.2-v11.2/changelog-detailed.html">v8.2 - v11.2</a></li>
-      <li><a href="v8.2-v11.3/changelog-detailed.html">v8.2 - v11.3</a></li>
-      <li><a href="v8.2-v12.0/changelog-detailed.html">v8.2 - v12.0</a></li>
-      <li><a href="v8.2-v12.1/changelog-detailed.html">v8.2 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v9.0</h2>
-    <ul>
-      <li><a href="v9.0-v10.0/changelog-detailed.html">v9.0 - v10.0</a></li>
-      <li><a href="v9.0-v10.1/changelog-detailed.html">v9.0 - v10.1</a></li>
-      <li><a href="v9.0-v11.0/changelog-detailed.html">v9.0 - v11.0</a></li>
-      <li><a href="v9.0-v11.1/changelog-detailed.html">v9.0 - v11.1</a></li>
-      <li><a href="v9.0-v11.2/changelog-detailed.html">v9.0 - v11.2</a></li>
-      <li><a href="v9.0-v11.3/changelog-detailed.html">v9.0 - v11.3</a></li>
-      <li><a href="v9.0-v12.0/changelog-detailed.html">v9.0 - v12.0</a></li>
-      <li><a href="v9.0-v12.1/changelog-detailed.html">v9.0 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v10.0</h2>
-    <ul>
-      <li><a href="v10.0-v10.1/changelog-detailed.html">v10.0 - v10.1</a></li>
-      <li><a href="v10.0-v11.0/changelog-detailed.html">v10.0 - v11.0</a></li>
-      <li><a href="v10.0-v11.1/changelog-detailed.html">v10.0 - v11.1</a></li>
-      <li><a href="v10.0-v11.2/changelog-detailed.html">v10.0 - v11.2</a></li>
-      <li><a href="v10.0-v11.3/changelog-detailed.html">v10.0 - v11.3</a></li>
-      <li><a href="v10.0-v12.0/changelog-detailed.html">v10.0 - v12.0</a></li>
-      <li><a href="v10.0-v12.1/changelog-detailed.html">v10.0 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v10.1</h2>
-    <ul>
-      <li><a href="v10.1-v11.0/changelog-detailed.html">v10.1 - v11.0</a></li>
-      <li><a href="v10.1-v11.1/changelog-detailed.html">v10.1 - v11.1</a></li>
-      <li><a href="v10.1-v11.2/changelog-detailed.html">v10.1 - v11.2</a></li>
-      <li><a href="v10.1-v11.3/changelog-detailed.html">v10.1 - v11.3</a></li>
-      <li><a href="v10.1-v12.0/changelog-detailed.html">v10.1 - v12.0</a></li>
-      <li><a href="v10.1-v12.1/changelog-detailed.html">v10.1 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v11.0</h2>
-    <ul>
-      <li><a href="v11.0-v11.1/changelog-detailed.html">v11.0 - v11.1</a></li>
-      <li><a href="v11.0-v11.2/changelog-detailed.html">v11.0 - v11.2</a></li>
-      <li><a href="v11.0-v11.3/changelog-detailed.html">v11.0 - v11.3</a></li>
-      <li><a href="v11.0-v12.0/changelog-detailed.html">v11.0 - v12.0</a></li>
-      <li><a href="v11.0-v12.1/changelog-detailed.html">v11.0 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v11.1</h2>
-    <ul>
-      <li><a href="v11.1-v11.2/changelog-detailed.html">v11.1 - v11.2</a></li>
-      <li><a href="v11.1-v11.3/changelog-detailed.html">v11.1 - v11.3</a></li>
-      <li><a href="v11.1-v12.0/changelog-detailed.html">v11.1 - v12.0</a></li>
-      <li><a href="v11.1-v12.1/changelog-detailed.html">v11.1 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v11.2</h2>
-    <ul>
-      <li><a href="v11.2-v11.3/changelog-detailed.html">v11.2 - v11.3</a></li>
-      <li><a href="v11.2-v12.0/changelog-detailed.html">v11.2 - v12.0</a></li>
-      <li><a href="v11.2-v12.1/changelog-detailed.html">v11.2 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v11.3</h2>
-    <ul>
-      <li><a href="v11.3-v12.0/changelog-detailed.html">v11.3 - v12.0</a></li>
-      <li><a href="v11.3-v12.1/changelog-detailed.html">v11.3 - v12.1</a></li>
-    </ul>
-
-    <h2>Changes since v12.0</h2>
-    <ul>
-      <li><a href="v12.0-v12.1/changelog-detailed.html">v12.0 - v12.1</a></li>
-    </ul>
+      }
+      h3 {
+        color: #5D42BE;
+        font-size: 50px;
+        margin: 0;
+      }
+      
+    </style>
+    <div class="home">
+      <div class="blue">
+        <div class="blue-content">
+          <h4>Mitre Engenuity</h4>
+          <h1>ATT&CK <span>Sync</span></h1>
+          <p>ATTACK Sync is a product developed by the Center for Threat Informed Defense, a subsidiary of Mitre Engenuity. It is intended to assist ATTACK users determine differences between software releases and assist in upgrading versions.</p>
+            <a class="link" href="">
+              <h4>Learn More</h4>
+              <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+                <path id="Path_8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#C2EAF6" stroke-linejoin="round" stroke-width="3"/>
+                <path id="Path_9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#C2EAF6" stroke-linejoin="round" stroke-width="3"/>
+              </svg>          
+            </a>
+        </div>
+      </div>
+      <div class="right">
+        <div class="form">
+          <h3>Release Differences</h3>
+          <h5>Old Version</h5>
+          <select class="select">
+            <option value="10.1">10.1</option>
+            <option value="11.0">11.0</option>
+            <option value="11.1">11.1</option>
+            <option value="12.0">12.0</option>
+            <option value="12.1">12.1</option>
+          </select>
+          <h5>New Version</h5>
+          <select class="select">
+            <option value="10.1">10.1</option>
+            <option value="11.0">11.0</option>
+            <option value="11.1">11.1</option>
+            <option value="12.0">12.0</option>
+            <option value="12.1">12.1</option>
+          </select>
+          <h5>ATT&CK Product</h5>
+          <select class="select">
+            <option value="enterprise">Enterprise ATT&CK</option>
+            <option value="mobile">Mobile ATT&CK</option>
+            <option value="ics">ICS ATT&CK</option>
+          </select>
+          <button href="v11.2-v11.3/changelog-detailed.html" class="purple">
+            See Changes
+          </button>
+        </div>
+      </div>
+    </div>
+    
 
   </body>
 </html>
