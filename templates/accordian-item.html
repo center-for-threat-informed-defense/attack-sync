@@ -18,34 +18,31 @@
 <div class="accordion-item panel">
     <h2 class="accordion-header" id="flush-{{domain}}-{{changeType}}-{{ accordianId }}">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{domain}}-{{changeType}}-{{ accordianId }}" aria-expanded="false" aria-controls="flush-collapse-{{domain}}-{{changeType}}-{{ accordianId }}">
-          <h5 class="purple" style="padding-right: 20px;">{{itemId}}</h5>
+        {% if itemId %}<h5 class="purple" style="padding-right: 20px; min-width: 100px;">{{itemId}}</h5>{%endif%}
           <h5>{{itemTitle}}</h5>
           {% if itemVersionChange %}
             <h5 class="purple right" style="text-transform: lowercase;">{{itemVersionChange}}</h5>
           {% endif %}
-          {% if not itemVersionChange and itemVersionNew and not itemVersionOld %}
-            <h5 class="purple right" style="text-transform: lowercase;">v{{itemVersionNew}}</h5>
-          {% endif %}
-          {% if not itemVersionChange and not itemVersionNew and itemVersionOld %}
-            <h5 class="purple right" style="text-transform: lowercase;">v{{itemVersionOld}}</h5>
+          {% if not itemVersionChange and itemVersion %}
+            <h5 class="purple right" style="text-transform: lowercase;">v{{itemVersion}}</h5>
           {% endif %}
       </button>
     </h2>
     <div id="flush-collapse-{{domain}}-{{changeType}}-{{ accordianId }}" class="accordion-collapse collapse" aria-labelledby="flush-{{domain}}-{{changeType}}-{{ accordianId }}" data-bs-parent="#accordionFlush-{{domain}}-{{changeType}}">
       <div class="accordion-body">
         <!-- for changes: -->
-        {% if changeType == "version_changes" %}
+        {% if stix_object['old_description'] and stix_object['description'] %}
             <table>
                 <tr>
                     <th>Old Description</th>
                     <th>New Description</th>
                 </tr>
                 <tr>
-                    <td class="old">{{stix_object['description']}}</td>
-                    <td class="new">{{stix_object['old_description']}}</td>
+                    <td class="old">{{stix_object['old_description']}}</td>
+                    <td class="new">{{stix_object['description']}}</td>
                 </tr>
             </table>
-        {% elif changeType == "additions" or changeType == "revocations" or changeType == "deprecations" %} 
+        {% elif changeType == "additions" or changeType == "revocations" or changeType == "deprecations" or (not stix_object['old_description'] and stix_object['description']) %} 
             <table>
                 <tr>
                     <th>Description</th>
