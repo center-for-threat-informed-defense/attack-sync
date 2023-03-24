@@ -24,7 +24,7 @@ from tqdm import tqdm
 from jinja2 import Environment, FileSystemLoader, Template
 
 from mitreattack import release_info
-from create_accordian import buildParseAccordian, buildAccordianItem
+from create_accordian import buildAccordianItem
 
 # explanation of modification types to data objects for legend in layer files
 date = datetime.datetime.today()
@@ -285,6 +285,10 @@ class DiffStix(object):
 
                             delta = html_diff.make_table(old_lines, new_lines, "Old Description", "New Description")
                             new_stix_obj["description_change_table"] = delta
+                            new_stix_obj["old_description"] = old_stix_obj["description"].replace("\n", " ")
+                            # new_stix_obj["new_description"] = new_stix_obj["description"].replace("\n", " ")
+                            # new_stix_obj["description_change_table_copy"] = html_diff.make_table(old_lines, new_lines, "Old Description", "New Description")
+
 
                         if new_stix_obj["type"] == "attack-pattern":
                             self.find_technique_mitigation_changes(new_stix_obj, domain)
@@ -1436,7 +1440,6 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
             theme = "light",
             oldVersion = old_version,
             newVersion = new_version,
-            # title="ATT&CK Changes"
             title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
         )
         else:
@@ -1451,14 +1454,14 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
         for object_type, domain_data in diffStix.data["changes"].items():
             # only display changes that are in the type layer specified in initialization
             if object_type in diffStix.types:
-            # this is an obnoxious way of determining if there are changes in any of the sections for any of the domains
+            # this is a way of determining if there are changes in any of the sections for any of the domains
                 if sum([sum(change_types.values(), []) for change_types in domain_data.values()], []):
                     lines.append(f"<h2>{diffStix.attack_type_to_title[object_type]}</h2>")
                 else:
                     continue
 
                 for domain, change_types in domain_data.items():
-                    # add subnav underneath each  domain
+                    # add subnav underneath each  domain: only show section if there are changes in that section
                     template = environment.get_template("subnav.html")
                     category = diffStix.attack_type_to_title[object_type].lower()
                     subnav = template.render(
@@ -1480,19 +1483,13 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
                         datastore_version = "old" if change_type == "deletions" else "new"
 
                         if change_data:
-                                    # for object_type, domain_data in diffStix.data["changes"].items():
+                            # build accordian for each change
                             lines.append(f'<h4 id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
-
-                            # lines.append(f'<h4 id="{object_type}_{domain}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
-                            # lines.append("<details>")
-                            # lines.append(f"<summary>{diffStix.section_headers[object_type][change_type]}</summary>")
-
-                            # template = environment.get_template("accordian-item.html")
-                            # buildParseAccordian(change_data, lines, domain, change_type)
                             lines.append(f'<div class="accordion accordion-flush" id="accordionFlush_{domain}_{change_type}">')
                             index = 0
 
                             template = environment.get_template("accordian-item.html")
+                            
                         for stix_object in change_data:
                             # this is the loop that iterates through each change object
                             attack_id = get_attack_id(stix_object)
@@ -1512,21 +1509,10 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
                             else:
                                 nameplate = stix_object["name"]
 
-                            # if attack_id:
-                            #     nameplate = f"[{attack_id}] {nameplate}"
-                            # else:
-                            #     if stix_object["type"] != "x-mitre-data-component":
-                            #         logger.warning(f"{stix_object['id']} does not have an ATT&CK ID")
-                            # each change is listed beginning here: add accordian item here
-                            lines.append(buildAccordianItem(stix_object, nameplate, domain, change_type, index))
-                            index = index + 1
-                            
-                            detailed_diff = json.loads(stix_object.get("detailed_diff", "{}"))
-                           
+                            lines.append(buildAccordianItem(stix_object, nameplate, domain, change_type, object_type, index))
+                            index = index + 1                           
 
                         lines.append("</div>")
-                    # if change_data:
-                    #     lines.append("</details>")
 
         lines.append(
             """
@@ -1537,7 +1523,6 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
         )
 
         file.writelines(lines)
-
 
 def get_parsed_args():
     """Create argument parser and parse arguments."""

@@ -82,9 +82,13 @@
     }
     table .old {
         background-color: #FFD7D7;
+        width: 50%;
+        vertical-align: top;
     }
     table .new {
         background-color: #D8F9C8;
+        width: 50%;
+        vertical-align: top;
     }
     .link {
         display: flex;
@@ -155,12 +159,18 @@
         box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
         border-bottom: none;
     }
+    .details-table td, .details-table th {
+      font-size: smaller;
+      padding: 5px;
+    }
+    details h6 {
+      margin-top: 10px;
+      font-weight: bold;
+    }
     .accordion-button::after {
         margin-left: 10px !important;
     }
 </style>
-<!--  todo: set up navigation
--->
 
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
