@@ -178,8 +178,8 @@
 </style>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/index.html">ATT&CK SYNC</a>
-      <button class="navbar-brand" href="/index.html" >{{ oldVersion }} → {{ newVersion }}</button>
+      <a class="navbar-brand" href="/attack-changes/index.html">ATT&CK SYNC</a>
+      <button class="navbar-brand" href="/attack-changes/index.html" >{{ oldVersion }} → {{ newVersion }}</button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -187,12 +187,12 @@
         <ul class="navbar-nav mr-auto mb-2 mb-lg-0 ml-auto">
           {% for type in typeList %}
           <li class="nav-item dropdown" id={{type}}>
-            <a class="nav-link dropdown-toggle active" href="/v{{oldVersion}}-v{{newVersion}}/{{type}}/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{type}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% for domain in domainList %}
-                <li><a class="dropdown-item" href="/v{{oldVersion}}-v{{newVersion}}/{{type}}/{{domain}}/index.html">{{domain.split("-")[0].upper()}} ATT&CK</a></li>
+                <li><a class="dropdown-item" href="/attack-changes/v{{oldVersion}}-v{{newVersion}}/{{domain}}/{{type}}/index.html">{{domain.split("-")[0].upper()}} ATT&CK</a></li>
               {% endfor %}
             </ul>
           </li>
