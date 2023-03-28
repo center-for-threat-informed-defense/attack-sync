@@ -5,9 +5,9 @@ import re
 from jinja2 import Environment, FileSystemLoader;
 
 environment = Environment(loader=FileSystemLoader("templates/"))
-template = environment.get_template("accordian-item.html")
+template = environment.get_template("accordion-item.html")
 
-def buildAccordianItem(changeItem, name, domain, changeType, objectType, index):
+def buildAccordionItem(changeItem, name, domain, changeType, objectType, index):
     attack_id = get_attack_id(changeItem)
     object_version = get_attack_object_version(stix_obj=changeItem)
     version_change = changeItem.get("version_change")
@@ -64,7 +64,7 @@ def buildAccordianItem(changeItem, name, domain, changeType, objectType, index):
     content = template.render(
         stix_object=changeItem,
         itemId=attack_id,
-        accordianId=index,
+        accordionId=index,
         itemTitle=name,
         itemVersionChange=version_change,
         itemVersion=object_version,

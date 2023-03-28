@@ -24,7 +24,7 @@ from tqdm import tqdm
 from jinja2 import Environment, FileSystemLoader, Template
 
 from mitreattack import release_info
-from create_accordian import buildAccordianItem
+from create_accordion import buildAccordionItem
 
 # explanation of modification types to data objects for legend in layer files
 date = datetime.datetime.today()
@@ -1485,12 +1485,12 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
                         datastore_version = "old" if change_type == "deletions" else "new"
 
                         if change_data:
-                            # build accordian for each change
+                            # build accordion for each change
                             lines.append(f'<h4 class="change-type" id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
                             lines.append(f'<div class="accordion accordion-flush" id="accordionFlush_{domain}_{change_type}">')
                             index = 0
 
-                            template = environment.get_template("accordian-item.html")
+                            template = environment.get_template("accordion-item.html")
                         for stix_object in change_data:
                             attack_id = get_attack_id(stix_object)
 
@@ -1508,7 +1508,7 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
                             else:
                                 nameplate = stix_object["name"]
 
-                            lines.append(buildAccordianItem(stix_object, nameplate, domain, change_type, object_type, index))
+                            lines.append(buildAccordionItem(stix_object, nameplate, domain, change_type, object_type, index))
                             index = index + 1                           
                         if change_data:
                             lines.append("</div>")

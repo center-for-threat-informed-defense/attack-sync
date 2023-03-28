@@ -16,8 +16,8 @@
   {%- endmacro %}
 
 <div class="accordion-item panel">
-    <h2 class="accordion-header" id="flush-{{domain}}-{{changeType}}-{{ accordianId }}">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{domain}}-{{changeType}}-{{ accordianId }}" aria-expanded="false" aria-controls="flush-collapse-{{domain}}-{{changeType}}-{{ accordianId }}">
+    <h2 class="accordion-header" id="flush-{{domain}}-{{changeType}}-{{ accordionId }}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{domain}}-{{changeType}}-{{ accordionId }}" aria-expanded="false" aria-controls="flush-collapse-{{domain}}-{{changeType}}-{{ accordionId }}">
         {% if itemId %}<h5 class="purple" style="padding-right: 20px; min-width: 100px;">{{itemId}}</h5>{%endif%}
           <h5>{{itemTitle}}</h5>
           {% if itemVersionChange %}
@@ -28,9 +28,8 @@
           {% endif %}
       </button>
     </h2>
-    <div id="flush-collapse-{{domain}}-{{changeType}}-{{ accordianId }}" class="accordion-collapse collapse" aria-labelledby="flush-{{domain}}-{{changeType}}-{{ accordianId }}" data-bs-parent="#accordionFlush-{{domain}}-{{changeType}}">
+    <div id="flush-collapse-{{domain}}-{{changeType}}-{{ accordionId }}" class="accordion-collapse collapse" aria-labelledby="flush-{{domain}}-{{changeType}}-{{ accordionId }}" data-bs-parent="#accordionFlush-{{domain}}-{{changeType}}">
       <div class="accordion-body">
-        <!-- for changes: -->
         {% if stix_object['old_description'] and stix_object['description'] %}
             <table>
                 <tr>
@@ -132,28 +131,6 @@
                 {% endif %}
             </details>
         {% endif %}
- 
-        <!-- add a details section that defaults to being hidden -->
-        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_{{accordianId}}">
-            <h2 class="accordion-header" id="flush-details-{{domain}}-{{changeType}}-{{ accordianId }}">
-                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-{{domain}}-{{changeType}}-{{ accordianId }}" aria-expanded="false" aria-controls="flus-details-collapse-{{domain}}-{{changeType}}-{{ accordianId }}">
-                    + Details
-                </button>
-          </h2>
-          <div id="flush-details-collapse-{{domain}}-{{changeType}}-{{ accordianId }}" class="accordion-collapse collapse" aria-labelledby="flush-details-{{domain}}-{{changeType}}-{{ accordianId }}" data-bs-parent="#accordionFlush_details_{{accordianId}}">
-            <div class="accordion-body">
-                {% block details %}{{detailsContent}}{% endblock %}
-            </div>
-          </div>
-        </div> -->
-       
-        <!-- <a class="link" href="">
-            <h4>Learn More</h4>
-            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
-            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
-            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
-            </svg>          
-        </a> -->
       </div>
     </div>
   </div>
