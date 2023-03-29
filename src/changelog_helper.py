@@ -1490,23 +1490,6 @@ def write_detailed_index(html_file_detailed: str, diffStix: DiffStix):
 
         file.writelines(lines)
 
-def count_changes(diffStix: DiffStix):
-    for domain in diffStix.domains:
-        for obj_type in diffStix.types:
-            changes = diffStix.data["changes"][obj_type][domain]["additions"]
-            logger.warning("got changes " +obj_type + domain+ str(len(changes)))
-            
-    #         l = diffStix.data["changes"][obj_type][domain].items().count()
-    #         logger.warning("count for "+ obj_type + " and " + str(l))
-    # revoked = diffStix.data["changes"]["revoked"]
-    # logger.warning("count for " + str(revoked))
-
-    # for domain_data in diffStix.data["changes"].items():
-    #     for domain, change_types in domain_data.items():
-    #         for change_type, change_data in change_types.items():
-
-
-
 def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     """Write a detailed HTML report of changes between ATT&CK versions.
 
