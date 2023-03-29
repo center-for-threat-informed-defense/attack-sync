@@ -1394,8 +1394,9 @@ def write_detailed_index(html_file_detailed: str, diffStix: DiffStix):
     diffStix : DiffStix
         An instance of a DiffStix object.
     """
-    old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
-    new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
+    if len(diffStix.domains) == 1:
+        old_version = diffStix.data["old"][diffStix.domains[0]]["attack_release_version"]
+        new_version = diffStix.data["new"][diffStix.domains[0]]["attack_release_version"]
     title = "ATT&CK Changes"
 
     environment = Environment(loader=FileSystemLoader("templates/"))
@@ -1500,8 +1501,9 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     diffStix : DiffStix
         An instance of a DiffStix object.
     """
-    old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
-    new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
+    if len(diffStix.domains) == 1:
+        old_version = diffStix.data["old"][diffStix.domains[0]]["attack_release_version"]
+        new_version = diffStix.data["new"][diffStix.domains[0]]["attack_release_version"]
     title = "ATT&CK Changes"
 
     environment = Environment(loader=FileSystemLoader("templates/"))
