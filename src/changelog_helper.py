@@ -990,15 +990,15 @@ class DiffStix(object):
                                 "techniqueID": technique["external_references"][0]["external_id"],
                                 "tactic": phase["phase_name"],
                                 "enabled": True,
-                                "color": colors[section],
+                                # "color": colors[section],
                                 # trim the 's' off end of word
                                 "comment": section[:-1] if section != "unchanged" else section,
                             }
                         )
 
             legendItems = []
-            for section, description in self.section_descriptions.items():
-                legendItems.append({"color": colors[section], "label": f"{section}: {description}"})
+            # for section, description in self.section_descriptions.items():
+            #     legendItems.append({"color": colors[section], "label": f"{section}: {description}"})
 
             # build layer structure
             layer_json = {
@@ -1384,6 +1384,128 @@ def layers_dict_to_files(outfiles, layers):
         Path(ics_attack_layer_file).parent.mkdir(parents=True, exist_ok=True)
         json.dump(layers["ics-attack"], open(ics_attack_layer_file, "w"), indent=4)
 
+def write_detailed_index(html_file_detailed: str, diffStix: DiffStix):
+    """Write high level overview of changes between ATT&CK versions as a landing page.
+
+    Parameters
+    ----------
+    html_file : str
+        File to write HTML for the index.
+    diffStix : DiffStix
+        An instance of a DiffStix object.
+    """
+    old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
+    new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
+    title = "ATT&CK Changes"
+
+    environment = Environment(loader=FileSystemLoader("templates/"))
+    template = environment.get_template("nav.html")
+
+    navbar = template.render(
+        oldVersion = old_version,
+        newVersion = new_version,
+        typeList = ["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        domainList = ["enterprise-attack", "mobile-attack", "ics-attack"]
+    )
+    if len(diffStix.domains) < 2:
+        title = diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK Changes"
+    if len(diffStix.types) < 2:
+        title = title + " - " + diffStix.attack_type_to_title[diffStix.types[0]]
+        
+    frontmatter = [
+        textwrap.dedent(
+            f"""\
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>{title}</title>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+            </head>
+            <body>
+        """
+        ),
+        navbar,
+    ]
+    with open(html_file_detailed, "w") as file:
+        file.writelines(frontmatter)
+        lines = []
+        template = environment.get_template("heading.html")
+        if len(diffStix.domains) < 2:
+            header = template.render(
+            theme = "light",
+            oldVersion = old_version,
+            newVersion = new_version,
+            title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
+        )
+        else:
+            header = template.render(
+            theme = "light",
+            oldVersion = old_version,
+            newVersion = new_version,
+            title="ATT&CK Changes"
+        )
+        logger.warning("finished writing header ", old_version)
+        lines.append(header)
+        template = environment.get_template("subnav.html")
+        subnav = template.render(
+            types=diffStix.types,
+            displayType = {"techniques": "Techniques",
+            "software": "Software",
+            "groups": "Groups",
+            "campaigns": "Campaigns",
+            "mitigations": "Mitigations",
+            "datasources": "Data Sources",
+            "datacomponents": "Data Components",}
+        )
+        lines.append(subnav)
+        # count_changes(diffStix=diffStix)
+        for object_type, domain_data in diffStix.data["changes"].items():
+            # only display changes that are in the type layer specified in initialization
+            if object_type in diffStix.types:
+            # this is a way of determining if there are changes in any of the sections for any of the domains
+                if sum([sum(change_types.values(), []) for change_types in domain_data.values()], []):
+                    lines.append(f'<div id="{object_type}_div">')
+                    lines.append(f'<h4>{diffStix.attack_type_to_title[object_type]}</h4>')
+                    template = environment.get_template("table.html")
+                    change_types = ["additions", "version_changes", "revocations", "deprecations"]
+                    for domain in diffStix.domains :
+                        if len(diffStix.domains) > 1:
+                            lines.append(f"<h5>{diffStix.domain_to_domain_label[diffStix.domains[0]]} ATT&CK</h5>")
+                        lines.append(template.render(changeTypes=change_types, domain=domain, obj_type=object_type, diffStix=diffStix, old=old_version, new=new_version ))
+                    lines.append(f'</div>')
+
+                else:
+                    continue
+                    
+        lines.append(
+            """
+            <div>
+            </div>
+            <div style="height: 100px"></div>
+            </body>
+        </html>
+        """
+        )
+
+        file.writelines(lines)
+
+def count_changes(diffStix: DiffStix):
+    for domain in diffStix.domains:
+        for obj_type in diffStix.types:
+            changes = diffStix.data["changes"][obj_type][domain]["additions"]
+            logger.warning("got changes " +obj_type + domain+ str(len(changes)))
+            
+    #         l = diffStix.data["changes"][obj_type][domain].items().count()
+    #         logger.warning("count for "+ obj_type + " and " + str(l))
+    # revoked = diffStix.data["changes"]["revoked"]
+    # logger.warning("count for " + str(revoked))
+
+    # for domain_data in diffStix.data["changes"].items():
+    #     for domain, change_types in domain_data.items():
+    #         for change_type, change_data in change_types.items():
+
+
 
 def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     """Write a detailed HTML report of changes between ATT&CK versions.
@@ -1764,13 +1886,13 @@ def get_new_changelog_md(
         with open(markdown_file, "w") as file:
             file.write(md_string)
 
-    if html_file:
-        markdown_to_html(outfile=html_file, content=md_string, diffStix=diffStix)
-
     if types:
         diffStix.types = types
         logger.info("Change type specified: "+ str(types))
 
+    if html_file:
+        # markdown_to_html(outfile=html_file, content=md_string, diffStix=diffStix)
+        write_detailed_index(html_file_detailed=html_file, diffStix=diffStix)
 
     if html_file_detailed:
         Path(html_file_detailed).parent.mkdir(parents=True, exist_ok=True)

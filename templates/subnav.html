@@ -12,5 +12,8 @@
         {% if deprecatedItems %}
         <li><a href="#{{domain}}_{{category}}_deprecated">Deprecated {{ category }}</a></li>
         {% endif %}
+        {% for type in types %}
+        <li><a href="#{{type}}_div">{{displayType[type]}}</a></li>
+        {% endfor %}
     </ul>
 </div>

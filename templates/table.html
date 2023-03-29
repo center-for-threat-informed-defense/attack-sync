@@ -1,0 +1,17 @@
+<table class="overview-table">
+    <tr>
+        {% for changeType in changeTypes %}
+            <th>{{changeType.replace("_", " ")}}</th>
+        {% endfor %}
+
+    </tr>
+    <tr>
+        {%- for changeType in changeTypes %}
+            <td style="width: 200px;">{{diffStix.data["changes"][obj_type][domain][changeType] | length}}</td>
+        {% endfor %}
+    </tr>
+</table>
+<a class="small-link" href="/output/attack-changes/v{{old}}-v{{new}}/{{domain}}/{{changeType}}/index.html">
+    <h5>Learn More</h5>
+    <span>→</span>
+  </a>
