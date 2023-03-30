@@ -1,18 +1,18 @@
 <div class="subnav">
     <ul>
-        {% if newItems %}
+        {%- if newItems %}
         <li><a href="#{{domain}}_{{category}}_additions">New {{ category }}</a></li>
         {% endif %}
-        {% if changedItems %}
+        {%- if changedItems %}
         <li><a href="#{{domain}}_{{category}}_version_changes">Changed {{ category }}</a></li>
         {% endif %}
-        {% if revokedItems %}
+        {%- if revokedItems %}
         <li><a href="#{{domain}}_{{category}}_revocations">Revoked {{ category }}</a></li>
         {% endif %}
-        {% if deprecatedItems %}
+        {%- if deprecatedItems %}
         <li><a href="#{{domain}}_{{category}}_deprecated">Deprecated {{ category }}</a></li>
         {% endif %}
-        {% for type in types %}
+        {%- for type in types %}
         <li><a href="#{{type}}_div">{{displayType[type]}}</a></li>
         {% endfor %}
     </ul>
