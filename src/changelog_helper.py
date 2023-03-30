@@ -1432,22 +1432,28 @@ def write_detailed_index(html_file_detailed: str, diffStix: DiffStix):
         file.writelines(frontmatter)
         lines = []
         template = environment.get_template("heading.html")
+        nav_buttons = environment.get_template("nav-buttons.html")
+        lines.append(template.render())
         if len(diffStix.domains) < 2:
             header = template.render(
-            theme = "light",
-            oldVersion = old_version,
-            newVersion = new_version,
-            title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
-        )
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
+            )
+            buttons = nav_buttons.render(
+                domain=diffStix.domains[0]
+            )
         else:
             header = template.render(
-            theme = "light",
-            oldVersion = old_version,
-            newVersion = new_version,
-            title="ATT&CK Changes"
-        )
-        logger.warning("finished writing header ", old_version)
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title="ATT&CK Changes"
+            )
+            buttons = nav_buttons.render()
         lines.append(header)
+        lines.append(buttons)
         template = environment.get_template("subnav.html")
         subnav = template.render(
             types=diffStix.types,
@@ -1473,7 +1479,7 @@ def write_detailed_index(html_file_detailed: str, diffStix: DiffStix):
                     for domain in diffStix.domains :
                         if len(diffStix.domains) > 1:
                             lines.append(f"<h5>{diffStix.domain_to_domain_label[diffStix.domains[0]]} ATT&CK</h5>")
-                        lines.append(template.render(changeTypes=change_types, domain=domain, obj_type=object_type, diffStix=diffStix, old=old_version, new=new_version ))
+                        lines.append(template.render(changeTypes=change_types, domain=domain, obj_type=object_type, diffStix=diffStix, oldVersion=old_version, newVersion=new_version ))
                     lines.append(f'</div>')
 
                 else:
@@ -1542,24 +1548,29 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     with open(html_file_detailed, "w") as file:
         file.writelines(frontmatter)
         lines = []
-
+        nav_buttons = environment.get_template("nav-buttons.html")
         # render title to be specific to the domain it's in
         if len(diffStix.domains) < 2:
             header = template.render(
-            theme = "light",
-            oldVersion = old_version,
-            newVersion = new_version,
-            title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
-        )
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
+            )
+            buttons = nav_buttons.render(
+                domain=diffStix.domains[0]
+            )
         else:
             header = template.render(
-            theme = "light",
-            oldVersion = old_version,
-            newVersion = new_version,
-            title="ATT&CK Changes"
-        )
-    
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title="ATT&CK Changes"
+            )
+            buttons = nav_buttons.render()
         lines.append(header)
+        lines.append(buttons)
+
         for object_type, domain_data in diffStix.data["changes"].items():
             # only display changes that are in the type layer specified in initialization
             if object_type in diffStix.types:
