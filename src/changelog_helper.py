@@ -1605,7 +1605,7 @@ def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
                         if change_data:
                             # build accordion for each change
                             lines.append(f'<h4 class="change-type" id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
-                            lines.append(f'<div class="accordion accordion-flush" id="accordionFlush_{domain}_{change_type}">')
+                            lines.append(f'<div class="accordion accordion-flush" id="accordionFlush-{domain}-{change_type}">')
                             index = 0
 
                             template = environment.get_template("accordion-item.html")
