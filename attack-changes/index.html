@@ -153,7 +153,7 @@
                 <option value="8.1">8.1</option>
                 <option value="9.0">9.0</option>
                 <option value="9.1">9.1</option>
-                <option value="10.1">10.0</option>
+                <option value="10.0">10.0</option>
                 <option value="10.1">10.1</option>
                 <option value="11.0">11.0</option>
                 <option value="11.1">11.1</option>
@@ -169,7 +169,7 @@
                 <option value="8.1">8.1</option>
                 <option value="9.0">9.0</option>
                 <option value="9.1">9.1</option>
-                <option value="10.1">10.0</option>
+                <option value="10.0">10.0</option>
                 <option value="10.1">10.1</option>
                 <option value="11.0">11.0</option>
                 <option value="11.1">11.1</option>
@@ -208,7 +208,7 @@
         event.stopPropagation()
         return;
       }
-      let url = "/v" + oldVal + "-v" + newVal;
+      let url = "/attack-changes/v" + oldVal + "-v" + newVal;
       if (document.getElementById("domain").value !== "all") {
         url += "/" + document.getElementById("domain").value;
       } 
