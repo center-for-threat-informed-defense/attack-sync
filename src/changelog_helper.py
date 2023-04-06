@@ -24,6 +24,7 @@ from tqdm import tqdm
 from jinja2 import Environment, FileSystemLoader, Template
 
 from mitreattack import release_info
+from create_accordion import buildAccordionItem
 
 # explanation of modification types to data objects for legend in layer files
 date = datetime.datetime.today()
@@ -42,6 +43,7 @@ class DiffStix(object):
     def __init__(
         self,
         domains: List[str] = ["enterprise-attack", "mobile-attack", "ics-attack"],
+        types: List[str] = ["techniques", "software", "groups", "campaigns","mitigations", "data"],
         layers: List[str] = None,
         unchanged: bool = False,
         old: str = "old",
@@ -79,6 +81,7 @@ class DiffStix(object):
         """
         self.domains = domains
         self.layers = layers
+        self.types = types
         self.unchanged = unchanged
         self.old = old
         self.new = new
@@ -106,11 +109,7 @@ class DiffStix(object):
 
         self.section_descriptions = {
             "additions": "ATT&CK objects which are present in the new STIX data but not the old.",
-            "major_version_changes": "ATT&CK objects that have a major version change. (e.g. 1.0 → 2.0)",
-            "minor_version_changes": "ATT&CK objects that have a minor version change. (e.g. 1.0 → 1.1)",
-            "other_version_changes": "ATT&CK objects that have an unexpected version change. (e.g. 1.0 → 1.3)",
-            "metadata_changes": "ATT&CK objects that have at least one field changed, but not the version.",
-            "unknown_changes": "ATT&CK objects that have changed while the modified time stayed the same.",
+            "version_changes": "ATT&CK objects that have a change",
             "revocations": "ATT&CK objects which are revoked by a different object.",
             "deprecations": "ATT&CK objects which are deprecated and no longer in use, and not replaced.",
             "deletions": "ATT&CK objects which are no longer found in the STIX data.",
@@ -121,11 +120,7 @@ class DiffStix(object):
         for object_type in self.types:
             self.section_headers[object_type] = {
                 "additions": f"New {self.attack_type_to_title[object_type]}",
-                "major_version_changes": "Major Version Changes",
-                "minor_version_changes": "Minor Version Changes",
-                "other_version_changes": "Other Version Changes",
-                "metadata_changes": "Metadata-only Changes",
-                "unknown_changes": "Unknown Changes",
+                "version_changes": f"Changed {self.attack_type_to_title[object_type]}",
                 "deprecations": "Deprecations",
                 "revocations": "Revocations",
                 "deletions": "Deletions",
@@ -145,11 +140,7 @@ class DiffStix(object):
                 #     "enterprise-attack": {
                 #         "additions": [],
                 #         "deletions": [],
-                #         "major_version_changes": [],
-                #         "minor_version_changes": [],
-                #         "other_version_changes": [],
-                #         "metadata_changes": [],
-                #         "unknown_changes": [],
+                #         "version_changes": [],
                 #         "revocations": [],
                 #         "deprecations": [],
                 #         "unchanged": [],
@@ -198,11 +189,7 @@ class DiffStix(object):
                 deletions = old_attack_objects.keys() - new_attack_objects.keys()
 
                 # sets to store the ids of objects for each section
-                major_version_changes = set()
-                minor_version_changes = set()
-                other_version_changes = set()
-                metadata_changes = set()
-                unknown_changes = set()
+                version_changes = set()
                 revocations = set()
                 deprecations = set()
                 unchanged = set()
@@ -267,23 +254,14 @@ class DiffStix(object):
                             old_date = dateparser.parse(old_stix_obj["modified"])
                             new_date = dateparser.parse(new_stix_obj["modified"])
                             if new_date != old_date:
-                                metadata_changes.add(stix_id)
+                                version_changes.add(stix_id)
                             else:
                                 unchanged.add(stix_id)
 
                         # Version number changed
                         ########################
                         else:
-                            if is_major_version_change(old_version=old_version, new_version=new_version):
-                                major_version_changes.add(stix_id)
-                            elif is_minor_version_change(old_version=old_version, new_version=new_version):
-                                minor_version_changes.add(stix_id)
-                            else:
-                                other_version_changes.add(stix_id)
-                                logger.warning(
-                                    f"{stix_id} - Unexpected version increase {old_version} → {new_version}. [{attack_id}] {new_stix_obj['name']}"
-                                )
-
+                            version_changes.add(stix_id)
                             new_stix_obj["version_change"] = f"{old_version} → {new_version}"
 
                         # Description changes
@@ -295,23 +273,22 @@ class DiffStix(object):
                         df1 = [x for x in new_lines if x not in old_lines]
 
                         if df != [] or df1 != []:
-                            if (
-                                (stix_id not in major_version_changes)
-                                and (stix_id not in minor_version_changes)
-                                and (stix_id not in metadata_changes)
-                                and (stix_id not in other_version_changes)
-                            ):
+                            if(stix_id not in version_changes):
                                 logger.error(
                                     f"{stix_id} - Somehow {attack_id} has a description change "
                                     "without the version being incremented or the last modified date changing"
                                 )
-                                unknown_changes.add(stix_id)
+                                version_changes.add(stix_id)
 
                             html_diff = difflib.HtmlDiff(wrapcolumn=60)
                             html_diff._legend = ""
 
                             delta = html_diff.make_table(old_lines, new_lines, "Old Description", "New Description")
                             new_stix_obj["description_change_table"] = delta
+                            new_stix_obj["old_description"] = old_stix_obj["description"].replace("\n", " ")
+                            # new_stix_obj["new_description"] = new_stix_obj["description"].replace("\n", " ")
+                            # new_stix_obj["description_change_table_copy"] = html_diff.make_table(old_lines, new_lines, "Old Description", "New Description")
+
 
                         if new_stix_obj["type"] == "attack-pattern":
                             self.find_technique_mitigation_changes(new_stix_obj, domain)
@@ -355,24 +332,8 @@ class DiffStix(object):
                         [new_attack_objects[stix_id] for stix_id in additions],
                         key=lambda stix_object: stix_object["name"],
                     ),
-                    "major_version_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in major_version_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "minor_version_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in minor_version_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "other_version_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in other_version_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "metadata_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in metadata_changes],
-                        key=lambda stix_object: stix_object["name"],
-                    ),
-                    "unknown_changes": sorted(
-                        [new_attack_objects[stix_id] for stix_id in unknown_changes],
+                    "version_changes": sorted(
+                        [new_attack_objects[stix_id] for stix_id in version_changes],
                         key=lambda stix_object: stix_object["name"],
                     ),
                     "revocations": sorted(
@@ -916,7 +877,7 @@ class DiffStix(object):
         Returns
         -------
         str
-            Key for change types used in Markdown output.
+            Key for change types used in Markdown output
         """
         # end first line with \ to avoid the empty line from dedent()
         key = textwrap.dedent(
@@ -924,11 +885,7 @@ class DiffStix(object):
             ## Key
 
             * New objects: {self.section_descriptions["additions"]}
-            * Major version changes: {self.section_descriptions["major_version_changes"]}
-            * Minor version changes: {self.section_descriptions["minor_version_changes"]}
-            * Other version changes: {self.section_descriptions["other_version_changes"]}
-            * Metadata changes: {self.section_descriptions["metadata_changes"]}
-            * Unknown changes: {self.section_descriptions["unknown_changes"]}
+            * Changes: {self.section_descriptions["version_changes"]}
             * Object revocations: {self.section_descriptions["revocations"]}
             * Object deprecations: {self.section_descriptions["deprecations"]}
             * Object deletions: {self.section_descriptions["deletions"]}
@@ -1033,15 +990,15 @@ class DiffStix(object):
                                 "techniqueID": technique["external_references"][0]["external_id"],
                                 "tactic": phase["phase_name"],
                                 "enabled": True,
-                                "color": colors[section],
+                                # "color": colors[section],
                                 # trim the 's' off end of word
                                 "comment": section[:-1] if section != "unchanged" else section,
                             }
                         )
 
             legendItems = []
-            for section, description in self.section_descriptions.items():
-                legendItems.append({"color": colors[section], "label": f"{section}: {description}"})
+            # for section, description in self.section_descriptions.items():
+            #     legendItems.append({"color": colors[section], "label": f"{section}: {description}"})
 
             # build layer structure
             layer_json = {
@@ -1393,7 +1350,6 @@ def markdown_to_html(outfile: str, content: str, diffStix: DiffStix):
         )
         logger.info("finished adding header")
 
-        # header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
     else:
         header = f"<h1 style='text-align:center;'>ATT&CK Changes Between v{old_version} and new content</h1>"
 
@@ -1428,8 +1384,120 @@ def layers_dict_to_files(outfiles, layers):
         Path(ics_attack_layer_file).parent.mkdir(parents=True, exist_ok=True)
         json.dump(layers["ics-attack"], open(ics_attack_layer_file, "w"), indent=4)
 
+def write_detailed_index(html_file_detailed: str, diffStix: DiffStix):
+    """Write high level overview of changes between ATT&CK versions as a landing page.
 
-def write_detailed_html(html_file_detailed: str, diffStix: DiffStix):
+    Parameters
+    ----------
+    html_file : str
+        File to write HTML for the index.
+    diffStix : DiffStix
+        An instance of a DiffStix object.
+    """
+    if len(diffStix.domains) == 1:
+        old_version = diffStix.data["old"][diffStix.domains[0]]["attack_release_version"]
+        new_version = diffStix.data["new"][diffStix.domains[0]]["attack_release_version"]
+    title = "ATT&CK Changes"
+
+    environment = Environment(loader=FileSystemLoader("templates/"))
+    template = environment.get_template("nav.html")
+
+    navbar = template.render(
+        oldVersion = old_version,
+        newVersion = new_version,
+        typeList = ["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        domainList = ["enterprise-attack", "mobile-attack", "ics-attack"]
+    )
+    if len(diffStix.domains) < 2:
+        title = diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK Changes"
+    if len(diffStix.types) < 2:
+        title = title + " - " + diffStix.attack_type_to_title[diffStix.types[0]]
+        
+    frontmatter = [
+        textwrap.dedent(
+            f"""\
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>{title}</title>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+            </head>
+            <body>
+        """
+        ),
+        navbar,
+    ]
+    with open(html_file_detailed, "w") as file:
+        file.writelines(frontmatter)
+        lines = []
+        template = environment.get_template("heading.html")
+        nav_buttons = environment.get_template("nav-buttons.html")
+        lines.append(template.render())
+        if len(diffStix.domains) < 2:
+            header = template.render(
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
+            )
+            buttons = nav_buttons.render(
+                domain=diffStix.domains[0]
+            )
+        else:
+            header = template.render(
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title="ATT&CK Changes"
+            )
+            buttons = nav_buttons.render()
+        lines.append(header)
+        lines.append(buttons)
+        template = environment.get_template("subnav.html")
+        subnav = template.render(
+            types=diffStix.types,
+            displayType = {"techniques": "Techniques",
+            "software": "Software",
+            "groups": "Groups",
+            "campaigns": "Campaigns",
+            "mitigations": "Mitigations",
+            "datasources": "Data Sources",
+            "datacomponents": "Data Components",}
+        )
+        lines.append(subnav)
+        # count_changes(diffStix=diffStix)
+        for object_type, domain_data in diffStix.data["changes"].items():
+            # only display changes that are in the type layer specified in initialization
+            if object_type in diffStix.types:
+            # this is a way of determining if there are changes in any of the sections for any of the domains
+                if sum([sum(change_types.values(), []) for change_types in domain_data.values()], []):
+                    lines.append(f'<div id="{object_type}_div">')
+                    lines.append(f'<h4>{diffStix.attack_type_to_title[object_type]}</h4>')
+                    template = environment.get_template("table.html")
+                    change_types = ["additions", "version_changes", "revocations", "deprecations"]
+                    for domain in diffStix.domains :
+                        if len(diffStix.domains) > 1:
+                            lines.append(f"<h5>{diffStix.domain_to_domain_label[diffStix.domains[0]]} ATT&CK</h5>")
+                        lines.append(template.render(changeTypes=change_types, domain=domain, obj_type=object_type, diffStix=diffStix, oldVersion=old_version, newVersion=new_version ))
+                    lines.append(f'</div>')
+
+                else:
+                    continue
+                    
+        lines.append(
+            """
+            <div>
+            </div>
+            <div style="height: 100px"></div>
+            </body>
+        </html>
+        """
+        )
+
+        file.writelines(lines)
+
+def write_detailed_html_refactor(html_file_detailed: str, diffStix: DiffStix):
     """Write a detailed HTML report of changes between ATT&CK versions.
 
     Parameters
@@ -1439,8 +1507,10 @@ def write_detailed_html(html_file_detailed: str, diffStix: DiffStix):
     diffStix : DiffStix
         An instance of a DiffStix object.
     """
-    old_version = diffStix.data["old"]["enterprise-attack"]["attack_release_version"]
-    new_version = diffStix.data["new"]["enterprise-attack"]["attack_release_version"]
+    if len(diffStix.domains) == 1:
+        old_version = diffStix.data["old"][diffStix.domains[0]]["attack_release_version"]
+        new_version = diffStix.data["new"][diffStix.domains[0]]["attack_release_version"]
+    title = "ATT&CK Changes"
 
     environment = Environment(loader=FileSystemLoader("templates/"))
     template = environment.get_template("nav.html")
@@ -1448,269 +1518,130 @@ def write_detailed_html(html_file_detailed: str, diffStix: DiffStix):
     navbar = template.render(
         oldVersion = old_version,
         newVersion = new_version,
+        typeList = ["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        domainList = ["enterprise-attack", "mobile-attack", "ics-attack"]
     )
 
     template = environment.get_template("heading.html")
 
-    if new_version:
-        header = template.render(
-            theme = "light",
-            oldVersion = old_version,
-            newVersion = new_version,
-            title="ATT&CK Changes"
-        )
-        logger.info("after adding header")
-
-        # header = f"<h1>ATT&CK Changes Between v{old_version} and v{new_version}</h1>"
-    else:
-        header = f"<h1>ATT&CK Changes Between v{old_version} and new content</h1>"
-
+    if len(diffStix.domains) < 2:
+        title = diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK Changes"
+    if len(diffStix.types) < 2:
+        title = title + " - " + diffStix.attack_type_to_title[diffStix.types[0]]
+        
     frontmatter = [
         textwrap.dedent(
-            """\
+            f"""\
         <!DOCTYPE html>
         <html>
             <head>
-                <title>ATT&CK Changes</title>
+                <title>{title}</title>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-                <style type="text/css">
-                    table.diff {font-family:Courier; border:medium;}
-                    .diff_header {background-color:#e0e0e0}
-                    td.diff_header {text-align:right}
-                    .diff_next {background-color:#c0c0c0}
-                    .diff_add {background-color:#aaffaa}
-                    .diff_chg {background-color:#ffff77}
-                    .diff_sub {background-color:#ffaaaa}
-                </style>
+
             </head>
             <body>
         """
         ),
-        header,
-        textwrap.dedent(
-            """\
-        
-        <h2>Additional formats</h2>
-        <p>These ATT&CK Navigator layer files can be uploaded to ATT&CK Navigator manually.</p>
-        <ul>
-            <li><a href="layer-enterprise.json">Enterprise changes</a></li>
-            <li><a href="layer-mobile.json">Mobile changes</a></li>
-            <li><a href="layer-ics.json">ICS changes</a></li>
-        </ul>
-        <p>This JSON file contains the machine readble output used to create this page: <a href="changelog.json">changelog.json</a></p>
-        """
-        ),
+        navbar,
     ]
 
     with open(html_file_detailed, "w") as file:
         file.writelines(frontmatter)
         lines = []
+        nav_buttons = environment.get_template("nav-buttons.html")
+        # render title to be specific to the domain it's in
+        if len(diffStix.domains) < 2:
+            header = template.render(
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title= diffStix.domain_to_domain_label[diffStix.domains[0]] + " ATT&CK"
+            )
+            buttons = nav_buttons.render(
+                domain=diffStix.domains[0]
+            )
+        else:
+            header = template.render(
+                theme = "light",
+                oldVersion = old_version,
+                newVersion = new_version,
+                title="ATT&CK Changes"
+            )
+            buttons = nav_buttons.render()
+        lines.append(header)
+        lines.append(buttons)
+
         for object_type, domain_data in diffStix.data["changes"].items():
-
-            # this is an obnoxious way of determining if there are changes in any of the sections for any of the domains
-            if sum([sum(change_types.values(), []) for change_types in domain_data.values()], []):
-                lines.append(f"<h2>{diffStix.attack_type_to_title[object_type]}</h2>")
-            else:
-                continue
-
-            for domain, change_types in domain_data.items():
-                if sum(change_types.values(), []):
-                    lines.append(f"<h3>{domain}</h3>")
+            # only display changes that are in the type layer specified in initialization
+            if object_type in diffStix.types:
+            # this is a way of determining if there are changes in any of the sections for any of the domains
+                if sum([sum(change_types.values(), []) for change_types in domain_data.values()], []):
+                    lines.append(f"<h2>{diffStix.attack_type_to_title[object_type]}</h2>")
                 else:
                     continue
 
-                for change_type, change_data in change_types.items():
-                    if change_type == "unchanged":
-                        # Not reporting on unchanged STIX objects for detailed changelog
-                        continue
+                for domain, change_types in domain_data.items():
+                    # add subnav underneath each  domain: only show section if there are changes in that section
+                    template = environment.get_template("subnav.html")
+                    category = diffStix.attack_type_to_title[object_type].lower()
+                    subnav = template.render(
+                        newItems = change_types["additions"],
+                        changedItems = change_types["version_changes"],
+                        revokedItems = change_types["revocations"],
+                        deprecatedItems = change_types["deprecations"],
+                        category=category,
+                        domain=domain
+                    )
+                    lines.append(subnav)
+                    
+                    for change_type, change_data in change_types.items():
+                        
+                        if change_type == "unchanged":
+                            # Not reporting on unchanged STIX objects for detailed changelog
+                            continue
 
-                    datastore_version = "old" if change_type == "deletions" else "new"
+                        datastore_version = "old" if change_type == "deletions" else "new"
 
-                    if change_data:
-                        lines.append("<details>")
-                        lines.append(f"<summary>{diffStix.section_headers[object_type][change_type]}</summary>")
+                        if change_data:
+                            # build accordion for each change
+                            lines.append(f'<h4 class="change-type" id="{domain}_{category}_{change_type}">{diffStix.section_headers[object_type][change_type]}</h4>')
+                            lines.append(f'<div class="accordion accordion-flush" id="accordionFlush-{domain}-{change_type}">')
+                            index = 0
 
-                    for stix_object in change_data:
-                        attack_id = get_attack_id(stix_object)
-                        object_version = get_attack_object_version(stix_obj=stix_object)
+                            template = environment.get_template("accordion-item.html")
+                        for stix_object in change_data:
+                            attack_id = get_attack_id(stix_object)
 
-                        if stix_object["type"] == "x-mitre-data-component" or stix_object.get(
-                            "x_mitre_is_subtechnique"
-                        ):
-                            parent_object = diffStix.get_parent_stix_object(
-                                stix_object=stix_object, datastore_version=datastore_version, domain=domain
-                            )
-                            if parent_object:
-                                nameplate = f"{parent_object.get('name')}: {stix_object['name']}"
-                            else:
-                                logger.warning(f"[{stix_object['id']}] {attack_id} has no parent!")
-                                nameplate = f"{stix_object['name']} (No parent object identified. It is likely revoked or deprecated)"
-                        else:
-                            nameplate = stix_object["name"]
-
-                        if attack_id:
-                            nameplate = f"[{attack_id}] {nameplate}"
-                        else:
-                            if stix_object["type"] != "x-mitre-data-component":
-                                logger.warning(f"{stix_object['id']} does not have an ATT&CK ID")
-
-                        lines.append("<hr>")
-                        lines.append(f"<h4>{nameplate}</h4>")
-
-                        if object_version:
-                            lines.append(f"<p><b>Current version</b>: {object_version}</p>")
-
-                        if change_type in ["additions", "revocations", "deprecations", "deletions"]:
-                            if stix_object.get("description"):
-                                lines.append(f"<p><b>Description</b>: {stix_object['description']}</p>")
-
-                        if change_type == "revocations":
-                            revoked_by_id = get_attack_id(stix_object["revoked_by"])
-                            revoked_by_name = stix_object["revoked_by"]["name"]
-                            revoked_by_description = stix_object["revoked_by"]["description"]
-                            lines.append("<font color=blue>")
-                            lines.append(f"<p>This object has been revoked by [{revoked_by_id}] {revoked_by_name}</p>")
-                            lines.append("</font>")
-                            if revoked_by_description:
-                                lines.append(
-                                    f"<p><b>Description for [{revoked_by_id}] {revoked_by_name}</b>: {revoked_by_description}</p>"
+                            if stix_object["type"] == "x-mitre-data-component" or stix_object.get(
+                                "x_mitre_is_subtechnique"
+                            ):
+                                parent_object = diffStix.get_parent_stix_object(
+                                    stix_object=stix_object, datastore_version=datastore_version, domain=domain
                                 )
-
-                        version_change = stix_object.get("version_change")
-                        if version_change:
-                            lines.append(f"<p><b>Version changed from</b>: {version_change}</p>")
-
-                        description_change_table = stix_object.get("description_change_table")
-                        if description_change_table:
-                            lines.append(description_change_table)
-
-                        if object_type == "techniques":
-                            # Mitigations!
-                            if stix_object.get("changelog_mitigations"):
-                                new_mitigations = stix_object["changelog_mitigations"].get("new")
-                                dropped_mitigations = stix_object["changelog_mitigations"].get("dropped")
-                                if new_mitigations:
-                                    lines.append("<p><b>New Mitigations</b>:</p>")
-                                    lines.append("<ul>")
-                                    for mitigation in new_mitigations:
-                                        lines.append(f"  <li>{mitigation}</li>")
-                                    lines.append("</ul>")
-                                if dropped_mitigations:
-                                    lines.append("<p><b>Dropped Mitigations</b>:</p>")
-                                    lines.append("<ul>")
-                                    for mitigation in dropped_mitigations:
-                                        lines.append(f"  <li>{mitigation}</li>")
-                                    lines.append("</ul>")
-
-                            # Detections!
-                            if stix_object.get("changelog_detections"):
-                                new_detections = stix_object["changelog_detections"].get("new")
-                                dropped_detections = stix_object["changelog_detections"].get("dropped")
-                                if new_detections:
-                                    lines.append("<p><b>New Detections</b>:</p>")
-                                    lines.append("<ul>")
-                                    for detection in new_detections:
-                                        lines.append(f"  <li>{detection}</li>")
-                                    lines.append("</ul>")
-                                if dropped_detections:
-                                    lines.append("<p><b>Dropped Detections</b>:</p>")
-                                    lines.append("<ul>")
-                                    for detection in dropped_detections:
-                                        lines.append(f"  <li>{detection}</li>")
-                                    lines.append("</ul>")
-
-                        detailed_diff = json.loads(stix_object.get("detailed_diff", "{}"))
-                        if detailed_diff:
-                            lines.append("<details>")
-                            lines.append("<summary>Details</summary>")
-                            table_inline_css = "style='border: 1px solid black;border-collapse: collapse;'"
-
-                            # the deepdiff library displays differences with a prefix of: root['<top-level-key-we-care-about>']
-                            regex = r"^root\['(?P<top_stix_key>[^\']*)'\](?P<the_rest>.*)$"
-                            for detailed_change_type, detailed_changes in detailed_diff.items():
-
-                                lines.append(f"<table {table_inline_css}>")
-                                lines.append(f"<caption>{detailed_change_type}</caption>")
-                                lines.append("<thead><tr>")
-                                lines.append(f"<th {table_inline_css}>STIX Field</th>")
-                                lines.append(f"<th {table_inline_css}>Old value</th>")
-                                lines.append(f"<th {table_inline_css}>New Value</th>")
-                                lines.append("</tr></thead>")
-                                lines.append("<tbody>")
-
-                                if detailed_change_type == "values_changed":
-                                    for detailed_change, values in detailed_changes.items():
-                                        matches = re.search(regex, detailed_change)
-                                        top_stix_key = matches.group("top_stix_key")
-                                        the_rest = matches.group("the_rest")
-                                        stix_field = f"{top_stix_key}{the_rest}"
-
-                                        old_value = values["old_value"]
-                                        new_value = values["new_value"]
-                                        lines.append("<tr>")
-                                        lines.append(f"<td {table_inline_css}>{stix_field}</td>")
-                                        lines.append(f"<td {table_inline_css}>{old_value}</td>")
-                                        lines.append(f"<td {table_inline_css}>{new_value}</td>")
-                                        lines.append("</tr>")
-
-                                elif detailed_change_type == "iterable_item_added":
-                                    for detailed_change, new_value in detailed_changes.items():
-                                        stix_field = re.search(regex, detailed_change).group("top_stix_key")
-                                        lines.append("<tr>")
-                                        lines.append(f"<td {table_inline_css}>{stix_field}</td>")
-                                        lines.append(f"<td {table_inline_css}></td>")
-                                        lines.append(f"<td {table_inline_css}>{new_value}</td>")
-                                        lines.append("</tr>")
-
-                                elif detailed_change_type == "iterable_item_removed":
-                                    for detailed_change, old_value in detailed_changes.items():
-                                        stix_field = re.search(regex, detailed_change).group("top_stix_key")
-                                        lines.append("<tr>")
-                                        lines.append(f"<td {table_inline_css}>{stix_field}</td>")
-                                        lines.append(f"<td {table_inline_css}>{old_value}</td>")
-                                        lines.append(f"<td {table_inline_css}></td>")
-                                        lines.append("</tr>")
-
-                                elif detailed_change_type == "dictionary_item_added":
-                                    for detailed_change, new_value in detailed_changes.items():
-                                        stix_field = re.search(regex, detailed_change).group("top_stix_key")
-                                        lines.append("<tr>")
-                                        lines.append(f"<td {table_inline_css}>{stix_field}</td>")
-                                        lines.append(f"<td {table_inline_css}></td>")
-                                        lines.append(f"<td {table_inline_css}>{new_value}</td>")
-                                        lines.append("</tr>")
-
-                                elif detailed_change_type == "dictionary_item_removed":
-                                    for detailed_change, old_value in detailed_changes.items():
-                                        stix_field = re.search(regex, detailed_change).group("top_stix_key")
-                                        lines.append("<tr>")
-                                        lines.append(f"<td {table_inline_css}>{stix_field}</td>")
-                                        lines.append(f"<td {table_inline_css}>{old_value}</td>")
-                                        lines.append(f"<td {table_inline_css}></td>")
-                                        lines.append("</tr>")
-
+                                if parent_object:
+                                    nameplate = f"{parent_object.get('name')}: {stix_object['name']}"
                                 else:
-                                    lines.append(f"<h5>{detailed_change_type}</h5>")
-                                    lines.append("<ul>")
-                                    for detailed_change in detailed_changes:
-                                        lines.append(f"<li>{detailed_change}</li>")
-                                    lines.append("</ul>")
+                                    logger.warning(f"[{stix_object['id']}] {attack_id} has no parent!")
+                                    nameplate = f"{stix_object['name']} (No parent object identified. It is likely revoked or deprecated)"
+                            else:
+                                nameplate = stix_object["name"]
 
-                                lines.append("</tbody></table>")
-                            lines.append("</details>")
+                            lines.append(buildAccordionItem(stix_object, nameplate, domain, change_type, object_type, index))
+                            index = index + 1                           
+                        if change_data:
+                            lines.append("</div>")
 
-                    if change_data:
-                        lines.append("</details>")
 
         lines.append(
             """
+            </div>
+            <div style="height: 100px"></div>
             </body>
         </html>
         """
         )
 
         file.writelines(lines)
-
 
 def get_parsed_args():
     """Create argument parser and parse arguments."""
@@ -1744,6 +1675,15 @@ def get_parsed_args():
         choices=["enterprise-attack", "mobile-attack", "ics-attack"],
         default=["enterprise-attack", "mobile-attack", "ics-attack"],
         help="Which domains to report on. Choices (and defaults) are %(choices)s",
+    )
+
+    parser.add_argument(
+        "--types",
+        type=str,
+        nargs="+",
+        choices=["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        default=["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
+        help="Which type of changes to report on. Choices (and defaults) are %(choices)s",
     )
 
     parser.add_argument(
@@ -1852,6 +1792,7 @@ def get_parsed_args():
 def get_new_changelog_md(
     domains: List[str] = ["enterprise-attack", "mobile-attack", "ics-attack"],
     layers: List[str] = layer_defaults,
+    types: List[str] = ["techniques", "software", "groups", "campaigns","mitigations", "datasources", "datacomponents"],
     unchanged: bool = False,
     old: str = None,
     new: str = "new",
@@ -1920,6 +1861,7 @@ def get_new_changelog_md(
     diffStix = DiffStix(
         domains=domains,
         layers=layers,
+        types=types,
         unchanged=unchanged,
         old=old,
         new=new,
@@ -1940,13 +1882,18 @@ def get_new_changelog_md(
         with open(markdown_file, "w") as file:
             file.write(md_string)
 
+    if types:
+        diffStix.types = types
+        logger.info("Change type specified: "+ str(types))
+
     if html_file:
-        markdown_to_html(outfile=html_file, content=md_string, diffStix=diffStix)
+        # markdown_to_html(outfile=html_file, content=md_string, diffStix=diffStix)
+        write_detailed_index(html_file_detailed=html_file, diffStix=diffStix)
 
     if html_file_detailed:
         Path(html_file_detailed).parent.mkdir(parents=True, exist_ok=True)
         logger.info("Writing detailed updates to file")
-        write_detailed_html(html_file_detailed=html_file_detailed, diffStix=diffStix)
+        write_detailed_html_refactor(html_file_detailed=html_file_detailed, diffStix=diffStix)
 
     if layers:
         if len(layers) == 0:
@@ -1978,6 +1925,7 @@ def main():
     get_new_changelog_md(
         domains=args.domains,
         layers=args.layers,
+        types=args.types,
         unchanged=args.unchanged,
         old=args.old,
         new=args.new,

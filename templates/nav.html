@@ -1,154 +1,224 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
     body {
-      margin: 0;
-      font-family: "Roboto", sans-serif;
-    }
+        margin: 0;
+        font-family: "Roboto Condensed", "Roboto", sans-serif;
+    } 
     h1 {
-      margin-top: 0;
+        margin-top: 0;
     }
-    h1, h2, h3, h4, h5 {
-      text-transform: uppercase;
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: uppercase;
     }
     h4.eyebrow {
-      color: #6241c5;
-      margin-bottom: 0;
+        color: #6241c5;
+        margin-bottom: 0;
     }
     h3 {
-      font-weight: 400;
+        font-weight: 400;
+    }
+    h4 {
+        font-size: 20px;
+    }
+    h4.change-type {
+      margin-top: 15px;
+      margin-bottom: 10px;
     }
     .light-purple {
-      color: #BCA9DD;
-    }
-    .purple {
-      color: #6241c5;
-    }
-    .subnav ul {
-      display: flex;
-      margin-left: -20px;
-      padding-inline-start: 0;
-    }
-    .subnav li {
-      text-transform: uppercase;
-      display: inline-block;
-      font-weight: bold;
-      padding: 10px 0px;
-      margin: 0px 20px;
-      text-align: left;
-      border-bottom: white solid 4px;
-    }
-    .subnav li:hover, .subnav li:active {
-      border-bottom: #6241c5 solid 4px;
-    }
-    .right {
-      margin-left: auto;
-    }
-    .navbar-expand-lg, .navbar-expand-lg a, .navbar-link{
-      background-color: #0F1538;
-      color: white;
-      transition: none;
-    }
-    .navbar a:hover, .navbar .active a,.navbar .show {
-      color: #BCA9DD;
-    }
-    .navbar-nav {
-      width: 100%;
-    }
-    .dropdown-menu.show {
-        background-color: #0F1538;
-    }
-    .dropdown-menu.show li:hover, .dropdown-menu.show a:hover {
-        background-color: inherit;
         color: #BCA9DD;
     }
-    button.navbar-brand  {
+    .purple {
+        color: #6241c5;
+    }
+    .nav li{
+      text-transform: uppercase;
+    }
+    .nav {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      right: 0;
+      width: 100%;
+    }
+    .subnav ul {
+        display: flex;
+        margin-left: -20px;
+        padding-inline-start: 0;
+    }
+    .subnav li {
+        text-transform: uppercase;
+        display: inline-block;
+        font-weight: bold;
+        padding: 10px 0px;
+        margin: 0px 20px;
+        text-align: left;
+        border-bottom: white solid 4px;
+    }
+    .subnav li:hover, .subnav li:active {
+        border-bottom: #6241c5 solid 4px;
+    }
+    .right {
+        margin-left: auto;
+    }
+    .accordion-button:not(.collapsed) {
+        color: inherit;
+        background-color: white;
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+        border-bottom: none;
+    }
+    .accordion-button::after {
+        margin-left: 10px;
+    }
+    h5 {
+        font-size: 18px;
+        font-weight: 400;
+    }
+    h6 {
+      font-size: 16px;
+      font-weight: 200;
+    }
+    .subnav a {
+        color: black;
+        text-decoration: none;
+    }
+    table {
+        border: #333 solid 1px;
+        width: 100%;
+    }
+    table td, table th {
+        border: #333 solid 1px;
+        padding: 10px;
+    }
+    table th {
+        background-color: #F0F1F2;
+    }
+    table .old {
+        background-color: #FFD7D7;
+        width: 50%;
+        vertical-align: top;
+    }
+    table .new {
+        background-color: #D8F9C8;
+        width: 50%;
+        vertical-align: top;
+    }
+    .link {
+        display: flex;
+        border-bottom: #005B94 solid 2px;
+        width: 30%;
+        text-decoration: none;
+        padding-bottom: 10px;
+        padding-top: 30px;
+      }
+      .overview-table {
+        text-transform: uppercase;
+        width: auto;
+      }
+      .small-link {
+        display: flex;
+        border-bottom: #005B94 solid 1px;
+        width: 250px;
+        text-decoration: none;
+        padding-bottom: 5px;
+        padding-top: 20px;
+        margin-bottom: 30px;
+        color: #005B94;
+      }
+      .small-link span {
+        margin-left: auto;
+      }
+      .small-link h5 {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .link h4 {
+        font-size: 18px;
+        color: #005B94;
+      }
+      .link svg {
+        height: 18px;
+        margin: auto;
+        margin-right: 0;
+        margin-left: auto;
+      }
+      .navbar-expand-lg, .navbar-expand-lg a, .navbar-link{
+        background-color: #0F1538;
+        color: white;
+        transition: none;
+      }
+      .navbar a:hover, .navbar .active a,.navbar .show {
+        color: #BCA9DD;
+      }
+      .navbar-nav {
+        width: 100%;
+      }
+      .nav-link {
+        text-transform: uppercase;
+      }
+      .dropdown-menu.show {
+        background-color: #0F1538;
+      }
+      .dropdown-menu.show li:hover, .dropdown-menu.show a:hover {
+        background-color: inherit;
+        color: #BCA9DD;
+      }
+      button.navbar-brand  {
         background-color: inherit;
         border: none;
         color: #BCA9DD;
-    }
-    .nav-link {
-        text-transform: uppercase;
       }
-      
+    .accordion-button:not(.collapsed) {
+        color: inherit;
+        background-color: white !important;
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+        border-bottom: none;
+    }
+    .accordion-item.panel {
+      border-left: none;
+      border-right: none;
+    }
+    .details-table td, .details-table th {
+      font-size: smaller;
+      padding: 5px;
+    }
+    details h6 {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .accordion-button::after {
+        margin-left: 10px !important;
+    }
+    summary {
+      margin-top: 8px;
+    }
+    .nav-item.dropdown#techniques {
+      margin-left: auto;
+    }
 </style>
-<!-- variables:
-    - oldVersion
-    - newVersion
-
-    todo: set up navigation
--->
-
-<nav class="navbar navbar-expand-lg">
+<nav id="navbar" class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/index">ATT&CK SYNC</a>
-      <button class="navbar-brand" href="/index" >{{ oldVersion }} → {{ newVersion }}</button>
-
+      <a class="navbar-brand" href="/attack-changes/index.html">ATT&CK SYNC</a>
+      <button class="navbar-brand" href="/attack-changes/index.html" >{{ oldVersion }} → {{ newVersion }}</button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto mb-2 mb-lg-0 ml-auto">
-          <li class="nav-item dropdown" style="margin-left: auto;">
-            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Techniques
+          {% for type in typeList %}
+          <li class="nav-item dropdown" id={{type}}>
+            <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{type}}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
+              {% for domain in domainList %}
+                <li><a class="dropdown-item" href="/attack-changes/v{{oldVersion}}-v{{newVersion}}/{{domain}}/{{type}}/index.html">{{domain.split("-")[0].upper()}} ATT&CK</a></li>
+              {% endfor %}
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Software
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Groups
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/campaigns" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Campaigns
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/campaigns/enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="/campaigns/mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="/campaigns/ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Mitigations
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Data Sources/Data Components
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#enterprise">ATT&CK Enterprise</a></li>
-              <li><a class="dropdown-item" href="#mobile">ATT&CK Mobile</a></li>
-              <li><a class="dropdown-item" href="#ics">ATT&CK ICS</a></li>
-            </ul>
-          </li>
+          {% endfor %}
         </ul>
       </div>
     </div>

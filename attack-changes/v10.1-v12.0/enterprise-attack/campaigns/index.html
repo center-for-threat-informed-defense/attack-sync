@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Enterprise ATT&CK Changes - Campaigns</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+    </head>
+    <body>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+    body {
+        margin: 0;
+        font-family: "Roboto Condensed", "Roboto", sans-serif;
+    } 
+    h1 {
+        margin-top: 0;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        text-transform: uppercase;
+    }
+    h4.eyebrow {
+        color: #6241c5;
+        margin-bottom: 0;
+    }
+    h3 {
+        font-weight: 400;
+    }
+    h4 {
+        font-size: 20px;
+    }
+    h4.change-type {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+    .light-purple {
+        color: #BCA9DD;
+    }
+    .purple {
+        color: #6241c5;
+    }
+    .nav li{
+      text-transform: uppercase;
+    }
+    .nav {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      right: 0;
+      width: 100%;
+    }
+    .subnav ul {
+        display: flex;
+        margin-left: -20px;
+        padding-inline-start: 0;
+    }
+    .subnav li {
+        text-transform: uppercase;
+        display: inline-block;
+        font-weight: bold;
+        padding: 10px 0px;
+        margin: 0px 20px;
+        text-align: left;
+        border-bottom: white solid 4px;
+    }
+    .subnav li:hover, .subnav li:active {
+        border-bottom: #6241c5 solid 4px;
+    }
+    .right {
+        margin-left: auto;
+    }
+    .accordion-button:not(.collapsed) {
+        color: inherit;
+        background-color: white;
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+        border-bottom: none;
+    }
+    .accordion-button::after {
+        margin-left: 10px;
+    }
+    h5 {
+        font-size: 18px;
+        font-weight: 400;
+    }
+    h6 {
+      font-size: 16px;
+      font-weight: 200;
+    }
+    .subnav a {
+        color: black;
+        text-decoration: none;
+    }
+    table {
+        border: #333 solid 1px;
+        width: 100%;
+    }
+    table td, table th {
+        border: #333 solid 1px;
+        padding: 10px;
+    }
+    table th {
+        background-color: #F0F1F2;
+    }
+    table .old {
+        background-color: #FFD7D7;
+        width: 50%;
+        vertical-align: top;
+    }
+    table .new {
+        background-color: #D8F9C8;
+        width: 50%;
+        vertical-align: top;
+    }
+    .link {
+        display: flex;
+        border-bottom: #005B94 solid 2px;
+        width: 30%;
+        text-decoration: none;
+        padding-bottom: 10px;
+        padding-top: 30px;
+      }
+      .link h4 {
+        font-size: 18px;
+        color: #005B94;
+      }
+      .link svg {
+        height: 18px;
+        margin: auto;
+        margin-right: 0;
+        margin-left: auto;
+      }
+      .navbar-expand-lg, .navbar-expand-lg a, .navbar-link{
+        background-color: #0F1538;
+        color: white;
+        transition: none;
+      }
+      .navbar a:hover, .navbar .active a,.navbar .show {
+        color: #BCA9DD;
+      }
+      .navbar-nav {
+        width: 100%;
+      }
+      .nav-link {
+        text-transform: uppercase;
+      }
+      .dropdown-menu.show {
+        background-color: #0F1538;
+      }
+      .dropdown-menu.show li:hover, .dropdown-menu.show a:hover {
+        background-color: inherit;
+        color: #BCA9DD;
+      }
+      button.navbar-brand  {
+        background-color: inherit;
+        border: none;
+        color: #BCA9DD;
+      }
+    .accordion-button:not(.collapsed) {
+        color: inherit;
+        background-color: white !important;
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+        border-bottom: none;
+    }
+    .accordion-item.panel {
+      border-left: none;
+      border-right: none;
+    }
+    .details-table td, .details-table th {
+      font-size: smaller;
+      padding: 5px;
+    }
+    details h6 {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .accordion-button::after {
+        margin-left: 10px !important;
+    }
+    summary {
+      margin-top: 8px;
+    }
+    .nav-item.dropdown#techniques {
+      margin-left: auto;
+    }
+</style>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/index.html">ATT&CK SYNC</a>
+      <button class="navbar-brand" href="/index.html" >10.1 → 12.1</button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto mb-2 mb-lg-0 ml-auto">
+          
+          <li class="nav-item dropdown" id=techniques>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/techniques/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              techniques
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/techniques/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/techniques/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/techniques/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown" id=software>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/software/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              software
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/software/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/software/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/software/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown" id=groups>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/groups/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              groups
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/groups/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/groups/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/groups/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown" id=campaigns>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/campaigns/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              campaigns
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/campaigns/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/campaigns/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/campaigns/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown" id=mitigations>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/mitigations/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              mitigations
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/mitigations/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/mitigations/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/mitigations/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown" id=datasources>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/datasources/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              datasources
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/datasources/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/datasources/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/datasources/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+          <li class="nav-item dropdown" id=datacomponents>
+            <a class="nav-link dropdown-toggle active" href="/v10.1-v12.1/datacomponents/index.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              datacomponents
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/datacomponents/enterprise-attack/index.html">ENTERPRISE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/datacomponents/mobile-attack/index.html">MOBILE ATT&CK</a></li>
+              
+                <li><a class="dropdown-item" href="/v10.1-v12.1/datacomponents/ics-attack/index.html">ICS ATT&CK</a></li>
+              
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav><div style="max-width: 80%;margin: auto;margin-top:80px;">
+    
+        <h4 class="eyebrow">Version 10.1 to 12.1</h4>
+        <h1>Enterprise ATT&CK</h1>
+    <h2>Campaigns</h2><div class="subnav">
+    <ul>
+        
+        <li><a href="#enterprise-attack_campaigns_additions">New campaigns</a></li>
+        
+        
+        
+        
+    </ul>
+</div><h4 class="change-type" id="enterprise-attack_campaigns_additions">New Campaigns</h4><div class="accordion accordion-flush" id="accordionFlush_enterprise-attack_additions">
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-0">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-0" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-0">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0010</h5>
+          <h5>C0010</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-0" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-0" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[C0010](https://attack.mitre.org/campaigns/C0010) was a cyber espionage campaign conducted by UNC3890 that targeted Israeli shipping, government, aviation, energy, and healthcare organizations. Security researcher assess UNC3890 conducts operations in support of Iranian interests, and noted several limited technical connections to Iran, including PDB strings and Farsi language artifacts. [C0010](https://attack.mitre.org/campaigns/C0010) began by at least late 2020, and was still ongoing as of mid-2022.(Citation: Mandiant UNC3890 Aug 2022)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_0">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-0">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-0" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-0">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-0" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-0" data-bs-parent="#accordionFlush_details_0">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-1">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-1" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-1">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0011</h5>
+          <h5>C0011</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-1" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-1" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[C0011](https://attack.mitre.org/campaigns/C0011) was a suspected cyber espionage campaign conducted by [Transparent Tribe](https://attack.mitre.org/groups/G0134) that targeted students at universities and colleges in India. Security researchers noted this campaign against students was a significant shift from [Transparent Tribe](https://attack.mitre.org/groups/G0134)'s historic targeting Indian government, military, and think tank personnel, and assessed it was still ongoing as of July 2022.(Citation: Cisco Talos Transparent Tribe Education Campaign July 2022) </td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_1">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-1">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-1" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-1">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-1" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-1" data-bs-parent="#accordionFlush_details_1">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-2">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-2" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-2">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0015</h5>
+          <h5>C0015</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-2" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-2" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[C0015](https://attack.mitre.org/campaigns/C0015) was a ransomware intrusion during which the unidentified attackers used [Bazar](https://attack.mitre.org/software/S0534), [Cobalt Strike](https://attack.mitre.org/software/S0154), and [Conti](https://attack.mitre.org/software/S0575), along with other tools, over a 5 day period. Security researchers assessed the actors likely used the widely-circulated [Conti](https://attack.mitre.org/software/S0575) ransomware playbook based on the observed pattern of activity and operator errors.(Citation: DFIR Conti Bazar Nov 2021)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_2">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-2">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-2" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-2">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-2" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-2" data-bs-parent="#accordionFlush_details_2">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-3">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-3" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-3">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0004</h5>
+          <h5>CostaRicto</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-3" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-3" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[CostaRicto](https://attack.mitre.org/campaigns/C0004) was a suspected hacker-for-hire cyber espionage campaign that targeted multiple industries worldwide, with a large number being financial institutions. [CostaRicto](https://attack.mitre.org/campaigns/C0004) actors targeted organizations in Europe, the Americas, Asia, Australia, and Africa, with a large concentration in South Asia (especially India, Bangladesh, and Singapore), using custom malware, open source tools, and a complex network of proxies and SSH tunnels.(Citation: BlackBerry CostaRicto November 2020)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_3">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-3">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-3" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-3">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-3" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-3" data-bs-parent="#accordionFlush_details_3">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-4">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-4" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-4">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0001</h5>
+          <h5>Frankenstein</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-4" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-4" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Frankenstein](https://attack.mitre.org/campaigns/C0001) was described by security researchers as a highly-targeted campaign conducted by moderately sophisticated and highly resourceful threat actors in early 2019. The unidentified actors primarily relied on open source tools, including [Empire](https://attack.mitre.org/software/S0363). The campaign name refers to the actors' ability to piece together several unrelated open-source tool components.(Citation: Talos Frankenstein June 2019)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_4">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-4">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-4" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-4">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-4" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-4" data-bs-parent="#accordionFlush_details_4">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-5">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-5" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-5">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0007</h5>
+          <h5>FunnyDream</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-5" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-5" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[FunnyDream](https://attack.mitre.org/campaigns/C0007) was a suspected Chinese cyber espionage campaign that targeted government and foreign organizations in Malaysia, the Philippines, Taiwan, Vietnam, and other parts of Southeast Asia. Security researchers linked the [FunnyDream](https://attack.mitre.org/campaigns/C0007) campaign to possible Chinese-speaking threat actors through the use of the [Chinoxy](https://attack.mitre.org/software/S1041) backdoor and noted infrastructure overlap with the TAG-16 threat group.(Citation: Bitdefender FunnyDream Campaign November 2020)(Citation: Kaspersky APT Trends Q1 2020)(Citation: Recorded Future Chinese Activity in Southeast Asia December 2021)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_5">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-5">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-5" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-5">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-5" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-5" data-bs-parent="#accordionFlush_details_5">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-6">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-6" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-6">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0002</h5>
+          <h5>Night Dragon</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-6" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-6" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Night Dragon](https://attack.mitre.org/campaigns/C0002) was a cyber espionage campaign that targeted oil, energy, and petrochemical companies, along with individuals and executives in Kazakhstan, Taiwan, Greece, and the United States. The unidentified threat actors searched for information related to oil and gas field production systems, financials, and collected data from SCADA systems. Based on the observed techniques, tools, and network activities, security researchers assessed the campaign involved a threat group based in China.(Citation: McAfee Night Dragon)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_6">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-6">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-6" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-6">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-6" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-6" data-bs-parent="#accordionFlush_details_6">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-7">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-7" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-7">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0012</h5>
+          <h5>Operation CuckooBees</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-7" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-7" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Operation CuckooBees](https://attack.mitre.org/campaigns/C0012) was a cyber espionage campaign targeting technology and manufacturing companies in East Asia, Western Europe, and North America since at least 2019. Security researchers noted the goal of [Operation CuckooBees](https://attack.mitre.org/campaigns/C0012), which was still ongoing as of May 2022, was likely the theft of proprietary information, research and development documents, source code, and blueprints for various technologies. Researchers assessed [Operation CuckooBees](https://attack.mitre.org/campaigns/C0012) was conducted by actors affiliated with [Winnti Group](https://attack.mitre.org/groups/G0044), [APT41](https://attack.mitre.org/groups/G0096), and BARIUM.(Citation: Cybereason OperationCuckooBees May 2022)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_7">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-7">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-7" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-7">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-7" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-7" data-bs-parent="#accordionFlush_details_7">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-8">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-8" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-8">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0016</h5>
+          <h5>Operation Dust Storm</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-8" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-8" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Operation Dust Storm](https://attack.mitre.org/campaigns/C0016) was a long-standing persistent cyber espionage campaign that targeted multiple industries in Japan, South Korea, the United States, Europe, and several Southeast Asian countries. By 2015, the [Operation Dust Storm](https://attack.mitre.org/campaigns/C0016) threat actors shifted from government and defense-related intelligence targets to Japanese companies or Japanese subdivisions of larger foreign organizations supporting Japan's critical infrastructure, including electricity generation, oil and natural gas, finance, transportation, and construction.(Citation: Cylance Dust Storm)
+
+[Operation Dust Storm](https://attack.mitre.org/campaigns/C0016) threat actors also began to use Android backdoors in their operations by 2015, with all identified victims at the time residing in Japan or South Korea.(Citation: Cylance Dust Storm)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_8">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-8">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-8" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-8">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-8" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-8" data-bs-parent="#accordionFlush_details_8">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-9">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-9" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-9">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0006</h5>
+          <h5>Operation Honeybee</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-9" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-9" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Operation Honeybee](https://attack.mitre.org/campaigns/C0006) was a campaign that targeted humanitarian aid and inter-Korean affairs organizations from at least late 2017 through early 2018. [Operation Honeybee](https://attack.mitre.org/campaigns/C0006) initially targeted South Korea, but expanded to include Vietnam, Singapore, Japan, Indonesia, Argentina, and Canada. Security researchers assessed the threat actors were likely Korean speakers based on metadata used in both lure documents and executables, and named the campaign "Honeybee" after the author name discovered in malicious Word documents.(Citation: McAfee Honeybee) </td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_9">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-9">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-9" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-9">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-9" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-9" data-bs-parent="#accordionFlush_details_9">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-10">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-10" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-10">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0013</h5>
+          <h5>Operation Sharpshooter</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-10" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-10" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Operation Sharpshooter](https://attack.mitre.org/campaigns/C0013) was a global cyber espionage campaign that targeted nuclear, defense, government, energy, and financial companies, with many located in Germany, Turkey, the United Kingdom, and the United States. Security researchers noted the campaign shared many similarities with previous [Lazarus Group](https://attack.mitre.org/groups/G0032) operations, including fake job recruitment lures and shared malware code.(Citation: McAfee Sharpshooter December 2018)(Citation: Bleeping Computer Op Sharpshooter March 2019)(Citation: Threatpost New Op Sharpshooter Data March 2019)    </td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_10">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-10">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-10" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-10">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-10" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-10" data-bs-parent="#accordionFlush_details_10">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-11">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-11" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-11">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0005</h5>
+          <h5>Operation Spalax</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-11" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-11" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Operation Spalax](https://attack.mitre.org/campaigns/C0005) was a campaign that primarily targeted Colombian government organizations and private companies, particularly those associated with the energy and metallurgical industries. The [Operation Spalax](https://attack.mitre.org/campaigns/C0005) threat actors distributed commodity malware and tools using generic phishing topics related to COVID-19, banking, and law enforcement action. Security researchers noted indicators of compromise and some infrastructure overlaps with other campaigns dating back to April 2018, including at least one separately attributed to [APT-C-36](https://attack.mitre.org/groups/G0099), however identified enough differences to report this as separate, unattributed activity.(Citation: ESET Operation Spalax Jan 2021)  </td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_11">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-11">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-11" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-11">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-11" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-11" data-bs-parent="#accordionFlush_details_11">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-enterprise-attack-additions-12">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-enterprise-attack-additions-12" aria-expanded="false" aria-controls="flush-collapse-enterprise-attack-additions-12">
+        <h5 class="purple" style="padding-right: 20px; min-width: 100px;">C0014</h5>
+          <h5>Operation Wocao</h5>
+          
+          
+            <h5 class="purple right" style="text-transform: lowercase;">v1.0</h5>
+          
+      </button>
+    </h2>
+    <div id="flush-collapse-enterprise-attack-additions-12" class="accordion-collapse collapse" aria-labelledby="flush-enterprise-attack-additions-12" data-bs-parent="#accordionFlush-enterprise-attack-additions">
+      <div class="accordion-body">
+        <!-- for changes: -->
+         
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>[Operation Wocao](https://attack.mitre.org/campaigns/C0014) was a cyber espionage campaign that targeted organizations around the world, including in Brazil, China, France, Germany, Italy, Mexico, Portugal, Spain, the United Kingdom, and the United States. The suspected China-based actors compromised government organizations and managed service providers, as well as aviation, construction, energy, finance, health care, insurance, offshore engineering, software development, and transportation companies.(Citation: FoxIT Wocao December 2019)
+
+Security researchers assessed the [Operation Wocao](https://attack.mitre.org/campaigns/C0014) actors used similar TTPs and tools as APT20, suggesting a possible overlap. [Operation Wocao](https://attack.mitre.org/campaigns/C0014) was named after an observed command line entry by one of the threat actors, possibly out of frustration from losing webshell access.(Citation: FoxIT Wocao December 2019)</td>
+                </tr>
+            </table>
+        
+        
+        
+        
+ 
+        <!-- add a details section that defaults to being hidden -->
+        <!-- <div class="accordion accordion-flush" id="accordionFlush_details_12">
+            <h2 class="accordion-header" id="flush-details-enterprise-attack-additions-12">
+                <button class="accordion-button details collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-details-collapse-enterprise-attack-additions-12" aria-expanded="false" aria-controls="flus-details-collapse-enterprise-attack-additions-12">
+                    + Details
+                </button>
+          </h2>
+          <div id="flush-details-collapse-enterprise-attack-additions-12" class="accordion-collapse collapse" aria-labelledby="flush-details-enterprise-attack-additions-12" data-bs-parent="#accordionFlush_details_12">
+            <div class="accordion-body">
+                
+            </div>
+          </div>
+        </div> -->
+       
+        <!-- <a class="link" href="">
+            <h4>Learn More</h4>
+            <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+            <path id="Path-8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path-9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734" transform="translate(-2918.257 -8194.207)" fill="none" stroke="#005B94" stroke-linejoin="round" stroke-width="3"/>
+            </svg>          
+        </a> -->
+      </div>
+    </div>
+  </div></div>
+            </div>
+            <div style="height: 100px"></div>
+            </body>
+        </html>
+        

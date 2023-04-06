@@ -1,0 +1,136 @@
+{%- macro table_macro(values) -%}
+    <table class="details-table">
+        <tr>
+            <th>STIX Field</th>
+            <th>Old value</th>
+            <th>New value</th>
+        </tr>
+        {%- for value in values -%}
+            <tr>
+                <td>{{value.stix}}</td>
+                <td>{{value.old}}</td>
+                <td>{{value.new}}</td>
+            </tr>
+        {%- endfor -%}
+    </table>
+  {%- endmacro %}
+
+<div class="accordion-item panel">
+    <h2 class="accordion-header" id="flush-{{domain}}-{{changeType}}-{{ accordionId }}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{domain}}-{{changeType}}-{{ accordionId }}" aria-expanded="false" aria-controls="flush-collapse-{{domain}}-{{changeType}}-{{ accordionId }}">
+        {%- if itemId %}<h5 class="purple" style="padding-right: 20px; min-width: 100px;">{{itemId}}</h5>{%endif%}
+          <h5>{{itemTitle}}</h5>
+          {%- if itemVersionChange %}
+            <h5 class="purple right" style="text-transform: lowercase;">{{itemVersionChange}}</h5>
+          {%- endif %}
+          {%- if not itemVersionChange and itemVersion %}
+            <h5 class="purple right" style="text-transform: lowercase;">v{{itemVersion}}</h5>
+          {% endif %}
+      </button>
+    </h2>
+    <div id="flush-collapse-{{domain}}-{{changeType}}-{{ accordionId }}" class="accordion-collapse collapse" aria-labelledby="flush-{{domain}}-{{changeType}}-{{ accordionId }}" data-bs-parent="#accordionFlush-{{domain}}-{{changeType}}">
+      <div class="accordion-body">
+        {%- if stix_object['old_description'] and stix_object['description'] %}
+            <table>
+                <tr>
+                    <th>Old Description</th>
+                    <th>New Description</th>
+                </tr>
+                <tr>
+                    <td class="old">{{stix_object['old_description']}}</td>
+                    <td class="new">{{stix_object['description']}}</td>
+                </tr>
+            </table>
+        {%- elif changeType == "additions" or changeType == "revocations" or changeType == "deprecations" or (not stix_object['old_description'] and stix_object['description']) %} 
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>{{ stix_object['description'] }}</td>
+                </tr>
+            </table>
+        {% endif %}
+        {%- if changeType == "revocations"%}
+            <h5 style="margin-top: 20px;">Revoked by {{revoked_by_id}} {{revoked_by_name}}</h5>
+            {% if revoked_by_description %}
+                <table>
+                    <tr>
+                        <th>Description for {{revoked_by_id}} {{revoked_by_name}}</th>
+                    </tr>
+                    <tr>
+                        <td>{{ revoked_by_description }}</td>
+                    </tr>
+                </table>
+            {% endif %}
+        {% endif %}
+        {%- if objectType == "techniques" %}
+            {% if stix_object.get("changelog_mitigations") %}
+                {% set mitigations =  stix_object["changelog_mitigations"].get("new") %}
+                    {% if mitigations %}
+                        <p><b>New Mitigations</b>:</p>
+                        <ul>
+                            {%- for mitigation in mitigations %}
+                                <li>{{mitigation}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% set mitigations =  stix_object["changelog_mitigations"].get("dropped")%}
+                {% if mitigations %}
+                    <p><b>Dropped Mitigations</b>:</p>
+                    <ul>
+                        {%- for mitigation in mitigations %}
+                            <li>{{mitigation}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+            {%- if stix_object.get("changelog_detections") %}
+                {% set detections =  stix_object["changelog_detections"].get("new") %}
+                    {% if detections %}
+                        <p><b>New Detections</b>:</p>
+                        <ul>
+                            {%- for detection in detections %}
+                                <li>{{detection}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% set detections =  stix_object["changelog_detections"].get("dropped")%}
+                {% if detections %}
+                    <p><b>Dropped Detections</b>:</p>
+                    <ul>
+                        {%- for detection in detections %}
+                            <li>{{detection}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {%- if detailed_diff %}
+            <details>
+                <summary>Details</summary>
+                {%- if dict_added %}
+                    <h6>Dictionary Item Added</h6>
+                    {{ table_macro(dict_added) }}
+                {% endif %}
+                {%- if dict_removed %}
+                    <h6>Dictionary Item Removed</h6>
+                    {{ table_macro(dict_removed) }}
+                {% endif %}
+                {%- if values_changed %}
+                    <h6>Values Changed</h6>
+                    {{ table_macro(values_changed) }}
+                {% endif %}
+                {%- if iterable_added %}
+                    <h6>Iterable Item Added</h6>
+                    {{ table_macro(iterable_added) }}
+                {% endif %}
+                {%- if iterable_removed %}
+                    <h6>Iterable Item Removed</h6>
+                    {{ table_macro(iterable_removed) }}
+                {% endif %}
+            </details>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
