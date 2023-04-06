@@ -200,8 +200,8 @@
 </style>
 <nav id="navbar" class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/output/attack-changes/index.html">ATT&CK SYNC</a>
-      <button class="navbar-brand" href="/output/attack-changes/index.html" >{{ oldVersion }} → {{ newVersion }}</button>
+      <a class="navbar-brand" href="/attack-changes/index.html">ATT&CK SYNC</a>
+      <button class="navbar-brand" href="/attack-changes/index.html" >{{ oldVersion }} → {{ newVersion }}</button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -214,7 +214,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% for domain in domainList %}
-                <li><a class="dropdown-item" href="/output/attack-changes/v{{oldVersion}}-v{{newVersion}}/{{domain}}/{{type}}/index.html">{{domain.split("-")[0].upper()}} ATT&CK</a></li>
+                <li><a class="dropdown-item" href="/attack-changes/v{{oldVersion}}-v{{newVersion}}/{{domain}}/{{type}}/index.html">{{domain.split("-")[0].upper()}} ATT&CK</a></li>
               {% endfor %}
             </ul>
           </li>
