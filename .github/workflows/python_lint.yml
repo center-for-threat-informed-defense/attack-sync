@@ -1,0 +1,27 @@
+name: Python Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  code_format:
+    name: Python Code Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install Poetry
+        run: curl -sSL https://install.python-poetry.org/ | python -
+      - name: Add Poetry to PATH
+        run: echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+      - name: Install dependencies
+        run: poetry install
+      - name: Run Black
+        run: poetry run black --check src/
+      - name: Run Isort
+        run: poetry run black --check src/

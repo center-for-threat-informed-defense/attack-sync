@@ -1,60 +1,76 @@
+[![MITRE ATT&CK® v12](https://img.shields.io/badge/MITRE%20ATT%26CK®-v12-red)](https://attack.mitre.org/versions/v12/)
+
 # ATT&CK Sync
 
-ATT&CK Sync...
+TODO TODO TODO TODO
 
-- [ATT\&CK Sync](#attck-sync)
-  - [Pre-requisites](#pre-requisites)
-  - [Run Locally](#run-locally)
-  - [Samples](#samples)
-  - [Wiki](#wiki)
-  - [Notice](#notice)
-  - [License](#license)
-  - [Acknowledgements](#acknowledgements)
+**Table Of Contents:**
 
-## Pre-requisites
+- [Getting Started](#getting-started)
+- [Getting Involved](#getting-involved)
+- [Questions and Feedback](#questions-and-feedback)
+- [How Do I Contribute?](#how-do-i-contribute)
+- [Notice](#notice)
 
-- Python 3.10 or later is recommended for running the scripts in this repository.
-- The following files need to be downloaded and placed in the `data/` directory
-  - `nist800-53-r4-mappings.xlsx` from the [center-for-threat-informed-defense/attack-control-framework-mappings](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings/tree/main/frameworks/attack_10_1/nist800_53_r4) repository.
-  - `nist800-53-r5-mappings.xlsx` from the [center-for-threat-informed-defense/attack-control-framework-mappings](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings/tree/main/frameworks/attack_10_1/nist800_53_r5) repository.
+## Getting Started
 
-## Run Locally
+TODO
 
-```bash
-  # Install project requirements (in a virtual environment)
-  pip install -r requirements.txt
+| Resource     | Description |
+| ------------ | ----------- |
+| [TODO](TODO) |             |
 
-  # Download ATT&CK STIX files. This command comes from https://github.com/mitre-attack/mitreattack-python
-  download_attack_stix --stix20 --all -d attack-releases
+## Getting Involved
 
-  # Create ATT&CK changelogs in output/attack-changes/
-  python create_attack_changelogs.py
+There are several ways that you can get involved with this project and help
+advance threat-informed defense:
 
-  # Create Excel file based on previous ATT&CK mapping in output/mapping_diff_attack_v<old_version>-v<new_version>.xlsx
-  python generate_mapping_excel.py
-```
+TODO TODO TODO
 
-## Samples
+- **Review the language specification, use the builder to create some flows, and tell us
+  what you think.** We welcome your review and feedback on the data model and our
+  methodology.
+- **Help us prioritize additional example flows to create.** Let us know what examples
+  you would like to turned into an Attack Flow. Your input will help us prioritize how
+  we expand our corpus.
+- **Share your use cases.** We are interested in developing additional tools and
+  resources to help the community understand and make threat-informed decisions in their
+  risk management programs. If you have ideas or suggestions, we consider them as we
+  explore additional research projects.
 
-There is some sample output in the [samples](samples/) directory which includes the following:
+## Questions and Feedback
 
-- `samples/attack-changes/v10.1-v12.1/`: Output from `create_attack_changelogs.py` for ATT&CK v10.1 and v12.1
-- `samples/mapping_diff_attack_v10.1-v12.1.xlsx`: Output from `generate_mapping_excel.py`
+Please submit issues for any technical questions/concerns or contact
+ctid@mitre-engenuity.org directly for more general inquiries.
 
-## Wiki
+Also see the guidance for contributors if are you interested in contributing or simply
+reporting issues.
 
-Check out our [wiki](https://github.com/center-for-threat-informed-defense/attack-sync/wiki) for more information about how to [contribute](/CONTRIBUTING.md) and set up a development environment.
+## How Do I Contribute?
+
+We welcome your feedback and contributions to help advance Attack Flow. Please see the
+guidance for contributors if are you interested in [contributing or simply reporting
+issues.](/CONTRIBUTING.md)
+
+Please submit
+[issues](https://github.com/center-for-threat-informed-defense/attack-flow/issues) for
+any technical questions/concerns or contact ctid@mitre-engenuity.org directly for more
+general inquiries.
 
 ## Notice
 
-Copyright 2023 MITRE Engenuity. Approved for public release. Document number XXXXX
+Copyright 2021 MITRE Engenuity. Approved for public release. Document number CT0040
 
-## License
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+file except in compliance with the License. You may obtain a copy of the License at
 
-[Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
+http://www.apache.org/licenses/LICENSE-2.0
 
-## Acknowledgements
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied. See the License for the specific language governing
+permissions and limitations under the License.
 
-This project makes use of ATT&CK®
+This project makes use of MITRE ATT&CK®
 
 [ATT&CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
