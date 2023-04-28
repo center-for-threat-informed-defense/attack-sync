@@ -1,0 +1,38 @@
+{% extends "root.html.j2" %}
+
+{% block body %}
+<nav id="navbar" class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">ATT&amp;CK SYNC</a>
+        <a class="navbar-brand version" href="/v{{ old_version }}-v{{ new_version }}">{{ old_version }} → {{ new_version
+            }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto mb-2 mb-lg-0 ml-auto">
+                {% for type in types %}
+                <li class="nav-item dropdown" id={{type}}>
+                    <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{type}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for domain in domains %}
+                        <li><a class="dropdown-item"
+                                href="/v{{old_version}}-v{{new_version}}/{{domain}}/{{type}}">{{domain.split("-")[0].upper()}}
+                                ATT&amp;CK</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+{% endblock %}

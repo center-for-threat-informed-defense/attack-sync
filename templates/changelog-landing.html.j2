@@ -1,0 +1,44 @@
+{% import "./macros.html.j2" as macros %}
+{% extends "nav-content.html.j2" %}
+
+{% block title %}
+{{ domain_name_to_label[current_domain] }} ATT&amp;CK {{ old_version }} → {{ new_version }} – ATT&amp;CK Sync
+{% endblock %}
+
+{% block content %}
+<div style="max-width: 80%;margin: auto;margin-top:80px;">
+    <h4 class="eyebrow">Version {{ old_version }} to {{ new_version }}</h4>
+    <h2>{{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog</h2>
+    {{ macros.floating_buttons(current_domain) }}
+    <div class="subnav">
+        <ul>
+            {%- for type in types %}
+            <li><a href="#{{type}}-summary">{{ type_name_to_label[type] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% for type_summary in type_summaries %}
+    <div id="{{ type_summary.type }}-summary">
+        <h4>{{ type_name_to_label[type_summary.type] }}</h4>
+        <table class="overview-table">
+            <tr>
+                {% for change_type in change_types %}
+                <th>{{ change_type.replace("_", " ") }}</th>
+                {% endfor %}
+
+            </tr>
+            <tr>
+                {%- for change_type in change_types %}
+                <td style="width: 200px;">{{ type_summary[change_type] }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+        <a class="small-link"
+            href="/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/{{ type_summary.type }}/">
+            <h5>View Details</h5>
+            <span>→</span>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

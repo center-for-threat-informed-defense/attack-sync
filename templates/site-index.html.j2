@@ -1,0 +1,83 @@
+{% extends "root.html.j2" %}
+
+{% block body %}
+<div class="home">
+    <div class="blue">
+        <div class="blue-content">
+            <img src="/static/logo.png" style="height: 25px; margin-bottom: 20px;" />
+            <h1>ATT&amp;CK <span>Sync</span></h1>
+            <p>The ATT&amp;CK Sync project streamlines upgrades to new versions of MITRE ATT&amp;CK&#174; by providing
+                detailed changelogs in both human and machine-readable formats. Use the form to the right to access
+                the changelog based on the version you are currently using and the version you want to upgrade to.
+            </p>
+            <a class="link" href="/about/">
+                <h4>Learn More</h4>
+                <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
+                    <path id="Path_8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765"
+                        transform="translate(-2918.257 -8194.207)" fill="none" stroke="#C2EAF6" stroke-linejoin="round"
+                        stroke-width="4" />
+                    <path id="Path_9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734"
+                        transform="translate(-2918.257 -8194.207)" fill="none" stroke="#C2EAF6" stroke-linejoin="round"
+                        stroke-width="4" />
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="right">
+        <form class="form" onsubmit="handleSubmission(event)">
+            <div class="form-group">
+                <h3 class="purple">Release Differences</h3>
+                <div id="old_div">
+                    <label>Old Version:</label>
+                    <select class="form-select form-control" id="old_version">
+                        {% for version in versions %}
+                        <option value="{{ version[0] }}.{{ version[1] }}" {% if loop.index==loop.length - 1 %}
+                            selected{% endif %}>v{{ version[0] }}.{{ version[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Old version must be less than new version.
+                    </div>
+                </div>
+                <div id="new_div">
+                    <label>New Version:</label>
+                    <select class="form-select form-control" id="new_version">
+                        {% for version in versions %}
+                        <option value="{{ version[0] }}.{{ version[1] }}" {% if loop.last %} selected{% endif %}>v{{
+                            version[0] }}.{{ version[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        New value must be greater than old value.
+                    </div>
+                </div>
+                <label>Domain:</label>
+                <select class="form-select form-control" id="domain">
+                    {% for domain in domains %}
+                    <option value="{{ domain }}">{{ domain_names[domain] }}</option>
+                    {% endfor %}
+                </select>
+                <button class="purple" type="submit">
+                    See Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function handleSubmission(event) {
+        event.preventDefault();
+        const oldVal = document.getElementById("old_version").value;
+        const newVal = document.getElementById("new_version").value;
+        if (parseFloat(oldVal) >= parseFloat(newVal)) {
+            document.getElementById("old_div").classList.add("invalid");
+            document.getElementById("new_div").classList.add("invalid");
+        } else {
+            const domain = document.getElementById("domain").value;
+            const url = `/v${oldVal}-v${newVal}/${domain}/`;
+            location.assign(url)
+        }
+    }
+</script>
+{% endblock %}

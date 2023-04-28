@@ -2,10 +2,9 @@ import json
 import re
 from typing import Dict, List, Optional
 
-from jinja2 import Environment, FileSystemLoader
+from .template import load_template
 
-environment = Environment(loader=FileSystemLoader("templates/"))
-template = environment.get_template("accordion-item.html")
+template = load_template("accordion-item.html.j2")
 
 
 def buildAccordionItem(changeItem, name, domain, changeType, objectType, index):

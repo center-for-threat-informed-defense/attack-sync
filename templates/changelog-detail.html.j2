@@ -1,0 +1,161 @@
+{% import "./macros.html.j2" as macros %}
+{% extends "nav-content.html.j2" %}
+
+{% block title %}
+{{ type_name_to_label[current_type] }} – {{ domain_name_to_label[current_domain] }} ATT&amp;CK {{ old_version }} →
+{{ new_version }} – ATT&amp;CK Sync
+{% endblock %}
+
+{% block content %}
+<div class="changelog-content">
+    <img src="/static/logo-small.png" class="logo-small">
+    <h4 class="eyebrow">Version {{ old_version }} → {{ new_version }}</h4>
+    <h2>{{ type_name_to_label[current_type] }} &mdash; {{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog
+    </h2>
+    {{ macros.floating_buttons(current_domain) }}
+    <div class="subnav">
+        <ul>
+            {% for cl_key, cl_name, items in changelog %}
+            {% if items %}
+            <li><a href="#{{ cl_key }}">{{ cl_name }} {{ type_name_to_label[current_type] }}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% for cl_key, cl_name, items in changelog %}
+    {% if items %}
+    <h4 class="change-type" id="{{ cl_key }}">{{ cl_name }} {{ type_name_to_label[current_type] }}</h4>
+    </h4>
+    <div class="accordion accordion-flush" id="accordion-{{ cl_key }}">
+        {% for item in items %}
+        <div class="accordion-item panel">
+            <h2 class="accordion-header" id="accordion-header-{{ cl_key }}-{{ loop.index }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#accordion-body-{{ cl_key }}-{{ loop.index }}" aria-expanded="false"
+                    aria-controls="accordion-body-{{ cl_key }}-{{ loop.index }}">
+                    <h5 class="purple" style="padding-right: 20px; min-width: 100px;">{{item.attack_id}}</h5>
+                    <h5>{{ item.title }}</h5>
+                    {% if item.version_change %}
+                    <h5 class="purple right" style="text-transform: lowercase;">{{item.version_change}}</h5>
+                    {% elif item.version %}
+                    <h5 class="purple right" style="text-transform: lowercase;">v{{item.version}}</h5>
+                    {% endif %}
+                </button>
+            </h2>
+            <div id="accordion-body-{{ cl_key }}-{{ loop.index }}" class="accordion-collapse collapse"
+                aria-labelledby="accordion-header-{{ cl_key }}-{{ loop.index }}"
+                data-bs-parent="#accordion-{{ cl_key }}">
+                <div class="accordion-body">
+                    {%- if item.stix_object.old_description and item.stix_object.description %}
+                    <table>
+                        <tr>
+                            <th>Old Description</th>
+                            <th>New Description</th>
+                        </tr>
+                        <tr>
+                            <td class="old">{{ item.stix_object.old_description }}</td>
+                            <td class="new">{{ item.stix_object.description }}</td>
+                        </tr>
+                    </table>
+                    {%- elif item.change_type in ("additions", "revocations", "deprecations")
+                    or
+                    (not item.stix_object.old_description and item.stix_object.description) %}
+                    <table>
+                        <tr>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>{{ item.stix_object.description }}</td>
+                        </tr>
+                    </table>
+                    {% endif %}
+                    {%- if item.change_type == "revocations"%}
+                    <h5 style="margin-top: 20px;">Revoked by {{ item.revoked_by_id }} {{ item.revoked_by_name }}
+                    </h5>
+                    {% if revoked_by_description %}
+                    <table>
+                        <tr>
+                            <th>Description for {{ item.revoked_by_id }} {{ item.revoked_by_name }}</th>
+                        </tr>
+                        <tr>
+                            <td>{{ revoked_by_description }}</td>
+                        </tr>
+                    </table>
+                    {% endif %}
+                    {% endif %}
+                    {%- if current_type == "techniques" %}
+                    {% if item.stix_object.get("changelog_mitigations") %}
+                    {% set mitigations = item.stix_object.changelog_mitigations.get("new") %}
+                    {% if mitigations %}
+                    <p><b>New Mitigations</b>:</p>
+                    <ul>
+                        {%- for mitigation in mitigations %}
+                        <li>{{ mitigation }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% set mitigations = item.stix_object.changelog_mitigations.get("dropped")%}
+                    {% if mitigations %}
+                    <p><b>Dropped Mitigations</b>:</p>
+                    <ul>
+                        {%- for mitigation in mitigations %}
+                        <li>{{ mitigation }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endif %}
+                    {%- if item.stix_object.get("changelog_detections") %}
+                    {% set detections = item.stix_object.changelog_detections.get("new") %}
+                    {% if detections %}
+                    <p><b>New Detections</b>:</p>
+                    <ul>
+                        {%- for detection in detections %}
+                        <li>{{ detection }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% set detections = item.stix_object.changelog_detections.get("dropped")%}
+                    {% if detections %}
+                    <p><b>Dropped Detections</b>:</p>
+                    <ul>
+                        {%- for detection in detections %}
+                        <li>{{ detection }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                    {%- if item.detailed_diff %}
+                    <details>
+                        <summary>Details</summary>
+                        {%- if item.dict_added %}
+                        <h6>Dictionary Item Added</h6>
+                        {{ macros.change_details_table(item.dict_added) }}
+                        {% endif %}
+                        {%- if item.dict_removed %}
+                        <h6>Dictionary Item Removed</h6>
+                        {{ macros.change_details_table(item.dict_removed) }}
+                        {% endif %}
+                        {%- if item.values_changed %}
+                        <h6>Values Changed</h6>
+                        {{ macros.change_details_table(item.values_changed) }}
+                        {% endif %}
+                        {%- if item.iterable_added %}
+                        <h6>Iterable Item Added</h6>
+                        {{ macros.change_details_table(item.iterable_added) }}
+                        {% endif %}
+                        {%- if item.iterable_removed %}
+                        <h6>Iterable Item Removed</h6>
+                        {{ macros.change_details_table(item.iterable_removed) }}
+                        {% endif %}
+                    </details>
+                    {%- endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
