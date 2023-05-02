@@ -14,23 +14,21 @@ def main():
         (8, 0),
         (8, 1),
         (8, 2),
-        # (9, 0),
-        # (10, 0),
-        # (10, 1),
-        # (11, 0),
-        # (11, 1),
-        # (11, 2),
-        # (11, 3),
-        # (12, 0),
-        # (12, 1),
+        (9, 0),
+        (10, 0),
+        (10, 1),
+        (11, 0),
+        (11, 1),
+        (11, 2),
+        (11, 3),
+        (12, 0),
+        (12, 1),
+        (13, 0),
     ]
-    # TODO
-    # TODO and fix link to changelog landing page
-    # TODO
     domains = [
-        # "enterprise-attack",
+        "enterprise-attack",
         "mobile-attack",
-        # "ics-attack",
+        "ics-attack",
     ]
     domain_names = {
         "enterprise-attack": "Enterprise ATT&CK",
@@ -40,11 +38,11 @@ def main():
     types = [
         "techniques",
         "software",
-        # "groups",
-        # "campaigns",
-        # "mitigations",
-        # "datasources",
-        # "datacomponents",
+        "groups",
+        "campaigns",
+        "mitigations",
+        "datasources",
+        "datacomponents",
     ]
 
     # Copy static files.

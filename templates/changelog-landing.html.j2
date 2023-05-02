@@ -7,13 +7,14 @@
 
 {% block content %}
 <div style="max-width: 80%;margin: auto;margin-top:80px;">
+    <img src="/static/logo-small.png" class="logo-small">
     <h4 class="eyebrow">Version {{ old_version }} to {{ new_version }}</h4>
     <h2>{{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog</h2>
     {{ macros.floating_buttons(current_domain) }}
     <div class="subnav">
         <ul>
-            {%- for type in types %}
-            <li><a href="#{{type}}-summary">{{ type_name_to_label[type] }}</a></li>
+            {%- for type_summary in type_summaries %}
+            <li><a href="#{{type_summary['type']}}-summary">{{ type_name_to_label[type_summary["type"]] }}</a></li>
             {% endfor %}
         </ul>
     </div>

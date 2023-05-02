@@ -940,14 +940,14 @@ files = [
 
 [[package]]
 name = "mitreattack-python"
-version = "2.0.7"
+version = "2.0.10"
 description = "MITRE ATT&CK python library"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "mitreattack-python-2.0.7.tar.gz", hash = "sha256:f75b1e0fcd768a7a39b43718535ed1a5253a77e4b0c6a3a302902fe155f42871"},
-    {file = "mitreattack_python-2.0.7-py3-none-any.whl", hash = "sha256:c3973bdffa209a0cbfd00fc617f0975e487ced62e996260a0c29212e9229d03f"},
+    {file = "mitreattack-python-2.0.10.tar.gz", hash = "sha256:b8751396d52716fd7e367909c4e19c92153d5dc255c3052be76144d92bbe7c35"},
+    {file = "mitreattack_python-2.0.10-py3-none-any.whl", hash = "sha256:9cf473c6ba4f01bb5913c0126af7089b26acfa4ab687110e1941761ab6201bfa"},
 ]
 
 [package.dependencies]

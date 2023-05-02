@@ -121,7 +121,7 @@ class StixDiff:
 
             logger.info("Diffing domain: {domain}", domain=domain)
             for obj_type in self.types:
-                logger.debug(f"Diffing type: {domain}/{obj_type}")
+                logger.info(f"Diffing type: {domain}/{obj_type}")
 
                 old_attack_objects = self.data["old"][domain]["attack_objects"][
                     obj_type
@@ -226,9 +226,10 @@ class StixDiff:
 
                         if df != [] or df1 != []:
                             if stix_id not in version_changes:
-                                logger.error(
-                                    f"{stix_id} - Somehow {attack_id} has a description change "
-                                    "without the version being incremented or the last modified date changing"
+                                logger.debug(
+                                    "Object has a description change without the version "
+                                    "being incremented or the last modified date changing: "
+                                    f"{stix_id} ({attack_id})"
                                 )
                                 version_changes.add(stix_id)
 
@@ -252,7 +253,6 @@ class StixDiff:
 
                 # New objects
                 for stix_id in additions:
-                    logger.debug("New STIX object: {}", stix_id)
                     new_stix_obj = new_attack_objects[stix_id]
                     attack_id = get_attack_id(new_stix_obj)
 
@@ -265,12 +265,12 @@ class StixDiff:
                         None, x_mitre_version, "additions"
                     ):
                         logger.debug(
-                            f"{stix_id} - Unexpected new version. Expected 1.0, but is {x_mitre_version}. [{attack_id}] {new_stix_obj['name']}"
+                            f"Expected version 1.0 for new object, but got {x_mitre_version} "
+                            f"instead: {stix_id} ({attack_id})"
                         )
 
                 # Deleted objects
                 for stix_id in deletions:
-                    logger.debug("Deleted STIX object: {}", stix_id)
                     old_stix_obj = old_attack_objects[stix_id]
                     attack_id = get_attack_id(old_stix_obj)
 
@@ -300,8 +300,6 @@ class StixDiff:
                         key=lambda stix_object: stix_object["name"],
                     ),
                 }
-
-                logger.debug(f"Loaded:  [{domain:17}]/{obj_type}")
 
     def find_technique_mitigation_changes(self, new_stix_obj: dict, domain: str):
         """
@@ -755,7 +753,7 @@ class StixDiff:
         thedate = datetime.datetime.today().strftime("%B %Y")
         # for each layer file in the domains mapping
         for domain in self.domains:
-            logger.debug(f"Generating ATT&CK Navigator layer for domain: {domain}")
+            logger.info(f"Generating ATT&CK Navigator layer for domain: {domain}")
             # build techniques list
             techniques = []
             for section, technique_stix_objects in self.data["changes"]["techniques"][
@@ -991,8 +989,6 @@ def deep_copy_stix(stix_objects: typing.List[dict]) -> typing.List[dict]:
     """
     result = []
     for stix_object in stix_objects:
-        # TODO: serialize the STIX objects instead of casting them to dict
-        # more details here: https://github.com/mitre/cti/issues/17#issuecomment-395768815
         stix_object = dict(stix_object)
         if "external_references" in stix_object:
             for i in range(len(stix_object["external_references"])):
@@ -1108,27 +1104,25 @@ def render_changelog_landing_page(stix_diff: StixDiff, output_dir: Path, domain:
     new_version = stix_diff.data["new"][stix_diff.domains[0]]["attack_release_version"]
 
     type_summaries = list()
-    for object_type, domain_data in stix_diff.data["changes"].items():
+    for object_type in stix_diff.data["changes"].keys():
         if object_type in stix_diff.types:
-            # TODO what is this??
-            # this is a way of determining if there are changes in any of the sections for any of the domains
-            if sum(
+            changes = stix_diff.data["changes"][object_type][domain]
+            type_summary = {
+                "type": object_type,
+                "added": len(changes["additions"]),
+                "modified": len(changes["version_changes"]),
+                "revoked": len(changes["revocations"]),
+                "deprecated": len(changes["deprecations"]),
+            }
+            if any(
                 [
-                    sum(change_types.values(), [])
-                    for change_types in domain_data.values()
-                ],
-                [],
+                    type_summary["added"],
+                    type_summary["modified"],
+                    type_summary["revoked"],
+                    type_summary["deprecated"],
+                ]
             ):
-                changes = stix_diff.data["changes"][object_type][domain]
-                type_summaries.append(
-                    {
-                        "type": object_type,
-                        "additions": len(changes["additions"]),
-                        "version_changes": len(changes["version_changes"]),
-                        "revocations": len(changes["revocations"]),
-                        "deprecations": len(changes["deprecations"]),
-                    }
-                )
+                type_summaries.append(type_summary)
 
     # Render the page.
     template = load_template("changelog-landing.html.j2")
@@ -1419,7 +1413,7 @@ def build_changelog(
     # Path(json_file).parent.mkdir(parents=True, exist_ok=True)
     # json.dump(changes_dict, open(json_file, "w"), indent=4)
 
-    # TODO
+    # TODO layers
     # if layers:
     #     if len(layers) == 0:
     #         # no files specified, e.g. '-layers', use defaults
@@ -1478,7 +1472,7 @@ def main():
         help="Which object types to report on. Defaults to all types.",
     )
 
-    # TODO
+    # TODO layers
     # parser.add_argument(
     #     "--layers",
     #     type=str,
@@ -1491,7 +1485,7 @@ def main():
     # )
 
     args = parser.parse_args()
-    # TODO
+    # TODO layers
     # if args.layers is not None:
     #     if len(args.layers) not in [0, 3]:
     #         parser.error(

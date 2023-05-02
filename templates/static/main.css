@@ -104,7 +104,7 @@ h4.change-type {
 
 .link h4 {
     font-size: 18px;
-    color: #005B94;
+    color: #C2EAF6;
 }
 
 .link svg {
@@ -220,6 +220,9 @@ p {
     margin-left: 10px;
 }
 
+.accordion-header h5 {
+    margin-bottom: 0;
+}
 
 .subnav a {
     color: black;
