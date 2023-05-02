@@ -15,7 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
     - uses: actions/setup-python@v4
       with:
         python-version: '3.8'
@@ -25,6 +28,10 @@ jobs:
       run: echo "$HOME/.poetry/bin" >> $GITHUB_PATH
     - name: Install dependencies
       run: poetry install
+    - name: Run Black
+      run: poetry run black --check src/
+    - name: Run Isort
+      run: poetry run black --check src/
     - name: Download ATT&CK data
       run: poetry run download_attack_stix --stix20 --all -d data/attack
     - name: Build website
