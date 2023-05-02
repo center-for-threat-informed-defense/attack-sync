@@ -25,8 +25,12 @@ jobs:
       run: echo "$HOME/.poetry/bin" >> $GITHUB_PATH
     - name: Install dependencies
       run: poetry install
+    - name: Download ATT&CK data
+      run: poetry run download_attack_stix --stix20 --all -d data/attack
     - name: Build website
-      run: poetry run build-attack
+      env:
+        LOGURU_LEVEL: INFO
+      run: poetry run build-attack-sync
     - name: Upload website artifact
       uses: actions/upload-artifact@v3
       with:
@@ -36,7 +40,7 @@ jobs:
   github_pages:
     # This job only runs when committing or merging to main branch.
     if: github.ref_name == 'main'
-    needs: docs
+    needs: build_website
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -53,7 +57,7 @@ jobs:
     - name: Upload website to GitHub pages
       uses: actions/upload-pages-artifact@v1
       with:
-        path: ./docs
+        path: ./public
     - name: Deploy GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v1
