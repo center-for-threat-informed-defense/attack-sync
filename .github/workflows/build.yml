@@ -30,7 +30,7 @@ jobs:
     - name: Build website
       env:
         LOGURU_LEVEL: INFO
-      run: poetry run build-attack-sync
+      run: poetry run build-attack-sync --url-prefix "/attack-sync"
     - name: Upload website artifact
       uses: actions/upload-artifact@v3
       with:

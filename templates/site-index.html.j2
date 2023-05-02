@@ -4,13 +4,14 @@
 <div class="home">
     <div class="blue">
         <div class="blue-content">
-            <img src="/static/logo.png" style="height: 25px; margin-bottom: 20px;" />
+            <a href="https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/"><img
+                    src="{{ url_prefix }}/static/logo.png" style="height: 25px; margin-bottom: 20px;" /></a>
             <h1>ATT&amp;CK <span>Sync</span></h1>
             <p>The ATT&amp;CK Sync project streamlines upgrades to new versions of MITRE ATT&amp;CK&#174; by providing
                 detailed changelogs in both human and machine-readable formats. Use the form to the right to access
                 the changelog based on the version you are currently using and the version you want to upgrade to.
             </p>
-            <a class="link" href="/about/">
+            <a class="link" href="{{ url_prefix }}/about/">
                 <h4>Learn More</h4>
                 <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
                     <path id="Path_8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765"
@@ -75,7 +76,7 @@
             document.getElementById("new_div").classList.add("invalid");
         } else {
             const domain = document.getElementById("domain").value;
-            const url = `/v${oldVal}-v${newVal}/${domain}/`;
+            const url = `{{ url_prefix }}/v${oldVal}-v${newVal}/${domain}/`;
             location.assign(url)
         }
     }

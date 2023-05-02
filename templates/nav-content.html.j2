@@ -3,8 +3,9 @@
 {% block body %}
 <nav id="navbar" class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">ATT&amp;CK SYNC</a>
-        <a class="navbar-brand version" href="/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/">{{
+        <a class="navbar-brand" href="{{ url_prefix }}/">ATT&amp;CK SYNC</a>
+        <a class="navbar-brand version"
+            href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/">{{
             old_version }} →
             {{ new_version }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -22,7 +23,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for domain in domains %}
                         <li><a class="dropdown-item"
-                                href="/v{{old_version}}-v{{new_version}}/{{domain}}/{{type}}">{{domain.split("-")[0].upper()}}
+                                href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/{{type}}">{{domain.split("-")[0].upper()}}
                                 ATT&amp;CK</a>
                         </li>
                         {% endfor %}

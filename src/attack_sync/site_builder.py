@@ -1,3 +1,4 @@
+from argparse import ArgumentParser, Namespace
 from itertools import combinations
 from pathlib import Path
 import shutil
@@ -8,8 +9,21 @@ from .changelog_builder import build_changelog
 from .template import PUBLIC_DIR, TEMPLATE_DIR, load_template
 
 
+def parse_args() -> Namespace:
+    parser = ArgumentParser(description="Build the ATT&CK Sync website.")
+    parser.add_argument(
+        "--url-prefix",
+        default="",
+        help="Optional: a prefix to apply to generated URLs, e.g. if hosting on GitHub "
+        "Pages (with no trailing slash)",
+    )
+    return parser.parse_args()
+
+
 def main():
     # Versions are expressed as (major, minor) tuples.
+    args = parse_args()
+    url_prefix = args.url_prefix.rstrip("/")
     versions = [
         (8, 0),
         (8, 1),
@@ -55,7 +69,10 @@ def main():
     logger.info("Creating site index: {}", index_path)
     index_template = load_template("site-index.html.j2")
     index_stream = index_template.stream(
-        versions=versions, domains=domains, domain_names=domain_names
+        versions=versions,
+        domains=domains,
+        domain_names=domain_names,
+        url_prefix=url_prefix,
     )
     index_stream.dump(str(index_path))
 
@@ -65,7 +82,7 @@ def main():
     about_path = about_dir / "index.html"
     logger.info("Creating site about page: {}", about_path)
     index_template = load_template("site-about.html.j2")
-    index_template.stream().dump(str(about_path))
+    index_template.stream(url_prefix=url_prefix).dump(str(about_path))
 
     # Build changelogs for each pair of versions.
     changelog_count = int((len(versions) * (len(versions) - 1)) / 2)
@@ -79,6 +96,7 @@ def main():
             types=types,
             old=old_version,
             new=new_version,
+            url_prefix=url_prefix,
         )
 
 

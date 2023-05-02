@@ -1086,7 +1086,9 @@ def layers_dict_to_files(outfiles, layers):
         json.dump(layers["ics-attack"], open(ics_attack_layer_file, "w"), indent=4)
 
 
-def render_changelog_landing_page(stix_diff: StixDiff, output_dir: Path, domain: str):
+def render_changelog_landing_page(
+    stix_diff: StixDiff, output_dir: Path, domain: str, url_prefix: str
+):
     """
     Write high level overview of changes between ATT&CK versions as a landing page.
 
@@ -1094,6 +1096,7 @@ def render_changelog_landing_page(stix_diff: StixDiff, output_dir: Path, domain:
         html_file: File to write HTML for the index.
         stix_diff: An instance of a stix_diff object.
         domain: ATT&CK domain
+        url_prefix: a prefix to place in front of any constructed URL
     """
     output_path = output_dir / domain / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1127,6 +1130,7 @@ def render_changelog_landing_page(stix_diff: StixDiff, output_dir: Path, domain:
     # Render the page.
     template = load_template("changelog-landing.html.j2")
     stream = template.stream(
+        url_prefix=url_prefix,
         old_version=old_version,
         new_version=new_version,
         current_domain=domain,
@@ -1146,7 +1150,7 @@ def render_changelog_landing_page(stix_diff: StixDiff, output_dir: Path, domain:
 
 
 def render_changelog_detail_page(
-    stix_diff: StixDiff, output_dir: Path, domain: str, type_: str
+    stix_diff: StixDiff, output_dir: Path, domain: str, type_: str, url_prefix: str
 ):
     """
     Create the HTML changelog for the provided diff.
@@ -1156,6 +1160,7 @@ def render_changelog_detail_page(
         output_dir: where to save the changelog
         domain: the ATT&CK domain to render
         type_: the ATT&CK object type to render
+        url_prefix: a prefix to place in front of any constructed URL
     """
     output_path = output_dir / domain / type_ / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1209,6 +1214,7 @@ def render_changelog_detail_page(
         ("deprecated", "Deprecated", changelog_dict["deprecated"]),
     ]
     stream = template.stream(
+        url_prefix=url_prefix,
         old_version=old_version,
         new_version=new_version,
         current_domain=domain,
@@ -1361,6 +1367,7 @@ def build_changelog(
     new: str,
     domains: typing.List[str],
     types: typing.List[str],
+    url_prefix: str,
     # layers: typing.List[str] = layer_defaults,
 ):
     """
@@ -1371,6 +1378,7 @@ def build_changelog(
         new: the new version number to compare against
         domains: list of domains to parse
         types: list of object types to parse
+        url_prefix: a prefix to place in front of any constructed URL
         layers: TODO
     """
     old_path = ATTACK_DATA_DIR / old
@@ -1400,11 +1408,13 @@ def build_changelog(
         changelog_name = f"{old}-{new}"
         changelog_dir = PUBLIC_DIR / changelog_name
         changelog_dir.mkdir(parents=True, exist_ok=True)
-        render_changelog_landing_page(stix_diff, changelog_dir, domain)
+        render_changelog_landing_page(stix_diff, changelog_dir, domain, url_prefix)
 
         # Create HTML changelog
         for type_ in types:
-            render_changelog_detail_page(stix_diff, changelog_dir, domain, type_)
+            render_changelog_detail_page(
+                stix_diff, changelog_dir, domain, type_, url_prefix
+            )
 
     # Create JSON changelog
     # logger.info("Creating JSON changelog")
@@ -1454,6 +1464,12 @@ def main():
         default=domain_choices,
         help="Which domains to report on. Defaults to all domains.",
     )
+    parser.add_argument(
+        "--url-prefix",
+        default="",
+        help="Optional: a prefix to apply to generated URLs, e.g. if hosting on GitHub "
+        "Pages (with no trailing slash)",
+    )
     type_choices = [
         "techniques",
         "software",
@@ -1492,11 +1508,13 @@ def main():
     #             "-layers requires exactly three files to be specified or none at all"
     #         )
 
+    url_prefix = args.url_prefix.rstrip("/")
     build_changelog(
         old=args.old,
         new=args.new,
         domains=args.domain,
         types=args.type,
+        url_prefix=url_prefix,
         # layers=args.layers, # TODO
     )
 
