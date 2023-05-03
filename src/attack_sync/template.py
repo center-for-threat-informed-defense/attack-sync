@@ -2,7 +2,6 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, Template
 
-
 ROOT_DIR = Path(__file__).parents[2]
 ATTACK_DATA_DIR = ROOT_DIR / "data" / "attack" / "stix-2.0"
 PUBLIC_DIR = ROOT_DIR / "public"

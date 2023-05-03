@@ -1,7 +1,7 @@
+import shutil
 from argparse import ArgumentParser, Namespace
 from itertools import combinations
 from pathlib import Path
-import shutil
 
 from loguru import logger
 

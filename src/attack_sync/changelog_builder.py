@@ -5,11 +5,11 @@ import datetime
 import difflib
 import json
 import math
-from operator import itemgetter
 import os
 import re
 import sys
 import typing
+from operator import itemgetter
 from pathlib import Path
 
 import stix2

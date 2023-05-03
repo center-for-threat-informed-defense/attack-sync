@@ -31,7 +31,7 @@ jobs:
       - name: Run Black
         run: poetry run black --check src/
       - name: Run Isort
-        run: poetry run black --check src/
+        run: poetry run isort --check src/
       - name: Download ATT&CK data
         run: poetry run download_attack_stix --stix20 --all -d data/attack
       - name: Build website

@@ -1,8 +1,8 @@
+from argparse import ArgumentParser
 import json
 import re
 from difflib import SequenceMatcher
 from pathlib import Path
-from string import whitespace
 from typing import Dict
 
 from loguru import logger
@@ -31,7 +31,7 @@ def get_attack_id(changelog_attack_object: dict):
 
 
 def get_changed_techniques(changelog: Dict[str, dict]):
-    logger.debug("Getting techniques that have changes between ATT&CK versions")
+    logger.info("Getting techniques that have changes between ATT&CK versions")
     changed_techniques = {}
     for domain, change_info in changelog.items():
         if domain == "new-contributors":
@@ -48,22 +48,41 @@ def get_changed_techniques(changelog: Dict[str, dict]):
     return changed_techniques
 
 
-def main():
-    old_version = "10.1"
-    new_version = "12.1"
-    changelog_json_file = f"data/attack-changelog-v{old_version}-v{new_version}.json"
-    original_mapping_file = "data/nist800-53-r5-mappings.xlsx"
-    output_dir = "output"
-    final_workbook = (
-        f"{output_dir}/nist800-53-r5-mappings-v{old_version}-v{new_version}.xlsx"
+def parse_args():
+    parser = ArgumentParser(
+        description="Annotate a mappings spreadsheet with notes from an ATT&CK changelog."
     )
+    parser.add_argument(
+        "changelog",
+        type=str,
+        help="Path to ATT&CK changelog",
+    )
+    parser.add_argument(
+        "mapping_in",
+        type=str,
+        help="Path to input mapping spreadsheet (xlsx).",
+    )
+    parser.add_argument(
+        "mapping_out",
+        type=str,
+        help="Path to save output mapping spreadsheet (xlsx).",
+    )
+    return parser.parse_args()
 
-    with open(changelog_json_file, "r") as file:
+
+def main():
+    args = parse_args()
+
+    changelog_json_file = Path(args.changelog)
+    original_mapping_file = Path(args.mapping_in)
+    final_workbook = Path(args.mapping_out)
+
+    with changelog_json_file.open("r") as file:
         changelog = json.load(file)
 
     changed_techniques = get_changed_techniques(changelog=changelog)
 
-    logger.debug(f"Loading: {original_mapping_file}")
+    logger.info(f"Loading: {original_mapping_file}")
     mapping_workbook = load_workbook(filename=original_mapping_file)
     mapping_sheet = mapping_workbook["Sheet1"]
     initial_cols = 5
@@ -89,7 +108,7 @@ def main():
         row[start_col + 1].value = change_value
         start_col += cols_per_change
 
-    logger.debug("Providing context for ATT&CK Techniques that have changed")
+    logger.info("Providing context for ATT&CK Techniques that have changed")
     for row in mapping_sheet.iter_rows(max_col=total_cols):
         control_id = row[0].value
         technique_id = row[3].value
@@ -222,26 +241,20 @@ def main():
             )
         )
 
-    ###########
-    # Style it!
-    ###########
-    logger.debug("Widening new columns...")
+    logger.info("Widening new columns...")
     for i in range(0, num_changes):
         col_idx = initial_cols + 1 + i * cols_per_change
         mapping_sheet.column_dimensions[get_column_letter(col_idx)].width = 18
         for j in range(1, cols_per_change):
             mapping_sheet.column_dimensions[get_column_letter(col_idx + j)].width = 100
 
-    # Wrap text
-    logger.debug("Wrapping text for new columns...")
+    logger.info("Wrapping text for new columns...")
     for row in mapping_sheet.rows:
         for col_idx in range(initial_cols + 1, total_cols):
             row[col_idx].alignment = Alignment(wrap_text=True)
 
-    logger.debug(f"Creating output directory: {output_dir}")
-    Path(output_dir).mkdir(parents=True, exist_ok=True)
-
-    logger.debug(f"Saving file: {final_workbook}")
+    logger.info(f"Saving file: {final_workbook}")
+    final_workbook.parent.mkdir(parents=True, exist_ok=True)
     mapping_workbook.save(filename=final_workbook)
 
 
