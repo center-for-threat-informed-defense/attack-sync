@@ -16,4 +16,5 @@ def test_changelog():
             "datasources",
             "datacomponents",
         ],
+        "/public",
     )

@@ -1,9 +1,14 @@
 [![MITRE ATT&CK® v13](https://img.shields.io/badge/MITRE%20ATT%26CK®-v13-red)](https://attack.mitre.org/versions/v13/)
-[![Build](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml/badge.svg)](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml)
+[![Build Status](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml/badge.svg)](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml)
 
 # ATT&CK Sync
 
-TODO TODO TODO TODO
+ATT&CK Sync is a Center for Threat-Informed Defense project that aims to ease the
+process of staying in sync with MITRE ATT&CK® version updates. We recognize widespread
+difficulties keeping internal systems and date in sync with with ATT&CK, so this project
+includes tools, data, and methodology to reduce the cost and effort associated with
+tracking ATT&CK releases. The Center is deploying this technology to improve our own
+projects, and we believe it will be highly valuable to many other organizations as well.
 
 **Table Of Contents:**
 
@@ -15,37 +20,42 @@ TODO TODO TODO TODO
 
 ## Getting Started
 
-TODO
+The best way to get started is to visit the ATT&CK Sync website, where you can quickly
+access detailed changelogs that show cumulative differences between any two versions of
+ATT&CK from v8.0 to v13.0. The sample JSON changelog shows how the differences can be
+consumed in machine-readable format, and the sample Excel mappings show how the
+machine-readable data can be merged with your internal systems & data to provide
+contextual ATT&CK changes. Finally, the project wiki provides thorough documentation for
+the project as well as a case study.
 
-| Resource     | Description |
-| ------------ | ----------- |
-| [TODO](TODO) |             |
+| Resource                                                                                        | Description                                                              |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [ATT&CK Sync Website](https://center-for-threat-informed-defense.github.io/attack-sync/)        | An interactive website for detailed comparisons between ATT&CK versions. |
+| [Project Wiki](https://github.com/center-for-threat-informed-defense/attack-sync/wiki)          | The wiki contains project documentation: goals, tools, and methodology.  |
+| [Sample JSON Changelog](https://github.com/center-for-threat-informed-defense/attack-sync/wiki) | A sample machine-readable ATT&CK changelog.                              |
+| [Sample Excel Mappings](https://github.com/center-for-threat-informed-defense/attack-sync/wiki) | A sample mappings spreadsheet annotated with ATT&CK changes.             |
 
 ## Getting Involved
 
 There are several ways that you can get involved with this project and help
 advance threat-informed defense:
 
-TODO TODO TODO
-
-- **Review the language specification, use the builder to create some flows, and tell us
-  what you think.** We welcome your review and feedback on the data model and our
-  methodology.
-- **Help us prioritize additional example flows to create.** Let us know what examples
-  you would like to turned into an Attack Flow. Your input will help us prioritize how
-  we expand our corpus.
-- **Share your use cases.** We are interested in developing additional tools and
-  resources to help the community understand and make threat-informed decisions in their
-  risk management programs. If you have ideas or suggestions, we consider them as we
-  explore additional research projects.
+- **Visit the ATT&CK Sync website.** Access changelogs that detail the cumulative
+  changes between any ATT&CK versions. This is especially helpful if your organization
+  is contemplating an upgrade of internal systems to a more recent version of ATT&CK.
+- **Review the sample documents.** These documents will give you a better idea of how
+  ATT&CK Sync can your organization major time and effort while staying in sync with
+  ATT&CK.
+- **Tell us what you think.** As the project grows, we want to cover a broader set of
+  use cases. Let us know if you like this idea and how we can make it even better in
+  future releases.
 
 ## Questions and Feedback
 
-Please submit issues for any technical questions/concerns or contact
-ctid@mitre-engenuity.org directly for more general inquiries.
-
-Also see the guidance for contributors if are you interested in contributing or simply
-reporting issues.
+Please submit
+[issues](https://github.com/center-for-threat-informed-defense/attack-sync/issues) for
+any technical questions/concerns or contact ctid@mitre-engenuity.org directly for
+general inquiries.
 
 ## How Do I Contribute?
 
@@ -53,14 +63,9 @@ We welcome your feedback and contributions to help advance Attack Flow. Please s
 guidance for contributors if are you interested in [contributing or simply reporting
 issues.](/CONTRIBUTING.md)
 
-Please submit
-[issues](https://github.com/center-for-threat-informed-defense/attack-flow/issues) for
-any technical questions/concerns or contact ctid@mitre-engenuity.org directly for more
-general inquiries.
-
 ## Notice
 
-Copyright 2021 MITRE Engenuity. Approved for public release. Document number CT0040
+Copyright 2023 MITRE Engenuity. Approved for public release. Document number ##TODO##
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
 file except in compliance with the License. You may obtain a copy of the License at

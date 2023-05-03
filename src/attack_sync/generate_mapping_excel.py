@@ -1,6 +1,6 @@
-from argparse import ArgumentParser
 import json
 import re
+from argparse import ArgumentParser
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Dict

@@ -1458,7 +1458,6 @@ def main():
     domain_choices = ["enterprise-attack", "mobile-attack", "ics-attack"]
     parser.add_argument(
         "-d",
-        "--domain",
         nargs="+",
         choices=domain_choices,
         default=domain_choices,
@@ -1466,9 +1465,8 @@ def main():
     )
     parser.add_argument(
         "--url-prefix",
-        default="",
-        help="Optional: a prefix to apply to generated URLs, e.g. if hosting on GitHub "
-        "Pages (with no trailing slash)",
+        default="/public",
+        help="A prefix to apply to generated (default: /public)",
     )
     type_choices = [
         "techniques",
@@ -1481,7 +1479,6 @@ def main():
     ]
     parser.add_argument(
         "-t",
-        "--type",
         nargs="+",
         choices=type_choices,
         default=type_choices,
