@@ -28,12 +28,13 @@ machine-readable data can be merged with your internal systems & data to provide
 contextual ATT&CK changes. Finally, the project wiki provides thorough documentation for
 the project as well as a case study.
 
-| Resource                                                                                        | Description                                                              |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [ATT&CK Sync Website](https://center-for-threat-informed-defense.github.io/attack-sync/)        | An interactive website for detailed comparisons between ATT&CK versions. |
-| [Project Wiki](https://github.com/center-for-threat-informed-defense/attack-sync/wiki)          | The wiki contains project documentation: goals, tools, and methodology.  |
-| [Sample JSON Changelog](https://github.com/center-for-threat-informed-defense/attack-sync/wiki) | A sample machine-readable ATT&CK changelog.                              |
-| [Sample Excel Mappings](https://github.com/center-for-threat-informed-defense/attack-sync/wiki) | A sample mappings spreadsheet annotated with ATT&CK changes.             |
+| Resource                                                                                                                                       | Description                                                              |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [ATT&CK Sync Website](https://center-for-threat-informed-defense.github.io/attack-sync/)                                                       | An interactive website for detailed comparisons between ATT&CK versions. |
+| [Project Wiki](https://github.com/center-for-threat-informed-defense/attack-sync/wiki)                                                         | The wiki contains project documentation: goals, tools, and methodology.  |
+| [Case Study](https://github.com/center-for-threat-informed-defense/attack-sync/wiki/Case-Study:-NIST-800-53-Mappings)                          | Case study measuring efficiency gained from using ATT&CK Sync.           |
+| [Sample JSON Changelog](https://github.com/center-for-threat-informed-defense/attack-sync/raw/main/samples/attack-changelog-v10.1-v12.1.json)  | A sample machine-readable ATT&CK changelog.                              |
+| [Sample Excel Mappings](https://github.com/center-for-threat-informed-defense/attack-sync/raw/main/samples/nist800-53-r5-mappings-output.xlsx) | A sample mappings spreadsheet annotated with ATT&CK changes.             |
 
 ## Getting Involved
 
@@ -59,7 +60,7 @@ general inquiries.
 
 ## How Do I Contribute?
 
-We welcome your feedback and contributions to help advance Attack Flow. Please see the
+We welcome your feedback and contributions to help advance Attack Sync. Please see the
 guidance for contributors if are you interested in [contributing or simply reporting
 issues.](/CONTRIBUTING.md)
 
