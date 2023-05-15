@@ -17,6 +17,10 @@ def parse_args() -> Namespace:
         help="Optional: a prefix to apply to generated URLs, e.g. if hosting on GitHub "
         "Pages (with no trailing slash)",
     )
+    parser.add_argument(
+        "--google-analytics",
+        help="Optional: a Google Analytics tracking tag",
+    )
     return parser.parse_args()
 
 
@@ -73,16 +77,9 @@ def main():
         domains=domains,
         domain_names=domain_names,
         url_prefix=url_prefix,
+        google_analytics_tag=args.google_analytics,
     )
     index_stream.dump(str(index_path))
-
-    # Build the about page
-    about_dir = PUBLIC_DIR / "about"
-    about_dir.mkdir(parents=True, exist_ok=True)
-    about_path = about_dir / "index.html"
-    logger.info("Creating site about page: {}", about_path)
-    index_template = load_template("site-about.html.j2")
-    index_template.stream(url_prefix=url_prefix).dump(str(about_path))
 
     # Build changelogs for each pair of versions.
     changelog_count = int((len(versions) * (len(versions) - 1)) / 2)
@@ -97,6 +94,7 @@ def main():
             old=old_version,
             new=new_version,
             url_prefix=url_prefix,
+            google_analytics_tag=args.google_analytics,
         )
 
 

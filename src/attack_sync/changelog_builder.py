@@ -1087,7 +1087,11 @@ def layers_dict_to_files(outfiles, layers):
 
 
 def render_changelog_landing_page(
-    stix_diff: StixDiff, output_dir: Path, domain: str, url_prefix: str
+    stix_diff: StixDiff,
+    output_dir: Path,
+    domain: str,
+    url_prefix: str,
+    google_analytics_tag: typing.Optional[str],
 ):
     """
     Write high level overview of changes between ATT&CK versions as a landing page.
@@ -1097,6 +1101,7 @@ def render_changelog_landing_page(
         stix_diff: An instance of a stix_diff object.
         domain: ATT&CK domain
         url_prefix: a prefix to place in front of any constructed URL
+        google_analytics_tag: a GA tag to emit in rendered pages
     """
     output_path = output_dir / domain / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1145,12 +1150,18 @@ def render_changelog_landing_page(
             "deprecated",
         ],
         type_summaries=type_summaries,
+        google_analytics_tag=google_analytics_tag,
     )
     stream.dump(str(output_path))
 
 
 def render_changelog_detail_page(
-    stix_diff: StixDiff, output_dir: Path, domain: str, type_: str, url_prefix: str
+    stix_diff: StixDiff,
+    output_dir: Path,
+    domain: str,
+    type_: str,
+    url_prefix: str,
+    google_analytics_tag: typing.Optional[str],
 ):
     """
     Create the HTML changelog for the provided diff.
@@ -1161,6 +1172,7 @@ def render_changelog_detail_page(
         domain: the ATT&CK domain to render
         type_: the ATT&CK object type to render
         url_prefix: a prefix to place in front of any constructed URL
+        google_analytics_tag: a GA tag to emit in rendered pages
     """
     output_path = output_dir / domain / type_ / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1225,6 +1237,7 @@ def render_changelog_detail_page(
         type_name_to_label=TYPE_NAME_TO_LABEL,
         current_type=type_,
         changelog=changelog,
+        google_analytics_tag=google_analytics_tag,
     )
     stream.dump(str(output_path))
 
@@ -1368,6 +1381,7 @@ def build_changelog(
     domains: typing.List[str],
     types: typing.List[str],
     url_prefix: str,
+    google_analytics_tag: typing.Optional[str],
     # layers: typing.List[str] = layer_defaults,
 ):
     """
@@ -1379,6 +1393,7 @@ def build_changelog(
         domains: list of domains to parse
         types: list of object types to parse
         url_prefix: a prefix to place in front of any constructed URL
+        google_analytics_tag: a GA tag to emit in rendered pages
         layers: TODO
     """
     old_path = ATTACK_DATA_DIR / old
@@ -1408,12 +1423,19 @@ def build_changelog(
         changelog_name = f"{old}-{new}"
         changelog_dir = PUBLIC_DIR / changelog_name
         changelog_dir.mkdir(parents=True, exist_ok=True)
-        render_changelog_landing_page(stix_diff, changelog_dir, domain, url_prefix)
+        render_changelog_landing_page(
+            stix_diff, changelog_dir, domain, url_prefix, google_analytics_tag
+        )
 
         # Create HTML changelog
         for type_ in types:
             render_changelog_detail_page(
-                stix_diff, changelog_dir, domain, type_, url_prefix
+                stix_diff,
+                changelog_dir,
+                domain,
+                type_,
+                url_prefix,
+                google_analytics_tag,
             )
 
     # Create JSON changelog
@@ -1458,6 +1480,7 @@ def main():
     domain_choices = ["enterprise-attack", "mobile-attack", "ics-attack"]
     parser.add_argument(
         "-d",
+        "--domain",
         nargs="+",
         choices=domain_choices,
         default=domain_choices,
@@ -1467,6 +1490,10 @@ def main():
         "--url-prefix",
         default="/public",
         help="A prefix to apply to generated (default: /public)",
+    )
+    parser.add_argument(
+        "--google-analytics",
+        help="Optional: a Google Analytics tracking tag",
     )
     type_choices = [
         "techniques",
@@ -1479,6 +1506,7 @@ def main():
     ]
     parser.add_argument(
         "-t",
+        "--type",
         nargs="+",
         choices=type_choices,
         default=type_choices,
@@ -1512,6 +1540,7 @@ def main():
         domains=args.domain,
         types=args.type,
         url_prefix=url_prefix,
+        google_analytics_tag=args.google_analytics,
         # layers=args.layers, # TODO
     )
 
