@@ -373,3 +373,23 @@ img.logo-small {
     margin: auto;
     margin-top: 4rem;
 }
+
+table.diff-inline span.text-added {
+    color: #1d8d1d;
+    font-weight: bold;
+}
+
+table.diff-inline span.text-unchanged {
+    color: #212529;
+}
+
+table.diff-inline span.text-removed {
+    color: #c90808;
+    text-decoration: line-through;
+}
+
+table.diff-inline a,
+table.diff-side-by-side a {
+    font-weight: normal;
+    text-decoration: none;
+}

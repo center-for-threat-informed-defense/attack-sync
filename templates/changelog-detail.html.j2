@@ -47,11 +47,31 @@
                 aria-labelledby="accordion-header-{{ cl_key }}-{{ loop.index }}"
                 data-bs-parent="#accordion-{{ cl_key }}">
                 <div class="accordion-body">
-                    {%- if item.stix_object.old_description and item.stix_object.description %}
-                    <table>
+                    {%- if item.stix_object.description_diff %}
+                    <table class="diff-inline">
+                        <tr>
+                            <th>
+                                Modified Description
+                                <a onclick="diffView('accordion-body-{{ cl_key }}-{{ loop.index }}', false)"
+                                    class="float-end">View changes
+                                    side-by-side</a>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% for snippet in item.stix_object.description_diff %}
+                                <span class="text-{{ snippet['disposition'] }}">{{ snippet["text"] }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="diff-side-by-side" style="display: none;">
                         <tr>
                             <th>Old Description</th>
-                            <th>New Description</th>
+                            <th>New Description
+                                <a onclick="diffView('accordion-body-{{ cl_key }}-{{ loop.index }}', true)"
+                                    class="float-end">View changes inline</a>
+                            </th>
                         </tr>
                         <tr>
                             <td class="old">{{ item.stix_object.old_description }}</td>

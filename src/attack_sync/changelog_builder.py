@@ -2,13 +2,13 @@
 
 import argparse
 import datetime
-import difflib
 import json
 import math
 import os
 import re
 import sys
 import typing
+from difflib import SequenceMatcher
 from operator import itemgetter
 from pathlib import Path
 
@@ -214,17 +214,10 @@ class StixDiff:
                             ] = f"{old_version} → {new_version}"
 
                         # Description changes
-                        old_lines = (
-                            old_stix_obj["description"].replace("\n", " ").splitlines()
-                        )
-                        new_lines = (
-                            new_stix_obj["description"].replace("\n", " ").splitlines()
-                        )
+                        old_description = old_stix_obj["description"].split()
+                        new_description = new_stix_obj["description"].split()
 
-                        df = [x for x in old_lines if x not in new_lines]
-                        df1 = [x for x in new_lines if x not in old_lines]
-
-                        if df != [] or df1 != []:
+                        if old_description != new_description:
                             if stix_id not in version_changes:
                                 logger.debug(
                                     "Object has a description change without the version "
@@ -233,19 +226,10 @@ class StixDiff:
                                 )
                                 version_changes.add(stix_id)
 
-                            html_diff = difflib.HtmlDiff(wrapcolumn=60)
-                            html_diff._legend = ""
-
-                            delta = html_diff.make_table(
-                                old_lines,
-                                new_lines,
-                                "Old Description",
-                                "New Description",
+                            new_stix_obj["old_description"] = " ".join(old_description)
+                            new_stix_obj["description_diff"] = self._get_text_diff(
+                                old_description, new_description
                             )
-                            new_stix_obj["description_change_table"] = delta
-                            new_stix_obj["old_description"] = old_stix_obj[
-                                "description"
-                            ].replace("\n", " ")
 
                         if new_stix_obj["type"] == "attack-pattern":
                             self.find_technique_mitigation_changes(new_stix_obj, domain)
@@ -300,6 +284,43 @@ class StixDiff:
                         key=lambda stix_object: stix_object["name"],
                     ),
                 }
+
+    def _get_text_diff(
+        self, old_text: typing.List[str], new_text: typing.List[str]
+    ) -> typing.List[typing.Dict]:
+        """
+        Compute the diff between two texts and return a list of edits.
+
+        The return value is a list of dicts. Each dict contains a "text" key and a
+        "disposition" key indicating whether the text is "added", "removed", or
+        "unchanged".
+
+        Args:
+            old_text - the original text
+            new_text - the updated text
+
+        Returns:
+            a list of edits
+        """
+
+        edits: typing.List[typing.Dict] = list()
+        diff = SequenceMatcher(None, old_text, new_text, autojunk=False)
+
+        for opcode, old_start, old_end, new_start, new_end in diff.get_opcodes():
+            old = " " + " ".join(old_text[old_start:old_end]) + " "
+            new = " " + " ".join(new_text[new_start:new_end]) + " "
+            match opcode:
+                case "replace":
+                    edits.append({"text": old, "disposition": "removed"})
+                    edits.append({"text": new, "disposition": "added"})
+                case "delete":
+                    edits.append({"text": old, "disposition": "removed"})
+                case "insert":
+                    edits.append({"text": new, "disposition": "added"})
+                case "equal":
+                    edits.append({"text": new, "disposition": "unchanged"})
+
+        return edits
 
     def find_technique_mitigation_changes(self, new_stix_obj: dict, domain: str):
         """
