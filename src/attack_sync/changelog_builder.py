@@ -21,16 +21,6 @@ from stix2 import Filter, MemoryStore
 
 from .template import ATTACK_DATA_DIR, PUBLIC_DIR, load_template
 
-# TODO layers
-# this_month = date.strftime("%B_%Y")
-# layer_defaults = [
-#     os.path.join("output", f"{this_month}_Updates_Enterprise.json"),
-#     os.path.join("output", f"{this_month}_Updates_Mobile.json"),
-#     os.path.join("output", f"{this_month}_Updates_ICS.json"),
-#     os.path.join("output", f"{this_month}_Updates_Pre.json"),
-# ]
-
-
 DOMAIN_NAME_TO_LABEL = {
     "enterprise-attack": "Enterprise",
     "mobile-attack": "Mobile",
@@ -61,7 +51,6 @@ class StixDiff:
         new_path: Path,
         domains: typing.List[str],
         types: typing.List[str],
-        layers: typing.List[str] = [],  # TODO
     ):
         """
         Constructor.
@@ -71,13 +60,11 @@ class StixDiff:
             new_path - path to new version of ATT&CK data
             domains - list of domains to parse
             types - list of object types to parse
-            layers - TODO
         """
         self.old_path = old_path
         self.new_path = new_path
         self.domains = domains
         self.types = types
-        self.layers = layers
         self.release_contributors: typing.Dict[str, int] = {}
         self.section_headers = {}
         for object_type in self.types:
@@ -1403,7 +1390,6 @@ def build_changelog(
     types: typing.List[str],
     url_prefix: str,
     google_analytics_tag: typing.Optional[str],
-    # layers: typing.List[str] = layer_defaults,
 ):
     """
     Build the changelog for a specified version pair in HTML and JSON formats.
@@ -1415,7 +1401,6 @@ def build_changelog(
         types: list of object types to parse
         url_prefix: a prefix to place in front of any constructed URL
         google_analytics_tag: a GA tag to emit in rendered pages
-        layers: TODO
     """
     old_path = ATTACK_DATA_DIR / old
 
@@ -1436,14 +1421,20 @@ def build_changelog(
         )
         sys.exit(1)
 
-    # TODO layers
-    stix_diff = StixDiff(old_path, new_path, domains, types, layers=[])
+    stix_diff = StixDiff(old_path, new_path, domains, types)
+    changelog_name = f"{old}-{new}"
+    changelog_dir = PUBLIC_DIR / changelog_name
+    changelog_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create JSON changelog
+    json_path = changelog_dir / f"attack-changelog-{changelog_name}.json"
+    logger.info("Creating JSON changelog: {}", json_path)
+    changes_dict = stix_diff.get_changes_dict()
+    with json_path.open("w") as json_file:
+        json.dump(changes_dict, json_file, indent=4)
 
     for domain in domains:
         # Create HTML landing page
-        changelog_name = f"{old}-{new}"
-        changelog_dir = PUBLIC_DIR / changelog_name
-        changelog_dir.mkdir(parents=True, exist_ok=True)
         render_changelog_landing_page(
             stix_diff, changelog_dir, domain, url_prefix, google_analytics_tag
         )
@@ -1458,27 +1449,6 @@ def build_changelog(
                 url_prefix,
                 google_analytics_tag,
             )
-
-    # Create JSON changelog
-    # logger.info("Creating JSON changelog")
-    # changes_dict = stix_diff.get_changes_dict()
-    # logger.info("Writing JSON updates to file")
-    # Path(json_file).parent.mkdir(parents=True, exist_ok=True)
-    # json.dump(changes_dict, open(json_file, "w"), indent=4)
-
-    # TODO layers
-    # if layers:
-    #     if len(layers) == 0:
-    #         # no files specified, e.g. '-layers', use defaults
-    #         stix_diff.layers = layer_defaults
-    #         layers = layer_defaults
-    #     elif len(layers) == 3:
-    #         # files specified, e.g. '-layers file.json file2.json file3.json', use specified
-    #         # assumes order of files is enterprise, mobile, pre attack (same order as defaults)
-    #         stix_diff.layers = layers
-
-    #     layers_dict = stix_diff.get_layers_dict()
-    #     layers_dict_to_files(outfiles=layers, layers=layers_dict)
 
 
 def main():
@@ -1533,26 +1503,7 @@ def main():
         default=type_choices,
         help="Which object types to report on. Defaults to all types.",
     )
-
-    # TODO layers
-    # parser.add_argument(
-    #     "--layers",
-    #     type=str,
-    #     nargs="*",
-    #     help=f"""
-    #         Create layer files showing changes in each domain
-    #         expected order of filenames is 'enterprise', 'mobile', 'ics', 'pre attack'.
-    #         If values are unspecified, defaults to {", ".join(layer_defaults)}
-    #         """,
-    # )
-
     args = parser.parse_args()
-    # TODO layers
-    # if args.layers is not None:
-    #     if len(args.layers) not in [0, 3]:
-    #         parser.error(
-    #             "-layers requires exactly three files to be specified or none at all"
-    #         )
 
     url_prefix = args.url_prefix.rstrip("/")
     build_changelog(
@@ -1562,7 +1513,6 @@ def main():
         types=args.type,
         url_prefix=url_prefix,
         google_analytics_tag=args.google_analytics,
-        # layers=args.layers, # TODO
     )
 
 

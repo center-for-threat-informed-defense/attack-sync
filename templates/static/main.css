@@ -393,3 +393,15 @@ table.diff-side-by-side a {
     font-weight: normal;
     text-decoration: none;
 }
+
+svg.download-icon {
+    width: 1em;
+    margin-top: -0.2em;
+    margin-right: 0.2em;
+    fill: #6a6f75;
+}
+
+h6.download-changelog {
+    margin-top: 1em;
+    color: #6a6f75
+}
