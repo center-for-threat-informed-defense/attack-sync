@@ -23,6 +23,26 @@
             {% endfor %}
         </ul>
     </div>
+    {% if change_count == 0 %}
+    <p class="no-changes">There are no changes to {{ type_name_to_label[current_type] }} in the {{
+        domain_name_to_label[current_domain] }} domain between v{{
+        old_version }} and v{{
+        new_version }}. Try
+        choosing a different domain –
+        {% for other_domain in other_domains %}
+        <a href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ other_domain }}/{{ current_type }}/">{{
+            domain_name_to_label[other_domain] }}</a>
+        {% if not loop.last %}|{% endif %}
+        {% endfor %}
+        – or a different object type –
+        {% for other_type in other_types %}
+        <a href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/{{ other_type }}/">{{
+            type_name_to_label[other_type] }}</a>
+        {% if not loop.last %}|{% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
+
     {% for cl_key, cl_name, items in changelog %}
     {% if items %}
     <h4 class="change-type" id="{{ cl_key }}">{{ cl_name }} {{ type_name_to_label[current_type] }}</h4>

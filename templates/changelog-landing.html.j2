@@ -29,6 +29,18 @@
             {% endfor %}
         </ul>
     </div>
+    {% if type_summaries | length == 0 %}
+    <p class="no-changes">There are no changes to the {{ domain_name_to_label[current_domain] }} domain between v{{
+        old_version }} and v{{
+        new_version }}. Try
+        choosing a different domain:
+        {% for other_domain in other_domains %}
+        <a href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ other_domain }}/">{{
+            domain_name_to_label[other_domain] }}</a>
+        {% if not loop.last %}|{% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
     {% for type_summary in type_summaries %}
     <div id="{{ type_summary.type }}-summary">
         <h4>{{ type_name_to_label[type_summary.type] }}</h4>
