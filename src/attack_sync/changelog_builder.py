@@ -133,7 +133,9 @@ class StixDiff:
                     new_stix_obj = new_attack_objects[stix_id]
                     attack_id = get_attack_id(new_stix_obj)
 
-                    ddiff = DeepDiff(old_stix_obj, new_stix_obj, verbose_level=2)
+                    ddiff = DeepDiff(
+                        old_stix_obj, new_stix_obj, ignore_order=True, verbose_level=2
+                    )
                     detailed_diff = ddiff.to_json()
                     new_stix_obj["detailed_diff"] = detailed_diff
 
@@ -803,8 +805,6 @@ class StixDiff:
                         )
 
             legendItems = []
-            # for section, description in self.section_descriptions.items():
-            #     legendItems.append({"color": colors[section], "label": f"{section}: {description}"})
 
             # build layer structure
             layer_json = {
@@ -835,8 +835,6 @@ class StixDiff:
         Returns:
             A blank dict structure
         """
-        logger.info("Generating changes info")
-
         changes_dict = {}
         for domain in self.domains:
             changes_dict[domain] = {}
