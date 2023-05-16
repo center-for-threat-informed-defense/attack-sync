@@ -21,6 +21,11 @@ def parse_args() -> Namespace:
         "--google-analytics",
         help="Optional: a Google Analytics tracking tag",
     )
+    parser.add_argument(
+        "--no-changelogs",
+        action="store_true",
+        help="Copy static and create indexes, but do not create changelogs (for development)",
+    )
     return parser.parse_args()
 
 
@@ -83,20 +88,21 @@ def main():
     index_stream.dump(str(index_path))
 
     # Build changelogs for each pair of versions.
-    changelog_count = int((len(versions) * (len(versions) - 1)) / 2)
-    logger.info("Need to generate {} changelogs", changelog_count)
-    for (old_major, old_minor), (new_major, new_minor) in combinations(versions, 2):
-        old_version = f"v{old_major}.{old_minor}"
-        new_version = f"v{new_major}.{new_minor}"
-        logger.info("Building changelog for {} → {}", old_version, new_version)
-        build_changelog(
-            domains=domains,
-            types=types,
-            old=old_version,
-            new=new_version,
-            url_prefix=url_prefix,
-            google_analytics_tag=args.google_analytics,
-        )
+    if not args.no_changelogs:
+        changelog_count = int((len(versions) * (len(versions) - 1)) / 2)
+        logger.info("Need to generate {} changelogs", changelog_count)
+        for (old_major, old_minor), (new_major, new_minor) in combinations(versions, 2):
+            old_version = f"v{old_major}.{old_minor}"
+            new_version = f"v{new_major}.{new_minor}"
+            logger.info("Building changelog for {} → {}", old_version, new_version)
+            build_changelog(
+                domains=domains,
+                types=types,
+                old=old_version,
+                new=new_version,
+                url_prefix=url_prefix,
+                google_analytics_tag=args.google_analytics,
+            )
 
 
 if __name__ == "__main__":

@@ -4,11 +4,11 @@
 <div class="home">
     <div class="blue">
         <div class="blue-content">
-            <a href="https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/"><img
-                    src="{{ url_prefix }}/static/logo.png" style="height: 25px; margin-bottom: 20px;" /></a>
+            <a class="ctid" href="https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/"><img
+                    src="{{ url_prefix }}/static/logo.png" class="logo" /></a>
             <h1>ATT&amp;CK <span>Sync</span></h1>
             <p>The ATT&amp;CK Sync project streamlines upgrades to new versions of MITRE ATT&amp;CK&#174; by providing
-                detailed changelogs in both human and machine-readable formats. Use the form to the right to access
+                detailed changelogs in both human and machine-readable formats. Use the form to access
                 the changelog based on the version you are currently using and the version you want to upgrade to.
             </p>
             <a class="link" href="https://github.com/center-for-threat-informed-defense/attack-sync/wiki">
@@ -24,8 +24,8 @@
             </a>
         </div>
     </div>
-    <div class="right">
-        <form class="form" onsubmit="handleSubmission(event)">
+    <div class="form">
+        <form class="form-content" onsubmit="handleSubmission(event)">
             <div class="form-group">
                 <h3 class="purple">Compare Versions</h3>
                 <div id="old_div">

@@ -55,28 +55,8 @@ h4.change-type {
     margin-bottom: 10px;
 }
 
-.home {
-    display: flex;
-}
-
-.home .right {
-    width: 50vw;
-    display: inline-block;
-    margin: 0 auto;
-}
-
 .home .blue {
-    width: 50vw;
-    height: 100vh;
     background-color: #0F1538;
-    overflow: hidden;
-    display: inline-block;
-}
-
-.home .blue .blue-content {
-    width: 50%;
-    margin: auto;
-    margin-top: 30%;
 }
 
 .home .blue h1 {
@@ -91,6 +71,206 @@ h4.change-type {
     text-transform: uppercase;
     color: #C2EAF6;
 }
+
+/*
+ * Home page styles
+ */
+@media (min-width: 992px) {
+
+    /* Desktop devices */
+    .home {
+        display: flex;
+    }
+
+    .home .logo {
+        height: 25px;
+        margin-bottom: 20px;
+    }
+
+    .home .form {
+        width: 50vw;
+        display: inline-block;
+        margin: 0 auto;
+    }
+
+    .home .blue {
+        width: 50vw;
+        height: 100vh;
+        background-color: #0F1538;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    .home .blue .blue-content {
+        width: 50%;
+        margin: auto;
+        margin-top: 30%;
+    }
+
+    .form-content {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30%;
+    }
+}
+
+@media (max-width: 991.98px) {
+    /* Phone / table devices */
+
+    .home .blue .blue-content,
+    .home .form-content {
+        padding: 2em;
+        max-width: 30rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .home .blue a.ctid {
+        display: block;
+        padding: 2em 0;
+        text-align: center;
+    }
+
+    .home .logo {
+        max-width: 100%;
+    }
+
+    .home .blue h1 {
+        font-size: 22pt;
+    }
+
+    .home .blue p {
+        font-size: 12pt;
+    }
+}
+
+/*
+ * Content page styles
+ */
+.nav li {
+    text-transform: uppercase;
+}
+
+.nav {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    width: 100%;
+}
+
+.navbar-toggler svg {
+    width: 1.3rem;
+    fill: #f0f1f2;
+}
+
+.subnav ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding-left: 0;
+}
+
+.subnav li {
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 1rem;
+    text-align: left;
+    border-bottom: white solid 4px;
+}
+
+.subnav li:hover,
+.subnav li:active {
+    border-bottom: #6241c5 solid 4px;
+}
+
+.floating-buttons {
+    background-color: #F0F1F2;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 5vh;
+    right: 5vh;
+    z-index: 300;
+}
+
+.floating-buttons svg {
+    position: relative;
+}
+
+@media (min-width: 576px) {
+
+    /* Desktop / tablet devices */
+    ul.navbar-nav {
+        justify-content: end;
+    }
+
+    .content-container {
+        max-width: 80%;
+        margin: auto;
+        margin-top: 80px;
+    }
+
+    img.logo-small {
+        max-height: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .floating-buttons {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .floating-buttons svg {
+        top: 1.1rem;
+        left: 1.2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    /* Phone devices */
+    .content-container {
+        padding: 1rem;
+    }
+
+    img.logo-small {
+        width: 100%;
+        margin: 1rem 0 2rem 0;
+    }
+
+    .content-container h2 {
+        margin-bottom: 1rem;
+    }
+
+    .content-container .download-changelog {
+        font-size: 10pt;
+    }
+
+    h2.accordion-header {
+        margin-bottom: 0;
+    }
+
+    .accordion-button {
+        padding: 0.5rem 0;
+    }
+
+    .accordion-body {
+        padding: 1rem 0;
+    }
+
+    .floating-buttons {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .floating-buttons svg {
+        top: 0.5rem;
+        left: 0.65rem;
+    }
+}
+
 
 .link {
     display: flex;
@@ -125,13 +305,6 @@ label {
     padding-left: 0;
     margin-top: 15px;
     font-size: 18px;
-}
-
-.form {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30%;
 }
 
 button.purple {
@@ -174,39 +347,6 @@ p {
 
 .purple {
     color: #6241c5;
-}
-
-.nav li {
-    text-transform: uppercase;
-}
-
-.nav {
-    position: fixed;
-    z-index: 100;
-    top: 0;
-    right: 0;
-    width: 100%;
-}
-
-.subnav ul {
-    display: flex;
-    margin-left: -20px;
-    padding-inline-start: 0;
-}
-
-.subnav li {
-    text-transform: uppercase;
-    display: inline-block;
-    font-weight: bold;
-    padding: 10px 0px;
-    margin: 0px 20px;
-    text-align: left;
-    border-bottom: white solid 4px;
-}
-
-.subnav li:hover,
-.subnav li:active {
-    border-bottom: #6241c5 solid 4px;
 }
 
 .accordion-button:not(.collapsed) {
@@ -314,6 +454,10 @@ table .new {
     color: #BCA9DD;
 }
 
+a.navbar-brand {
+    margin-right: 0.4rem;
+}
+
 a.navbar-brand.version {
     background-color: inherit;
     border: none;
@@ -357,21 +501,6 @@ a.navbar-brand.version {
 
 summary {
     margin-top: 8px;
-}
-
-.nav-item.dropdown#techniques {
-    margin-left: auto;
-}
-
-img.logo-small {
-    max-height: 2rem;
-    margin-bottom: 3rem;
-}
-
-.changelog-content {
-    max-width: 80%;
-    margin: auto;
-    margin-top: 4rem;
 }
 
 table.diff-inline span.text-added {
