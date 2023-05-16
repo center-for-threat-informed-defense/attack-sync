@@ -7,7 +7,7 @@ ATTACK_DATA_DIR = ROOT_DIR / "data" / "attack" / "stix-2.0"
 PUBLIC_DIR = ROOT_DIR / "public"
 TEMPLATE_DIR = ROOT_DIR / "templates"
 
-_environment = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+_environment = Environment(loader=FileSystemLoader(TEMPLATE_DIR), autoescape=True)
 
 
 def load_template(name: str) -> Template:

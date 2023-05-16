@@ -111,7 +111,8 @@
                     </table>
                     {% endif %}
                     {%- if item.change_type == "revocations"%}
-                    <h5 style="margin-top: 20px;">Revoked by {{ item.revoked_by_id }} {{ item.revoked_by_name }}
+                    <h5 style="margin-top: 20px;">Replaced by: {{ item.revoked_by_id }} {{
+                        item.revoked_by_name }}
                     </h5>
                     {% if revoked_by_description %}
                     <table>

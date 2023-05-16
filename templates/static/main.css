@@ -199,6 +199,11 @@ h4.change-type {
     position: relative;
 }
 
+.overview-table {
+    text-transform: uppercase;
+    width: auto;
+}
+
 @media (min-width: 576px) {
 
     /* Desktop / tablet devices */
@@ -268,6 +273,12 @@ h4.change-type {
     .floating-buttons svg {
         top: 0.5rem;
         left: 0.65rem;
+    }
+
+    table.overview-table th,
+    table.overview-table td {
+        font-size: 10pt;
+        padding: 5px;
     }
 }
 
@@ -394,11 +405,6 @@ table .new {
     background-color: #D8F9C8;
     width: 50%;
     vertical-align: top;
-}
-
-.overview-table {
-    text-transform: uppercase;
-    width: auto;
 }
 
 .small-link {
@@ -533,4 +539,10 @@ svg.download-icon {
 h6.download-changelog {
     margin-top: 1em;
     color: #6a6f75
+}
+
+p.no-changes {
+    color: #6a6f76;
+    font: var(--bs-font-sans-serif);
+    font-style: italic;
 }

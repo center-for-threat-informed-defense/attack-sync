@@ -1127,6 +1127,7 @@ def render_changelog_landing_page(
                 "modified": len(changes["version_changes"]),
                 "revoked": len(changes["revocations"]),
                 "deprecated": len(changes["deprecations"]),
+                "deleted": len(changes["deletions"]),
             }
             if any(
                 [
@@ -1134,6 +1135,7 @@ def render_changelog_landing_page(
                     type_summary["modified"],
                     type_summary["revoked"],
                     type_summary["deprecated"],
+                    type_summary["deleted"],
                 ]
             ):
                 type_summaries.append(type_summary)
@@ -1155,6 +1157,7 @@ def render_changelog_landing_page(
             "modified",
             "revoked",
             "deprecated",
+            "deleted",
         ],
         type_summaries=type_summaries,
         google_analytics_tag=google_analytics_tag,
@@ -1197,13 +1200,14 @@ def render_changelog_detail_page(
         "version_changes": "modified",
         "deprecations": "deprecated",
         "revocations": "revoked",
-        "deletions": None,
+        "deletions": "deleted",
         "unchanged": None,
     }
     changelog_dict = {
         "added": [],
         "modified": [],
         "deprecated": [],
+        "deleted": [],
         "revoked": [],
     }
 
@@ -1231,6 +1235,7 @@ def render_changelog_detail_page(
         ("modified", "Modified", changelog_dict["modified"]),
         ("revoked", "Revoked", changelog_dict["revoked"]),
         ("deprecated", "Deprecated", changelog_dict["deprecated"]),
+        ("deleted", "Deleted", changelog_dict["deleted"]),
     ]
     stream = template.stream(
         url_prefix=url_prefix,
