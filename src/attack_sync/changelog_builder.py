@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import gzip
 import json
 import math
 import os
@@ -1434,10 +1435,10 @@ def build_changelog(
     changelog_dir.mkdir(parents=True, exist_ok=True)
 
     # Create JSON changelog
-    json_path = changelog_dir / f"attack-changelog-{changelog_name}.json"
+    json_path = changelog_dir / f"attack-changelog-{changelog_name}.json.gz"
     logger.info("Creating JSON changelog: {}", json_path)
     changes_dict = stix_diff.get_changes_dict()
-    with json_path.open("w") as json_file:
+    with gzip.open(json_path, "wt") as json_file:
         json.dump(changes_dict, json_file, indent=4)
 
     for domain in domains:
