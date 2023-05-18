@@ -77,7 +77,7 @@ h4.change-type {
  */
 @media (min-width: 992px) {
 
-    /* Desktop devices */
+    /* Desktop devices; 992px is the bootstrap "lg" size */
     .home {
         display: flex;
     }
@@ -206,7 +206,7 @@ h4.change-type {
 
 @media (min-width: 576px) {
 
-    /* Desktop / tablet devices */
+    /* Desktop / tablet devices; 576px is the the bootstrap "sm" size */
     ul.navbar-nav {
         justify-content: end;
     }
@@ -533,12 +533,7 @@ svg.download-icon {
     width: 1em;
     margin-top: -0.2em;
     margin-right: 0.2em;
-    fill: #6a6f75;
-}
-
-h6.download-changelog {
-    margin-top: 1em;
-    color: #6a6f75
+    fill: #ffffff;
 }
 
 p.no-changes {
