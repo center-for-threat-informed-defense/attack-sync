@@ -1095,6 +1095,8 @@ def layers_dict_to_files(outfiles, layers):
 
 def render_changelog_landing_page(
     stix_diff: StixDiff,
+    old_version: str,
+    new_version: str,
     output_dir: Path,
     domain: str,
     url_prefix: str,
@@ -1104,8 +1106,10 @@ def render_changelog_landing_page(
     Write high level overview of changes between ATT&CK versions as a landing page.
 
     Args:
-        html_file: File to write HTML for the index.
         stix_diff: An instance of a stix_diff object.
+        old_version: the old version string
+        new_version: the new version string
+        output_dir: Directory to write the landing page to
         domain: ATT&CK domain
         url_prefix: a prefix to place in front of any constructed URL
         google_analytics_tag: a GA tag to emit in rendered pages
@@ -1113,10 +1117,6 @@ def render_changelog_landing_page(
     output_path = output_dir / domain / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     logger.info("Creating changelog landing page: {}", output_path)
-
-    # Compute the data needed to render the page.
-    old_version = stix_diff.data["old"][stix_diff.domains[0]]["attack_release_version"]
-    new_version = stix_diff.data["new"][stix_diff.domains[0]]["attack_release_version"]
 
     type_summaries = list()
     for object_type in stix_diff.data["changes"].keys():
@@ -1168,6 +1168,8 @@ def render_changelog_landing_page(
 
 def render_changelog_detail_page(
     stix_diff: StixDiff,
+    old_version: str,
+    new_version: str,
     output_dir: Path,
     domain: str,
     type_: str,
@@ -1179,6 +1181,8 @@ def render_changelog_detail_page(
 
     Args:
         stix_diff: the diff object to generate a changelog from
+        old_version: the old version string
+        new_version: the new version string
         output_dir: where to save the changelog
         domain: the ATT&CK domain to render
         type_: the ATT&CK object type to render
@@ -1188,10 +1192,6 @@ def render_changelog_detail_page(
     output_path = output_dir / domain / type_ / "index.html"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     logger.info("Creating changelog detail pages: {}", output_path)
-
-    # Compute the data needed to render the page.
-    old_version = stix_diff.data["old"][stix_diff.domains[0]]["attack_release_version"]
-    new_version = stix_diff.data["new"][stix_diff.domains[0]]["attack_release_version"]
     change_types = stix_diff.data["changes"][type_][domain]
 
     # Map StixDiff key names to ATT&CK Sync key names, the keys that are used in
@@ -1440,17 +1440,27 @@ def build_changelog(
     changes_dict = stix_diff.get_changes_dict()
     with gzip.open(json_path, "wt") as json_file:
         json.dump(changes_dict, json_file, indent=4)
+    old_version = old.lstrip("v")
+    new_version = new.lstrip("v")
 
     for domain in domains:
         # Create HTML landing page
         render_changelog_landing_page(
-            stix_diff, changelog_dir, domain, url_prefix, google_analytics_tag
+            stix_diff,
+            old_version,
+            new_version,
+            changelog_dir,
+            domain,
+            url_prefix,
+            google_analytics_tag,
         )
 
         # Create HTML changelog
         for type_ in types:
             render_changelog_detail_page(
                 stix_diff,
+                old_version,
+                new_version,
                 changelog_dir,
                 domain,
                 type_,
