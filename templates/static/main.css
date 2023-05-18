@@ -8,7 +8,7 @@ body {
 p {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    line-height: 34px;
+    line-height: 1.7em;
     color: white;
 }
 
@@ -70,6 +70,26 @@ h4.change-type {
 .blue h4 {
     text-transform: uppercase;
     color: #C2EAF6;
+}
+
+.disclosures {
+    color: #71777d;
+    font-size: 10pt;
+    line-height: initial;
+    margin-top: 2rem;
+}
+
+.disclosures+.disclosures {
+    margin-top: 1rem;
+}
+
+.disclosures a,
+.disclosures a:visited {
+    color: #71777d;
+}
+
+footer .disclosures {
+    text-align: center;
 }
 
 /*
