@@ -84,7 +84,7 @@ def main():
 
     logger.info(f"Loading: {original_mapping_file}")
     mapping_workbook = load_workbook(filename=original_mapping_file)
-    mapping_sheet = mapping_workbook["Sheet1"]
+    mapping_sheet = mapping_workbook.worksheets[0]
     initial_cols = 5
     cols_per_change = 2
     num_changes = 5  # there are 5 hard coded checks for changes below
