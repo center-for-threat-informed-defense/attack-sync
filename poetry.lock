@@ -681,13 +681,13 @@ files = [
 
 [[package]]
 name = "mitreattack-python"
-version = "3.0.0"
+version = "3.0.4"
 description = "MITRE ATT&CK python library"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "mitreattack-python-3.0.0.tar.gz", hash = "sha256:e72275649611b9174c058c93bf85a8deb1a97a38459c71485a5c01fb56fb156e"},
-    {file = "mitreattack_python-3.0.0-py3-none-any.whl", hash = "sha256:79a79bf361e73af60c65a33ac596d669b3f58e0c6baeb0ce4eba1fd329841d8c"},
+    {file = "mitreattack-python-3.0.4.tar.gz", hash = "sha256:de46b4ccd6ba069091bb891303fcd6366842c1aa2d462e6b7c331fa581e4544c"},
+    {file = "mitreattack_python-3.0.4-py3-none-any.whl", hash = "sha256:63be705a0e6c2c3fba3982a854b75d6c61af7648157ac95678af242b3c0011fc"},
 ]
 
 [package.dependencies]
@@ -1710,4 +1710,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "f217e387ce2693c3ed2bb57218a08f1b7e9b378cc4a719e48abac4bdc42d5666"
+content-hash = "41bd88337a509428b2872789e8fd19dc8b9398e702cc15482e68fba0954ec43e"

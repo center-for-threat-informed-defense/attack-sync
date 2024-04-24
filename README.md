@@ -1,4 +1,4 @@
-[![MITRE ATT&CK® v14](https://img.shields.io/badge/MITRE%20ATT%26CK®-v14-red)](https://attack.mitre.org/versions/v14/)
+[![MITRE ATT&CK® v15](https://img.shields.io/badge/MITRE%20ATT%26CK®-v15-red)](https://attack.mitre.org/versions/v15/)
 [![Build Status](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml/badge.svg)](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml)
 
 # ATT&CK Sync
