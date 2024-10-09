@@ -1,7 +1,6 @@
 import shutil
 from argparse import ArgumentParser, Namespace
 from itertools import combinations
-from pathlib import Path
 
 from loguru import logger
 
@@ -51,6 +50,7 @@ def main():
         (14, 0),
         (14, 1),
         (15, 0),
+        (15, 1),
     ]
     domains = [
         "enterprise-attack",
