@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
-
+:root {
+    --mitre-blue: #005B94;
+    --mitre-navy: #0D2F4F;
+    --mitre-dark-navy: #0B2338;
+    --mitre-black: #111921;
+    --mitre-light-blue: #87DEFF;
+    --mitre-light-silver: #F1F3F4;
+    --mitre-silver: #D4D4D3;
+    --mitre-dark-gray: #7E8284;
+    --ctid-red: #D80101;
+  }
 body {
     font-family: "Roboto Condensed", "Roboto", sans-serif;
     margin: 0;
@@ -46,7 +56,7 @@ h6 {
 }
 
 h4.eyebrow {
-    color: #6241c5;
+    color: var(--mitre-blue);
     margin-bottom: 0;
 }
 
@@ -56,7 +66,7 @@ h4.change-type {
 }
 
 .home .blue {
-    background-color: #0F1538;
+    background-color: var(--mitre-dark-navy);
 }
 
 .home .blue h1 {
@@ -64,16 +74,16 @@ h4.change-type {
 }
 
 .blue h1 span {
-    color: #BAA2E2;
+    color: var(--mitre-light-blue);
 }
 
 .blue h4 {
     text-transform: uppercase;
-    color: #C2EAF6;
+    color: var(--mitre-light-blue);
 }
 
 .disclosures {
-    color: #71777d;
+    color: var(--mitre-dark-gray);
     font-size: 10pt;
     line-height: initial;
     margin-top: 2rem;
@@ -85,7 +95,7 @@ h4.change-type {
 
 .disclosures a,
 .disclosures a:visited {
-    color: #71777d;
+    color: var(--mitre-dark-gray);
 }
 
 footer .disclosures {
@@ -116,7 +126,7 @@ footer .disclosures {
     .home .blue {
         width: 50vw;
         height: 100vh;
-        background-color: #0F1538;
+        background-color: var(--mitre-dark-navy);
         overflow: hidden;
         display: inline-block;
     }
@@ -182,7 +192,7 @@ footer .disclosures {
 
 .navbar-toggler svg {
     width: 1.3rem;
-    fill: #f0f1f2;
+    fill: var(--mitre-light-silver);
 }
 
 .subnav ul {
@@ -203,7 +213,7 @@ footer .disclosures {
 
 .subnav li:hover,
 .subnav li:active {
-    border-bottom: #6241c5 solid 4px;
+    border-bottom: var(--mitre-blue) solid 4px;
 }
 
 .floating-buttons {
@@ -305,7 +315,7 @@ footer .disclosures {
 
 .link {
     display: flex;
-    border-bottom: #C2EAF6 solid 2px;
+    border-bottom: var(--mitre-light-blue) solid 2px;
     min-width: fit-content;
     width: 50%;
     text-decoration: none;
@@ -315,7 +325,7 @@ footer .disclosures {
 
 .link h4 {
     font-size: 18px;
-    color: #C2EAF6;
+    color: var(--mitre-light-blue);
 }
 
 .link svg {
@@ -340,7 +350,7 @@ label {
 
 button.purple {
     text-transform: uppercase;
-    background-color: #5D42BE;
+    background-color: var(--mitre-blue);
     color: white;
     width: 100%;
     padding: 15px;
@@ -350,7 +360,7 @@ button.purple {
 }
 
 h3 {
-    color: #5D42BE;
+    color: var(--mitre-blue);
     font-size: 36px;
     margin: 0;
 }
@@ -373,11 +383,11 @@ p {
 
 
 .light-purple {
-    color: #BCA9DD;
+    color: var(--mitre-light-blue);
 }
 
 .purple {
-    color: #6241c5;
+    color: var(--mitre-blue);
 }
 
 .accordion-button:not(.collapsed) {
@@ -429,13 +439,17 @@ table .new {
 
 .small-link {
     display: flex;
-    border-bottom: #005B94 solid 1px;
+    border-bottom: var(--mitre-blue) solid 1px;
     width: 250px;
     text-decoration: none;
     padding-bottom: 5px;
     padding-top: 20px;
     margin-bottom: 30px;
-    color: #005B94;
+    color: var(--mitre-blue);
+}
+.small-link:hover {
+    color: var(--mitre-navy);
+    border-bottom-color: var(--mitre-navy);
 }
 
 .small-link span {
@@ -451,7 +465,7 @@ table .new {
 .navbar-expand-lg,
 .navbar-expand-lg a,
 .navbar-link {
-    background-color: #0F1538;
+    background-color: var(--mitre-dark-navy);
     color: white;
     transition: none;
 }
@@ -459,7 +473,7 @@ table .new {
 .navbar a:hover,
 .navbar .active a,
 .navbar .show {
-    color: #BCA9DD;
+    color: var(--mitre-light-blue);
 }
 
 .navbar-nav {
@@ -471,13 +485,13 @@ table .new {
 }
 
 .dropdown-menu.show {
-    background-color: #0F1538;
+    background-color: var(--mitre-dark-navy);
 }
 
 .dropdown-menu.show li:hover,
 .dropdown-menu.show a:hover {
     background-color: inherit;
-    color: #BCA9DD;
+    color: var(--mitre-light-blue);
 }
 
 a.navbar-brand {
@@ -487,7 +501,7 @@ a.navbar-brand {
 a.navbar-brand.version {
     background-color: inherit;
     border: none;
-    color: #BCA9DD;
+    color: var(--mitre-light-blue);
 }
 
 .accordion-button:not(.collapsed) {
@@ -498,7 +512,7 @@ a.navbar-brand.version {
 }
 
 .accordion-item p {
-    color: #212529;
+    color: var(--mitre-black);
 }
 
 .accordion-item.panel {
@@ -535,7 +549,7 @@ table.diff-inline span.text-added {
 }
 
 table.diff-inline span.text-unchanged {
-    color: #212529;
+    color: var(--mitre-black);
 }
 
 table.diff-inline span.text-removed {
@@ -557,7 +571,7 @@ svg.download-icon {
 }
 
 p.no-changes {
-    color: #6a6f76;
+    color: var(--mitre-dark-gray);
     font: var(--bs-font-sans-serif);
     font-style: italic;
 }
