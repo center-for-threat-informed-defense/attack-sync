@@ -39,7 +39,7 @@ jobs:
           LOGURU_LEVEL: INFO
         run: poetry run build-attack-sync --url-prefix "/attack-sync" --google-analytics "G-XZLBW4KBV1"
       - name: Upload website artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: attack_sync_html
           path: public/
@@ -57,14 +57,14 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v2
     - name: Download website build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: attack_sync_html
         path: public/
     - name: Upload website to GitHub pages
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v3
       with:
         path: ./public
     - name: Deploy GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v1
+      uses: actions/deploy-pages@v4
