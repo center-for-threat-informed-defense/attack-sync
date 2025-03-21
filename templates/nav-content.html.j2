@@ -2,7 +2,7 @@
 
 {% block body %}
 <nav id="navbar" class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+    <div class="container">
         <div>
             <a class="navbar-brand" href="{{ url_prefix }}/">ATT&amp;CK SYNC</a>
             <a class="navbar-brand version"
@@ -59,15 +59,54 @@
     </div>
 </nav>
 
+<div class="container">
 {% block content %}
 {% endblock %}
-
-<div class="content-container">
-    <footer>
-        <p class="disclosures">MITRE Engenuity <a href="https://mitre-engenuity.org/privacy-policy/">Privacy
-                Policy</a> • This project makes use of MITRE ATT&CK®: <a
-                href="https://attack.mitre.org/resources/terms-of-use/">
-                ATT&CK Terms of Use</a></p>
-    </footer>
 </div>
+
+<footer id="footer" class="footer">
+    <div class="footer-content">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-6 col-sm-12 footer-info">
+                    <h3>The Center for Threat-Informed Defense</h3>
+                    <p>The <a href="https://ctid.mitre.org/" target="_blank">Center for Threat-Informed Defense</a> 
+                    is a non-profit, privately funded research and development organization. Our mission is to 
+                    advance the state of the art and the state of the practice in threat-informed defense globally.
+                    </p>
+                    <div class="footer-row">
+                    <a href="https://ctid.mitre.org/" target="_blank" title="The Center for Threat-Informed Defense" class="logo navbar-brand">
+                        <img src="{{ url_prefix }}/static/logo-white.svg" width="250" height="59" alt="The Center for Threat-Informed Defense" class="logo-img">
+                    </a>
+                    
+                    <div class="social-links d-flex">
+                        <a href="mailto:ctid@mitre.org?subject=Mappings%20Explorer" class="email"><i class="bi bi-envelope"></i></a>
+                        <a href="https://www.linkedin.com/showcase/center-for-threat-informed-defense/" target="blank" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.youtube.com/playlist?list=PLALq3Th79NnpUkRy8TUYVBKvysCp9xwNh" target="blank" class="youtube"><i class="bi bi-youtube"></i></a>
+                        <a href="https://github.com/center-for-threat-informed-defense/mappings-explorer" target="blank" class="github"><i class="bi bi-github"></i></a>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6 footer-links">
+                    <h4>About</h4>
+                    <ul>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/" target="_blank">Home</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/projects/" target="_blank">Our Work</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/membership/" target="_blank">Membership</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/get-involved/" target="_blank">Get Involved</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6 footer-links">
+                    <h4>Related Projects</h4>
+                    <ul>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/mappings-explorer/" target="_blank">Mappings Explorer</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/attack-flow/" target="_blank">Attack Flow</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/threat-modeling-with-attack/" target="_blank">Threat Modeling with ATT&CK</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/summiting-the-pyramid/" target="_blank">Summiting the Pyramid</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}

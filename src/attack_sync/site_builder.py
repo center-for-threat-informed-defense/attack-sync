@@ -12,7 +12,7 @@ def parse_args() -> Namespace:
     parser = ArgumentParser(description="Build the ATT&CK Sync website.")
     parser.add_argument(
         "--url-prefix",
-        default="",
+        default="http://127.0.0.1:5500/public",
         help="Optional: a prefix to apply to generated URLs, e.g. if hosting on GitHub "
         "Pages (with no trailing slash)",
     )
