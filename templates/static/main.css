@@ -10,8 +10,6 @@
     --mitre-dark-gray: #7E8284;
     --ctid-red:rgb(162, 0, 0);
     --ctid-green:rgb(7, 103, 7);
-    $accordion-icon-width: 1rem;
-
   }
 body {
     font-family: "Roboto", sans-serif;
@@ -19,12 +17,18 @@ body {
     font-size: 15px;
 }
 
+#content [id] {
+    scroll-margin-top: 80px;
+}
+
 p {
-    /* font-family: Arial, Helvetica, sans-serif; */
     font-size: 15px;
     line-height: 1.7em;
     color: white;
 }
+ a {
+    color: var(--mitre-blue);
+ }
 
 h1,
 h2,
@@ -35,11 +39,6 @@ h6 {
     text-transform: uppercase;
     font-family: "Oswald", "Roboto", sans-serif;
 }
-/* .accordion {
-    h5{
-        text-transform: none;
-    }
-} */
 
 h1 {
     margin-top: 0;
@@ -71,6 +70,9 @@ h4.eyebrow {
     margin-bottom: 0;
 }
 
+.eyebrow i {
+    vertical-align: text-top;
+}
 h4.change-type {
     margin-top: 15px;
     margin-bottom: 10px;
@@ -116,6 +118,10 @@ footer .disclosures {
 /*
  * Home page styles
  */
+ .blue-content h1 {
+    font-weight: normal;
+    margin-bottom: 20px;
+ }
 @media (min-width: 992px) {
 
     /* Desktop devices; 992px is the bootstrap "lg" size */
@@ -158,10 +164,9 @@ footer .disclosures {
 
 @media (max-width: 991.98px) {
     /* Phone / table devices */
-
     .home .blue .blue-content,
     .home .form-content {
-        padding: 2em;
+        padding: 6em 2em;
         max-width: 30rem;
         margin-left: auto;
         margin-right: auto;
@@ -170,11 +175,11 @@ footer .disclosures {
     .home .blue a.ctid {
         display: block;
         padding: 2em 0;
-        text-align: center;
     }
 
     .home .logo {
         max-width: 100%;
+        max-height: 35px;
     }
 
     .home .blue h1 {
@@ -239,6 +244,10 @@ footer .disclosures {
 
 .floating-buttons svg {
     position: relative;
+    display: block;
+    margin: auto;
+    height: 100%;
+    transform: rotate(180deg);
 }
 
 .overview-table {
@@ -261,17 +270,16 @@ footer .disclosures {
 
     img.logo-small {
         max-height: 2rem;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
+        margin-top: 3rem;
     }
 
     .floating-buttons {
         width: 4rem;
         height: 4rem;
     }
-
     .floating-buttons svg {
-        top: 1.1rem;
-        left: 1.2rem;
+        width: 30px;
     }
 }
 
@@ -284,8 +292,10 @@ footer .disclosures {
     }
 
     img.logo-small {
-        width: 100%;
-        margin: 1rem 0 2rem 0;
+        max-height: 2rem;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        margin-top: 1.5rem;
     }
 
     .content-container h2 {
@@ -314,8 +324,7 @@ footer .disclosures {
     }
 
     .floating-buttons svg {
-        top: 0.5rem;
-        left: 0.65rem;
+        width: 20px;
     }
 
     table.overview-table th,
@@ -379,10 +388,6 @@ h3 {
     color: var(--mitre-blue);
     font-size: 36px;
     margin: 0;
-}
-
-p {
-    font-size: 18px;
 }
 
 .invalid-feedback {
@@ -482,7 +487,9 @@ table .new {
     right: 0;
     z-index: 1000;
 }
-
+.navbar {
+    padding: 16px 0;
+}
 .navbar-expand-lg,
 .navbar-expand-lg a,
 .navbar-link {
@@ -518,14 +525,20 @@ table .new {
 }
 
 a.navbar-brand {
+    font-size: 24px;
     margin-right: 0.4rem;
     font-family: "Oswald", "Roboto", sans-serif;
+    vertical-align: middle;
 }
 
 a.navbar-brand.version {
+    font-size: 16px;
     background-color: inherit;
     border: none;
     color: var(--mitre-light-blue);
+}
+a.navbar-brand i {
+    vertical-align: top;
 }
 
 .accordion-button:not(.collapsed) {
@@ -546,6 +559,9 @@ a.navbar-brand.version {
 
 .accordion-item .right {
     margin-left: auto;
+}
+details {
+    overflow-y: scroll;
 }
 
 .change-details-table td,

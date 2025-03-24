@@ -6,9 +6,9 @@
         <div>
             <a class="navbar-brand" href="{{ url_prefix }}/">ATT&amp;CK SYNC</a>
             <a class="navbar-brand version"
-                href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/">{{
-                old_version }} →
-                {{ new_version }}</a>
+                href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/">v{{
+                old_version }} <i class="bi bi-arrow-right"></i>
+                v{{ new_version }}</a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container" id="content">
 {% block content %}
 {% endblock %}
 </div>
