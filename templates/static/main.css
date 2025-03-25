@@ -15,6 +15,12 @@ body {
     font-family: "Roboto", sans-serif;
     margin: 0;
     font-size: 15px;
+    /* height: 100%;
+    min-height: 100vh; */
+}
+#content {
+    height: 100%;
+    min-height: calc(100vh - 500px);
 }
 
 #content [id] {
@@ -634,6 +640,13 @@ p.no-changes {
 }
 
 /* footer styles */
+footer {
+    z-index: 1000;
+    /* position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+}
 
 .footer .footer-content {
     background-color: var(--mitre-dark-navy);
