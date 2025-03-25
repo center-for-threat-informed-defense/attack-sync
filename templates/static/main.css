@@ -8,15 +8,13 @@
     --mitre-light-silver: #F1F3F4;
     --mitre-silver: #D4D4D3;
     --mitre-dark-gray: #7E8284;
-    --ctid-red:rgb(162, 0, 0);
-    --ctid-green:rgb(7, 103, 7);
+    --ctid-red:#a20000;
+    --ctid-green:#076707;
   }
 body {
     font-family: "Roboto", sans-serif;
     margin: 0;
     font-size: 15px;
-    /* height: 100%;
-    min-height: 100vh; */
 }
 #content {
     height: 100%;
@@ -227,7 +225,6 @@ footer .disclosures {
 .subnav li {
     text-transform: uppercase;
     display: inline-block;
-    /* font-weight: bold; */
     margin-right: 1rem;
     text-align: left;
     border-bottom: white solid 4px;
@@ -269,7 +266,6 @@ footer .disclosures {
     }
 
     .content-container {
-        /* max-width: 80%; */
         margin: auto;
         margin-top: 100px;
     }
@@ -640,14 +636,6 @@ p.no-changes {
 }
 
 /* footer styles */
-footer {
-    z-index: 1000;
-    /* position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0; */
-}
-
 .footer .footer-content {
     background-color: var(--mitre-dark-navy);
     background-size: contain;
