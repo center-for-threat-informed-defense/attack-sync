@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, Template
-from jinja_markdown import MarkdownExtension
+from jinja_markdown2 import MarkdownExtension
 
 ROOT_DIR = Path(__file__).parents[2]
 ATTACK_DATA_DIR = ROOT_DIR / "data" / "attack" / "stix-2.0"

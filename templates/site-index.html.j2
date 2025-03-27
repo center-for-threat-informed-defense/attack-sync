@@ -31,9 +31,8 @@
                 <div id="old_div">
                     <label>Old Version:</label>
                     <select class="form-select form-control" id="old_version" aria-label="old ATT&CK version">
-                        {% for version in versions %}
-                        <option value="{{ version[0] }}.{{ version[1] }}" {% if loop.index==loop.length - 1 %}
-                            selected{% endif %}>v{{ version[0] }}.{{ version[1] }}</option>
+                        {% for version in versions[:-1] -%}
+                        <option value="{{ version[0] }}.{{ version[1] }}"{% if loop.index==loop.length %} selected{% endif %}> v{{ version[0] }}.{{ version[1] }}</option>
                         {% endfor %}
                     </select>
                     <div class="invalid-feedback">
@@ -43,10 +42,7 @@
                 <div id="new_div">
                     <label>New Version:</label>
                     <select class="form-select form-control" id="new_version" aria-label="new ATT&CK version">
-                        {% for version in versions %}
-                        <option value="{{ version[0] }}.{{ version[1] }}" {% if loop.last %} selected{% endif %}>v{{
-                            version[0] }}.{{ version[1] }}</option>
-                        {% endfor %}
+                        <option value="{{ versions[-1][0] }}.{{ versions[-1][1] }}" selected>v{{ versions[-1][0] }}.{{ versions[-1][1] }}</option>
                     </select>
                     <div class="invalid-feedback">
                         New version must be greater than old version.
@@ -71,18 +67,55 @@
 </div>
 
 <script>
-    function handleSubmission(event) {
-        event.preventDefault();
-        const oldVal = document.getElementById("old_version").value;
-        const newVal = document.getElementById("new_version").value;
-        if (parseFloat(oldVal) >= parseFloat(newVal)) {
-            document.getElementById("old_div").classList.add("invalid");
-            document.getElementById("new_div").classList.add("invalid");
-        } else {
-            const domain = document.getElementById("domain").value;
-            const url = `{{ url_prefix }}/v${oldVal}-v${newVal}/${domain}/`;
-            location.assign(url)
-        }
+function handleSubmission(event) {
+    event.preventDefault();
+    const oldVal = document.getElementById("old_version").value;
+    const newVal = document.getElementById("new_version").value;
+    const domain = document.getElementById("domain").value;
+    const url = `{{ url_prefix }}/v${oldVal}-v${newVal}/${domain}/`;
+    location.assign(url)
+}
+
+const versionPairs = {
+{%- for old_version, new_versions in version_pairs.items() %}
+    "{{old_version[0]}}.{{old_version[1]}}": [
+        {%- for new_version in new_versions %}"{{new_version[0]}}.{{new_version[1]}}"{% if loop.index < loop.length %}, {% endif %}{% endfor -%}
+    ]{% if loop.index < loop.length %},{% endif %}
+{%- endfor -%}
+};
+
+// Update the new version select with valid version numbers
+function updateNewVersions() {
+    // Clear out existing options
+    const newSelect = document.getElementById("new_version");
+    const currentNewVersion = newSelect.value;
+    while (newSelect.firstChild) {
+        newSelect.removeChild(newSelect.lastChild);
     }
+    // Populate new versions
+    // TODO restore currently selected if possible
+    const oldVersion = document.getElementById("old_version").value;
+    const newVersions = versionPairs[oldVersion];
+    var foundCurrentNewVersion = false;
+    for (const newVersion of newVersions) {
+        const option = document.createElement("option");
+        option.value = newVersion;
+        if (newVersion == currentNewVersion) {
+            option.selected = true;
+            foundCurrentNewVersion = true;
+        }
+        option.appendChild(document.createTextNode(`v${newVersion}`));
+        newSelect.appendChild(option);
+    }
+    if (!foundCurrentNewVersion) {
+        // If the previously selected version doesn't exist, then pick the most
+        // recent version.
+        newChild.lastChild.selected == true;
+    }
+
+}
+document.getElementById("old_version").addEventListener("change", updateNewVersions);
+updateNewVersions();
+
 </script>
 {% endblock %}

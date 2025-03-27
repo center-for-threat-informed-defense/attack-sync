@@ -1,6 +1,10 @@
+import multiprocessing
+import os
 import shutil
 from argparse import ArgumentParser, Namespace
+from collections import defaultdict
 from itertools import combinations
+from typing import Generator
 
 from loguru import logger
 
@@ -25,14 +29,70 @@ def parse_args() -> Namespace:
         action="store_true",
         help="Copy static and create indexes, but do not create changelogs (for development)",
     )
+    parser.add_argument(
+        "--no-parallel",
+        action="store_true",
+        help="Disable parallel build, which slows things down but may be useful for debugging build errors",
+    )
     return parser.parse_args()
+
+
+type Version = tuple[int, int]
+
+
+def get_version_pairs(
+    versions: list[Version],
+) -> dict[Version, list[Version]]:
+    """
+    Create pairs of versions that we want to render.
+
+    Rendering all version pairs is expensive and usually not neccesssary. Minor
+    ATT&CK versions typically only update citations, not actually change
+    content. And from a user perspective, if you want to migrate to v16, there's
+    no reason to choose v16.0 over v16.1.
+
+    This function uses the following logic: 1. Create pairs for each combination
+    of major versions, using the most reent minor release in each version. 2.
+    For each major version, create pairs for each combination of its minor
+    versions.
+
+    The first rule will generate pairs like (15.1, 16.1), but not (15.0, 16.1)
+    or (15.1, 16.0). The second rule will generate pairs like (11.0, 11.1) and
+    (11.0, 11.2), etc.
+
+    Args:
+        versions - a list of (major, minor) version tuples
+
+    Yields:
+        a dictionary where the keys are versions and the values are the
+        corresponding versions that we build
+    """
+    pairs: list[Version] = defaultdict(list)
+
+    # Group by major version
+    major_groups = defaultdict(list)
+    for major, minor in sorted(versions):
+        major_groups[major].append(minor)
+
+    # Yield pairs of major versions
+    for major1, major2 in combinations(major_groups.keys(), 2):
+        minor1 = major_groups[major1][-1]
+        minor2 = major_groups[major2][-1]
+        pairs[(major1, minor1)].append((major2, minor2))
+
+    # Yields pairs of minor versions within each major version
+    for major, minors in major_groups.items():
+        for minor1, minor2 in combinations(minors, 2):
+            pairs[(major, minor1)].append((major, minor2))
+
+    return pairs
 
 
 def main():
     # Versions are expressed as (major, minor) tuples.
     args = parse_args()
     url_prefix = args.url_prefix.rstrip("/")
-    versions = [
+    versions: list[Version] = [
         (8, 0),
         (8, 1),
         (8, 2),
@@ -80,11 +140,13 @@ def main():
     shutil.copytree(TEMPLATE_DIR / "static", static_dir, dirs_exist_ok=True)
 
     # Build the site index.html
+    version_pairs = get_version_pairs(versions)
     index_path = PUBLIC_DIR / "index.html"
     logger.info("Creating site index: {}", index_path)
     index_template = load_template("site-index.html.j2")
     index_stream = index_template.stream(
         versions=versions,
+        version_pairs=version_pairs,
         domains=domains,
         domain_names=domain_names,
         url_prefix=url_prefix,
@@ -93,21 +155,77 @@ def main():
     index_stream.dump(str(index_path))
 
     # Build changelogs for each pair of versions.
+    pair_count = sum(len(pairs) for pairs in version_pairs.values())
+    build_list = list()
+    for old_version, new_versions in version_pairs.items():
+        for new_version in new_versions:
+            build_list.append((old_version, new_version))
+
     if not args.no_changelogs:
-        changelog_count = int((len(versions) * (len(versions) - 1)) / 2)
-        logger.info("Need to generate {} changelogs", changelog_count)
-        for (old_major, old_minor), (new_major, new_minor) in combinations(versions, 2):
-            old_version = f"v{old_major}.{old_minor}"
-            new_version = f"v{new_major}.{new_minor}"
-            logger.info("Building changelog for {} → {}", old_version, new_version)
-            build_changelog(
-                domains=domains,
-                types=types,
-                old=old_version,
-                new=new_version,
-                url_prefix=url_prefix,
-                google_analytics_tag=args.google_analytics,
-            )
+        logger.info("Need to generate {} changelogs", pair_count)
+        if args.no_parallel:
+            # Run without multiprocessing
+            logger.info("Running without parallelism...")
+            for (old_major, old_minor), (new_major, new_minor) in build_list:
+                build_worker(
+                    old_major,
+                    old_minor,
+                    new_major,
+                    new_minor,
+                    domains,
+                    types,
+                    url_prefix,
+                    args.google_analyics,
+                )
+        else:
+            # Run with multiprocessing
+            num_workers = os.process_cpu_count()
+            pool = multiprocessing.Pool(num_workers)
+            logger.info("Running with {} parallel processes", num_workers)
+            jobs = list()
+            for (old_major, old_minor), (new_major, new_minor) in build_list:
+                jobs.append(
+                    (
+                        old_major,
+                        old_minor,
+                        new_major,
+                        new_minor,
+                        domains,
+                        types,
+                        url_prefix,
+                        args.google_analytics,
+                    )
+                )
+            pool.starmap(build_worker, jobs)
+
+
+def build_worker(
+    old_major,
+    old_minor,
+    new_major,
+    new_minor,
+    domains,
+    types,
+    url_prefix,
+    google_analytics,
+):
+    """
+    This worker is called for each version pair. It can be run in a separate process
+    using multiprocessing.
+
+    Note: all the arguments need to be pickle-able to be transferred across a process boundary.
+    """
+    old_version = f"v{old_major}.{old_minor}"
+    new_version = f"v{new_major}.{new_minor}"
+    logger.info("Building changelog for {} → {}", old_version, new_version)
+    build_changelog(
+        domains=domains,
+        types=types,
+        old=old_version,
+        new=new_version,
+        url_prefix=url_prefix,
+        google_analytics_tag=google_analytics,
+    )
 
 
 if __name__ == "__main__":
