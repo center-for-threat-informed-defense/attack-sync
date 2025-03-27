@@ -4,7 +4,7 @@ import shutil
 from argparse import ArgumentParser, Namespace
 from collections import defaultdict
 from itertools import combinations
-from typing import Generator
+from typing import TypeAlias
 
 from loguru import logger
 
@@ -37,7 +37,7 @@ def parse_args() -> Namespace:
     return parser.parse_args()
 
 
-type Version = tuple[int, int]
+Version: TypeAlias = tuple[int, int]
 
 
 def get_version_pairs(
@@ -175,7 +175,7 @@ def main():
                     domains,
                     types,
                     url_prefix,
-                    args.google_analyics,
+                    args.google_analytics,
                 )
         else:
             # Run with multiprocessing
