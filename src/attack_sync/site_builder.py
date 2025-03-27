@@ -179,7 +179,7 @@ def main():
                 )
         else:
             # Run with multiprocessing
-            num_workers = os.process_cpu_count()
+            num_workers = os.cpu_count()
             pool = multiprocessing.Pool(num_workers)
             logger.info("Running with {} parallel processes", num_workers)
             jobs = list()
