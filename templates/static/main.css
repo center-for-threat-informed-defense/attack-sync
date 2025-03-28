@@ -515,16 +515,43 @@ table .new {
     font-family: "Oswald", "Roboto", sans-serif;
     font-weight: 400;
 }
+.nav-link {
+    font-size: 1rem;
+}
+.dropdown-menu {
+    margin: 0 !important;
+    border-radius: 0;
+}
 
+.dropdown:hover > .dropdown-menu,
+.dropend:hover > .dropdown-menu,
 .dropdown-menu.show {
     background-color: var(--mitre-dark-navy);
+    display: block;
+    
 }
-
-.dropdown-menu.show li:hover,
-.dropdown-menu.show a:hover {
-    background-color: inherit;
+.dropdown-menu.show {
+    margin: 0;
+}
+.dropdown-menu li:hover,
+.dropdown-menu a:hover, .dropend:hover {
+    background-color: var(--mitre-dark-navy);
     color: var(--mitre-light-blue);
 }
+.dropdown .dropdown-menu {
+    display: none;
+  }
+.nav-item.dropend {
+    padding-left: 8px;
+}
+@media screen and (min-width: 769px) {
+    .dropend:hover > .dropdown-menu {
+      position: absolute;
+      top: 1.5em;
+      right: 100%;
+    }
+  }
+
 
 a.navbar-brand {
     font-size: 24px;
@@ -582,7 +609,8 @@ details {
     width: 1em;
 }
 
-.dropdown-toggle::after {
+
+.dropdown-toggle::after, .dropend .dropdown-toggle::after {
     flex-shrink: 0;
     width: 0.75rem;
     height: 0.75rem;
@@ -742,4 +770,3 @@ footer h3 {
   footer p {
     font-size: 15px;
   }
-  

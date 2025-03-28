@@ -19,22 +19,99 @@
         </button>
         <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-                {% for type in types %}
-                <li class="nav-item dropdown" id="{{type}}">
+                <li class="nav-item dropdown" id="techniques">
                     <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        {{type}}
+                        Techniques
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for domain in domains %}
                         <li><a class="dropdown-item"
-                                href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/{{type}}">{{domain.split("-")[0].upper()}}
+                                href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/techniques">{{domain.split("-")[0].upper()}}
                                 ATT&amp;CK</a>
                         </li>
                         {% endfor %}
                     </ul>
                 </li>
-                {% endfor %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Defenses
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item dropend">
+                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Data Sources
+                            </a>
+                            <ul class="dropdown-menu">
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datasources">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    <li class="nav-item dropend">
+                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Mitigations
+                            </a>
+                            <ul class="dropdown-menu">
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/mitigations">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    CTI
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item dropend">
+                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Groups
+                            </a>
+                            <ul class="dropdown-menu">
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/groups">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    <li class="nav-item dropend">
+                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Software
+                            </a>
+                            <ul class="dropdown-menu">
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/software">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item dropend">
+                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Campaigns
+                            </a>
+                            <ul class="dropdown-menu">
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/campaigns">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item dropdown" id="download">
                     <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
