@@ -525,7 +525,7 @@ table .new {
 }
 
 .dropdown:hover > .dropdown-menu,
-.dropend:hover > .dropdown-menu,
+.dropstart:hover > .dropdown-menu,
 .dropdown-menu.show {
     background-color: var(--mitre-dark-navy);
     display: block;
@@ -535,23 +535,25 @@ table .new {
     margin: 0;
 }
 .dropdown-menu li:hover,
-.dropdown-menu a:hover, .dropend:hover {
+.dropdown-menu a:hover,
+.dropdown-menu li:active,
+.dropdown-menu a:active,
+.dropdown-menu li:focus,
+.dropdown-menu a:focus,
+.dropstart:hover {
     background-color: var(--mitre-dark-navy);
     color: var(--mitre-light-blue);
 }
 .dropdown .dropdown-menu {
     display: none;
   }
-.nav-item.dropend {
-    padding-left: 8px;
-}
 @media screen and (min-width: 769px) {
-    .dropend:hover > .dropdown-menu {
+    .dropstart:hover > .dropdown-menu {
       position: absolute;
       top: 1.5em;
-      right: 100%;
+      right: 100% !important;
     }
-  }
+}
 
 
 a.navbar-brand {
@@ -610,8 +612,7 @@ details {
     width: 1em;
 }
 
-
-.dropdown-toggle::after, .dropend .dropdown-toggle::after {
+.dropdown-toggle::after, .dropstart .dropdown-toggle::before {
     flex-shrink: 0;
     width: 0.75rem;
     height: 0.75rem;

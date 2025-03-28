@@ -38,7 +38,7 @@
                     Defenses
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="nav-item dropend">
+                        <li class="nav-item dropstart">
                             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Data Sources
                             </a>
@@ -51,14 +51,27 @@
                             {% endfor %}
                             </ul>
                         </li>
-                    <li class="nav-item dropend">
+                        <li class="nav-item dropstart">
+                                <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Mitigations
+                                </a>
+                                <ul class="dropdown-menu">
+                                {% for domain in domains %}
+                                    <li><a class="dropdown-item"
+                                            href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/mitigations">{{domain.split("-")[0].upper()}}
+                                            ATT&amp;CK</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                        </li>
+                         <li class="nav-item dropstart">
                             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Mitigations
+                            Data Components
                             </a>
                             <ul class="dropdown-menu">
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
-                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/mitigations">{{domain.split("-")[0].upper()}}
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datacomponents">{{domain.split("-")[0].upper()}}
                                         ATT&amp;CK</a>
                                 </li>
                             {% endfor %}
@@ -71,7 +84,7 @@
                     CTI
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="nav-item dropend">
+                        <li class="nav-item dropstart">
                             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Groups
                             </a>
@@ -84,7 +97,7 @@
                             {% endfor %}
                             </ul>
                         </li>
-                    <li class="nav-item dropend">
+                    <li class="nav-item dropstart">
                             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Software
                             </a>
@@ -97,7 +110,7 @@
                             {% endfor %}
                             </ul>
                         </li>
-                        <li class="nav-item dropend">
+                        <li class="nav-item dropstart">
                             <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Campaigns
                             </a>
