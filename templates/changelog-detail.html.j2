@@ -94,8 +94,8 @@
                             </th>
                         </tr>
                         <tr>
-                            <td class="old">{%-markdown-%}{{ item.stix_object.old_description }}{%-endmarkdown-%}</td>
-                            <td class="new">{%-markdown-%}{{ item.stix_object.description }}{%-endmarkdown-%}</td>
+                            <td class="old">{{ item.stix_object.old_description | attack_markdown(item.stix_object.old_external_references) }}</td>
+                            <td class="new">{{ item.stix_object.description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
                     {%- elif item.change_type in ("additions", "revocations", "deprecations")
@@ -106,7 +106,7 @@
                             <th>Description</th>
                         </tr>
                         <tr>
-                            <td>{%-markdown-%}{{ item.stix_object.description }}{%-endmarkdown-%}</td>
+                            <td>{{ item.stix_object.description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
                     {% endif %}
@@ -120,7 +120,7 @@
                             <th>Description for {{ item.revoked_by_id }} {{ item.revoked_by_name }}</th>
                         </tr>
                         <tr>
-                            <td>{%-markdown-%}{{ revoked_by_description }}{%-endmarkdown-%}</td>
+                            <td>{{ revoked_by_description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
                     {% endif %}

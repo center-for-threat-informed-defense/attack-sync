@@ -523,13 +523,21 @@ table .new {
     margin: 0 !important;
     border-radius: 0;
 }
+.dropdown-menu .dropstart {
+    margin-top: 1rem;
+}
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .dropdown-menu {
+        right: 0;
+    }
+}
 
 .dropdown:hover > .dropdown-menu,
 .dropstart:hover > .dropdown-menu,
 .dropdown-menu.show {
     background-color: var(--mitre-dark-navy);
     display: block;
-    
+    padding: 1rem 0.5rem;
 }
 .dropdown-menu.show {
     margin: 0;
@@ -555,6 +563,19 @@ table .new {
     }
 }
 
+.nav-item-header {
+    color: lightgrey;
+    text-transform: uppercase;
+    font-family: "Oswald", "Roboto", sans-serif;
+    font-weight: 400;
+    margin: 0.5rem 1rem;
+    border-bottom: 1px solid lightgrey;
+}
+
+.nav-item ul {
+    padding-left: 0;
+    list-style: none;
+}
 
 a.navbar-brand {
     font-size: 24px;

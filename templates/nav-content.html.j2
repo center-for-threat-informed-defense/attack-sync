@@ -39,10 +39,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="nav-item dropstart">
-                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Data Sources
-                            </a>
-                            <ul class="dropdown-menu">
+                            <div class="nav-item-header">Data Sources</div>
+                            <ul>
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
                                         href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datasources">{{domain.split("-")[0].upper()}}
@@ -52,10 +50,8 @@
                             </ul>
                         </li>
                         <li class="nav-item dropstart">
-                                <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Mitigations
-                                </a>
-                                <ul class="dropdown-menu">
+                                <div class="nav-item-header"> Mitigations</div>
+                                <ul>
                                 {% for domain in domains %}
                                     <li><a class="dropdown-item"
                                             href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/mitigations">{{domain.split("-")[0].upper()}}
@@ -65,10 +61,8 @@
                                 </ul>
                         </li>
                          <li class="nav-item dropstart">
-                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Data Components
-                            </a>
-                            <ul class="dropdown-menu">
+                            <div class="nav-item-header">Data Components</div>
+                            <ul>
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
                                         href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datacomponents">{{domain.split("-")[0].upper()}}
@@ -85,10 +79,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="nav-item dropstart">
-                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Groups
-                            </a>
-                            <ul class="dropdown-menu">
+                            <div class="nav-item-header">Groups</div>
+                            <ul>
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
                                         href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/groups">{{domain.split("-")[0].upper()}}
@@ -98,10 +90,8 @@
                             </ul>
                         </li>
                     <li class="nav-item dropstart">
-                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Software
-                            </a>
-                            <ul class="dropdown-menu">
+                            <div class="nav-item-header">Software</div>
+                            <ul>
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
                                         href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/software">{{domain.split("-")[0].upper()}}
@@ -111,10 +101,8 @@
                             </ul>
                         </li>
                         <li class="nav-item dropstart">
-                            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Campaigns
-                            </a>
-                            <ul class="dropdown-menu">
+                            <div class="nav-item-header">Campaigns</div>
+                            <ul>
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
                                         href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/campaigns">{{domain.split("-")[0].upper()}}
@@ -178,12 +166,11 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-6 footer-links">
-                    <h4>About</h4>
+                    <h4>Related Links</h4>
                     <ul>
-                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/" target="_blank">Home</a></li>
-                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/projects/" target="_blank">Our Work</a></li>
-                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/membership/" target="_blank">Membership</a></li>
-                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/get-involved/" target="_blank">Get Involved</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/" target="_blank">About the Center</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/privacy/" target="_blank">Privacy Policy</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/terms/" target="_blank">Terms &amp; Conditions</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-3 col-6 footer-links">
