@@ -1,15 +1,7 @@
 {% macro floating_buttons(current_domain) %}
 <div class="floating-buttons">
-  <a href="#navbar" style="margin: auto;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="26.674" height="23.215" viewBox="0 0 26.674 23.215">
-      <g id="Group_64" data-name="Group 64" transform="translate(-139.412 -122.199)">
-        <path id="Path_10" data-name="Path 10" d="M18069.965,7102.156l-10.9-10.868-11.527,10.868"
-          transform="translate(-17906 -6967)" fill="none" stroke="#2d2d2d" stroke-linecap="round" stroke-width="3" />
-        <path id="Path_11" data-name="Path 11" d="M18069.965,7102.156l-10.9-10.868-11.527,10.868"
-          transform="translate(-17906 -6958.863)" fill="none" stroke="#2d2d2d" stroke-linecap="round"
-          stroke-width="3" />
-      </g>
-    </svg>
+  <a href="#" style="margin: auto;">
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>
   </a>
 </div>
 {% endmacro %}
@@ -17,9 +9,9 @@
 {%- macro change_details_table(values) -%}
 <table class="change-details-table">
   <tr>
-    <th>Field</th>
-    <th>Old value</th>
-    <th>New value</th>
+    <th>FIELD</th>
+    <th>OLD VALUE</th>
+    <th>NEW VALUE</th>
   </tr>
   {%- for value in values -%}
   <tr>

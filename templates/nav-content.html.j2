@@ -2,13 +2,13 @@
 
 {% block body %}
 <nav id="navbar" class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+    <div class="container">
         <div>
             <a class="navbar-brand" href="{{ url_prefix }}/">ATT&amp;CK SYNC</a>
             <a class="navbar-brand version"
-                href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/">{{
-                old_version }} →
-                {{ new_version }}</a>
+                href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/{{ current_domain }}/">v{{
+                old_version }} <i class="bi bi-arrow-right"></i>
+                v{{ new_version }}</a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,22 +19,100 @@
         </button>
         <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-                {% for type in types %}
-                <li class="nav-item dropdown" id="{{type}}">
+                <li class="nav-item dropdown" id="techniques">
                     <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        {{type}}
+                        Techniques
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for domain in domains %}
                         <li><a class="dropdown-item"
-                                href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/{{type}}">{{domain.split("-")[0].upper()}}
+                                href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/techniques">{{domain.split("-")[0].upper()}}
                                 ATT&amp;CK</a>
                         </li>
                         {% endfor %}
                     </ul>
                 </li>
-                {% endfor %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Defenses
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item dropstart">
+                            <div class="nav-item-header">Data Sources</div>
+                            <ul>
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datasources">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item dropstart">
+                                <div class="nav-item-header"> Mitigations</div>
+                                <ul>
+                                {% for domain in domains %}
+                                    <li><a class="dropdown-item"
+                                            href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/mitigations">{{domain.split("-")[0].upper()}}
+                                            ATT&amp;CK</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                        </li>
+                         <li class="nav-item dropstart">
+                            <div class="nav-item-header">Data Components</div>
+                            <ul>
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datacomponents">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    CTI
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item dropstart">
+                            <div class="nav-item-header">Groups</div>
+                            <ul>
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/groups">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    <li class="nav-item dropstart">
+                            <div class="nav-item-header">Software</div>
+                            <ul>
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/software">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item dropstart">
+                            <div class="nav-item-header">Campaigns</div>
+                            <ul>
+                            {% for domain in domains %}
+                                <li><a class="dropdown-item"
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/campaigns">{{domain.split("-")[0].upper()}}
+                                        ATT&amp;CK</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item dropdown" id="download">
                     <a class="nav-link dropdown-toggle active" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,8 +124,8 @@
                                 </path>
                             </svg></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item"
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" aria-label="Download JSON Changelog">
+                        <li><a class="dropdown-item" aria-label="Download JSON Changelog"
                                 href="{{ url_prefix }}/v{{ old_version }}-v{{ new_version }}/attack-changelog-v{{ old_version }}-v{{ new_version }}.json.gz">Download
                                 JSON
                                 Changelog</a>
@@ -59,15 +137,53 @@
     </div>
 </nav>
 
+<div class="container" id="content">
 {% block content %}
 {% endblock %}
-
-<div class="content-container">
-    <footer>
-        <p class="disclosures">MITRE Engenuity <a href="https://mitre-engenuity.org/privacy-policy/">Privacy
-                Policy</a> • This project makes use of MITRE ATT&CK®: <a
-                href="https://attack.mitre.org/resources/terms-of-use/">
-                ATT&CK Terms of Use</a></p>
-    </footer>
 </div>
+
+<footer id="footer" class="footer">
+    <div class="footer-content">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-6 col-sm-12 footer-info">
+                    <h3>The Center for Threat-Informed Defense</h3>
+                    <p>The <a href="https://ctid.mitre.org/" target="_blank">Center for Threat-Informed Defense</a> 
+                    is a non-profit, privately funded research and development organization. Our mission is to 
+                    advance the state of the art and the state of the practice in threat-informed defense globally.
+                    </p>
+                    <div class="footer-row">
+                    <a href="https://ctid.mitre.org/" target="_blank" title="The Center for Threat-Informed Defense" class="logo navbar-brand">
+                        <img src="{{ url_prefix }}/static/logo-white.svg" width="250" height="59" alt="The Center for Threat-Informed Defense" class="logo-img">
+                    </a>
+                    
+                    <div class="social-links d-flex">
+                        <a href="mailto:ctid@mitre.org?subject=Mappings%20Explorer" class="email"><i class="bi bi-envelope"></i></a>
+                        <a href="https://www.linkedin.com/showcase/center-for-threat-informed-defense/" target="blank" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.youtube.com/playlist?list=PLALq3Th79NnpUkRy8TUYVBKvysCp9xwNh" target="blank" class="youtube"><i class="bi bi-youtube"></i></a>
+                        <a href="https://github.com/center-for-threat-informed-defense/mappings-explorer" target="blank" class="github"><i class="bi bi-github"></i></a>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6 footer-links">
+                    <h4>Related Links</h4>
+                    <ul>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/" target="_blank">About the Center</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/privacy/" target="_blank">Privacy Policy</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://ctid.mitre.org/terms/" target="_blank">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6 footer-links">
+                    <h4>Related Projects</h4>
+                    <ul>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/mappings-explorer/" target="_blank">Mappings Explorer</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/attack-flow/" target="_blank">Attack Flow</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/threat-modeling-with-attack/" target="_blank">Threat Modeling with ATT&CK</a></li>
+                    <li><i class="bi bi-dash"></i> <a href="https://center-for-threat-informed-defense.github.io/summiting-the-pyramid/" target="_blank">Summiting the Pyramid</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}

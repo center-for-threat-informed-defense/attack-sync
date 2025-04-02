@@ -4,21 +4,21 @@
 <div class="home">
     <div class="blue">
         <div class="blue-content">
-            <a class="ctid" href="https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/"><img
-                    src="{{ url_prefix }}/static/logo.png" class="logo" /></a>
+            <a class="ctid" href="https://ctid.mitre.org/" target="_blank"><img
+                    src="{{ url_prefix }}/static/logo-white.svg" class="logo" alt="Center for Threat-Informed Defense" /></a>
             <h1>ATT&amp;CK <span>Sync</span></h1>
             <p>The ATT&amp;CK Sync project streamlines upgrades to new versions of MITRE ATT&amp;CK&#174; by providing
                 detailed changelogs in both human and machine-readable formats. Use the form to access
                 the changelog based on the version you are currently using and the version you want to upgrade to.
             </p>
-            <a class="link" href="https://github.com/center-for-threat-informed-defense/attack-sync/wiki">
+            <a class="link" href="https://github.com/center-for-threat-informed-defense/attack-sync/wiki" target="_blank">
                 <h4>Learn More</h4>
                 <svg xmlns="http://www.w3.org/2000/svg" width="47.893" height="28.406" viewBox="0 0 47.893 28.406">
                     <path id="Path_8" data-name="Path 8" d="M2918.257,8207.378H2964.6l-17.74-12.765"
-                        transform="translate(-2918.257 -8194.207)" fill="none" stroke="#C2EAF6" stroke-linejoin="round"
+                        transform="translate(-2918.257 -8194.207)" fill="none" stroke="#87DEFF" stroke-linejoin="round"
                         stroke-width="4" />
                     <path id="Path_9" data-name="Path 9" d="M2946.037,8222.223l18.562-14.845h-24.734"
-                        transform="translate(-2918.257 -8194.207)" fill="none" stroke="#C2EAF6" stroke-linejoin="round"
+                        transform="translate(-2918.257 -8194.207)" fill="none" stroke="#87DEFF" stroke-linejoin="round"
                         stroke-width="4" />
                 </svg>
             </a>
@@ -27,13 +27,12 @@
     <div class="form">
         <form class="form-content" onsubmit="handleSubmission(event)">
             <div class="form-group">
-                <h3 class="purple">Compare Versions</h3>
+                <h3>Compare Versions</h3>
                 <div id="old_div">
                     <label>Old Version:</label>
-                    <select class="form-select form-control" id="old_version">
-                        {% for version in versions %}
-                        <option value="{{ version[0] }}.{{ version[1] }}" {% if loop.index==loop.length - 1 %}
-                            selected{% endif %}>v{{ version[0] }}.{{ version[1] }}</option>
+                    <select class="form-select form-control" id="old_version" aria-label="old ATT&CK version">
+                        {% for version in versions[:-1] -%}
+                        <option value="{{ version[0] }}.{{ version[1] }}"{% if loop.index==loop.length %} selected{% endif %}> v{{ version[0] }}.{{ version[1] }}</option>
                         {% endfor %}
                     </select>
                     <div class="invalid-feedback">
@@ -42,18 +41,15 @@
                 </div>
                 <div id="new_div">
                     <label>New Version:</label>
-                    <select class="form-select form-control" id="new_version">
-                        {% for version in versions %}
-                        <option value="{{ version[0] }}.{{ version[1] }}" {% if loop.last %} selected{% endif %}>v{{
-                            version[0] }}.{{ version[1] }}</option>
-                        {% endfor %}
+                    <select class="form-select form-control" id="new_version" aria-label="new ATT&CK version">
+                        <option value="{{ versions[-1][0] }}.{{ versions[-1][1] }}" selected>v{{ versions[-1][0] }}.{{ versions[-1][1] }}</option>
                     </select>
                     <div class="invalid-feedback">
                         New version must be greater than old version.
                     </div>
                 </div>
                 <label>Domain:</label>
-                <select class="form-select form-control" id="domain">
+                <select class="form-select form-control" id="domain" aria-label="ATT&CK domain">
                     {% for domain in domains %}
                     <option value="{{ domain }}">{{ domain_names[domain] }}</option>
                     {% endfor %}
@@ -62,27 +58,64 @@
                     See Changes
                 </button>
             </div>
-            <p class="disclosures">MITRE Engenuity <a href="https://mitre-engenuity.org/privacy-policy/">Privacy
+            <p class="disclosures">Center for Threat-Informed Defense <a href="https://ctid.mitre.org/privacy/" target="_blank">Privacy
                     Policy</a></p>
             <p class="disclosures">This project makes use of MITRE ATT&CK®. <a
-                    href="https://attack.mitre.org/resources/terms-of-use/">
+                    href="https://attack.mitre.org/resources/terms-of-use/" target="_blank">
                     ATT&CK Terms of Use</a></p>
     </div>
 </div>
 
 <script>
-    function handleSubmission(event) {
-        event.preventDefault();
-        const oldVal = document.getElementById("old_version").value;
-        const newVal = document.getElementById("new_version").value;
-        if (parseFloat(oldVal) >= parseFloat(newVal)) {
-            document.getElementById("old_div").classList.add("invalid");
-            document.getElementById("new_div").classList.add("invalid");
-        } else {
-            const domain = document.getElementById("domain").value;
-            const url = `{{ url_prefix }}/v${oldVal}-v${newVal}/${domain}/`;
-            location.assign(url)
-        }
+function handleSubmission(event) {
+    event.preventDefault();
+    const oldVal = document.getElementById("old_version").value;
+    const newVal = document.getElementById("new_version").value;
+    const domain = document.getElementById("domain").value;
+    const url = `{{ url_prefix }}/v${oldVal}-v${newVal}/${domain}/`;
+    location.assign(url)
+}
+
+const versionPairs = {
+{%- for old_version, new_versions in version_pairs.items() %}
+    "{{old_version[0]}}.{{old_version[1]}}": [
+        {%- for new_version in new_versions %}"{{new_version[0]}}.{{new_version[1]}}"{% if loop.index < loop.length %}, {% endif %}{% endfor -%}
+    ]{% if loop.index < loop.length %},{% endif %}
+{%- endfor -%}
+};
+
+// Update the new version select with valid version numbers
+function updateNewVersions() {
+    // Clear out existing options
+    const newSelect = document.getElementById("new_version");
+    const currentNewVersion = newSelect.value;
+    while (newSelect.firstChild) {
+        newSelect.removeChild(newSelect.lastChild);
     }
+    // Populate new versions
+    // TODO restore currently selected if possible
+    const oldVersion = document.getElementById("old_version").value;
+    const newVersions = versionPairs[oldVersion];
+    var foundCurrentNewVersion = false;
+    for (const newVersion of newVersions) {
+        const option = document.createElement("option");
+        option.value = newVersion;
+        if (newVersion == currentNewVersion) {
+            option.selected = true;
+            foundCurrentNewVersion = true;
+        }
+        option.appendChild(document.createTextNode(`v${newVersion}`));
+        newSelect.appendChild(option);
+    }
+    if (!foundCurrentNewVersion) {
+        // If the previously selected version doesn't exist, then pick the most
+        // recent version.
+        newChild.lastChild.selected == true;
+    }
+
+}
+document.getElementById("old_version").addEventListener("change", updateNewVersions);
+updateNewVersions();
+
 </script>
 {% endblock %}

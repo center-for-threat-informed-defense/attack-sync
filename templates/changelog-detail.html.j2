@@ -2,16 +2,16 @@
 {% extends "nav-content.html.j2" %}
 
 {% block title %}
-{{ type_name_to_label[current_type] }} – {{ domain_name_to_label[current_domain] }} ATT&amp;CK {{ old_version }} →
-{{ new_version }} – ATT&amp;CK Sync
+{{ type_name_to_label[current_type] }} | {{ domain_name_to_label[current_domain] }} ATT&amp;CK {{ old_version }} →
+{{ new_version }} | ATT&amp;CK Sync
 {% endblock %}
 
 {% block content %}
 <div class="content-container">
-    <a href="https://mitre-engenuity.org/cybersecurity/center-for-threat-informed-defense/"><img
-            src="{{ url_prefix }}/static/logo-small.png" class="logo-small"></a>
-    <h4 class="eyebrow">Version {{ old_version }} → {{ new_version }}</h4>
-    <h2>{{ type_name_to_label[current_type] }} &mdash; {{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog
+    <a href="https://ctid.mitre.org/" target="_blank"><img
+            src="{{ url_prefix }}/static/logo-blue.svg" class="logo-small" alt="Center for Threat-Informed Defense"></a>
+    <h4 class="eyebrow">Version {{ old_version }} <i class="bi bi-arrow-right"></i> {{ new_version }}</h4>
+    <h2>{{ type_name_to_label[current_type] }} : {{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog
     </h2>
     {{ macros.floating_buttons(current_domain) }}
     <div class="subnav">
@@ -94,8 +94,8 @@
                             </th>
                         </tr>
                         <tr>
-                            <td class="old">{{ item.stix_object.old_description }}</td>
-                            <td class="new">{{ item.stix_object.description }}</td>
+                            <td class="old">{{ item.stix_object.old_description | attack_markdown(item.stix_object.external_references) }}</td>
+                            <td class="new">{{ item.stix_object.description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
                     {%- elif item.change_type in ("additions", "revocations", "deprecations")
@@ -106,7 +106,7 @@
                             <th>Description</th>
                         </tr>
                         <tr>
-                            <td>{{ item.stix_object.description }}</td>
+                            <td>{{ item.stix_object.description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
                     {% endif %}
@@ -120,7 +120,7 @@
                             <th>Description for {{ item.revoked_by_id }} {{ item.revoked_by_name }}</th>
                         </tr>
                         <tr>
-                            <td>{{ revoked_by_description }}</td>
+                            <td>{{ revoked_by_description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
                     {% endif %}

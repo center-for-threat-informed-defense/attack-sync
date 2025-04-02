@@ -29,9 +29,11 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run Black
-        run: poetry run black --check src/
+        run: poetry run black --check src/ tests/
       - name: Run Isort
-        run: poetry run isort --check src/
+        run: poetry run isort --check src/ tests/
+      - name: Run Pytest
+        run: poetry run pytest
       - name: Download ATT&CK data
         run: poetry run download_attack_stix --stix20 --all -d data/attack
       - name: Build website
@@ -39,7 +41,7 @@ jobs:
           LOGURU_LEVEL: INFO
         run: poetry run build-attack-sync --url-prefix "/attack-sync" --google-analytics "G-XZLBW4KBV1"
       - name: Upload website artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: attack_sync_html
           path: public/
@@ -57,14 +59,14 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v2
     - name: Download website build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: attack_sync_html
         path: public/
     - name: Upload website to GitHub pages
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v3
       with:
         path: ./public
     - name: Deploy GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v1
+      uses: actions/deploy-pages@v4

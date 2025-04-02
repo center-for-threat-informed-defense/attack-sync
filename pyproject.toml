@@ -13,6 +13,8 @@ build-attack-sync = "attack_sync.site_builder:main"
 python = "^3.10"
 openpyxl = "^3.1.2"
 setuptools = "^75.1.0"
+jinja-markdown2 = "^0.4.0"
+markupsafe = "^3.0.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
@@ -28,6 +30,7 @@ stix2 = "^3.0.1"
 tqdm = "^4.65.0"
 mitreattack-python = "^3.0.8"
 mypy = "^1.2.0"
+pytest = "^8.3.5"
 
 [build-system]
 requires = ["poetry-core"]

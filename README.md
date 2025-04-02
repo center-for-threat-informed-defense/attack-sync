@@ -1,4 +1,4 @@
-[![MITRE ATT&CK® v16](https://img.shields.io/badge/MITRE%20ATT%26CK®-v15-red)](https://attack.mitre.org/versions/v16/)
+[![MITRE ATT&CK® v16](https://img.shields.io/badge/MITRE%20ATT%26CK®-v16-red)](https://attack.mitre.org/versions/v16/)
 [![Build Status](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml/badge.svg)](https://github.com/center-for-threat-informed-defense/attack-sync/actions/workflows/build.yml)
 
 # ATT&CK Sync
@@ -22,7 +22,7 @@ projects, and we believe it will be highly valuable to many other organizations 
 
 The best way to get started is to visit the ATT&CK Sync website, where you can quickly
 access detailed changelogs that show cumulative differences between any two versions of
-ATT&CK from v8.0 to v13.0. The sample JSON changelog shows how the differences can be
+ATT&CK from v8.0 to v16.1. The sample JSON changelog shows how the differences can be
 consumed in machine-readable format, and the sample Excel mappings show how the
 machine-readable data can be merged with your internal systems & data to provide
 contextual ATT&CK changes. Finally, the project wiki provides thorough documentation for
