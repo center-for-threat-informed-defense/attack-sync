@@ -94,7 +94,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <td class="old">{{ item.stix_object.old_description | attack_markdown(item.stix_object.old_external_references) }}</td>
+                            <td class="old">{{ item.stix_object.old_description | attack_markdown(item.stix_object.external_references) }}</td>
                             <td class="new">{{ item.stix_object.description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
