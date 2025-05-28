@@ -2,7 +2,7 @@
 name = "attack-sync"
 version = "0.1.0"
 description = ""
-authors = ["Center for Threat-Informed Defense <ctid@mitre-engenuity.org>"]
+authors = ["MITRE Center for Threat-Informed Defense <ctid@mitre.org>"]
 license = "Apache"
 readme = "README.md"
 

@@ -55,7 +55,7 @@ advance threat-informed defense:
 
 Please submit
 [issues](https://github.com/center-for-threat-informed-defense/attack-sync/issues) for
-any technical questions/concerns or contact ctid@mitre-engenuity.org directly for
+any technical questions/concerns or contact ctid@mitre.org directly for
 general inquiries.
 
 ## How Do I Contribute?
@@ -66,7 +66,7 @@ issues.](/CONTRIBUTING.md)
 
 ## Notice
 
-Copyright 2023 MITRE Engenuity. Approved for public release. Document number CT0070.
+Copyright 2023 The MITRE Corporation. Approved for public release. Document number CT0070.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
 file except in compliance with the License. You may obtain a copy of the License at
