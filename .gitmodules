@@ -1,0 +1,3 @@
+[submodule "libs/mitreattack"]
+	path = libs/mitreattack
+	url = git@github.com:mitre-attack/mitreattack-python.git
