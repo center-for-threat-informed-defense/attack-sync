@@ -12,8 +12,9 @@ import typing
 from difflib import SequenceMatcher
 from operator import itemgetter
 from pathlib import Path
-# import mitreattack-python as a submodule
-sys.path.insert(0, 'libs/mitreattack') 
+
+# import mitreattack-python as a submodule- allows us to choose a branch
+sys.path.insert(0, "libs/mitreattack")
 from mitreattack import release_info
 
 import stix2
@@ -192,8 +193,6 @@ class StixDiff:
                         new_version = get_attack_object_version(new_stix_obj)
                         new_stix_obj["previous_version"] = old_version
 
-                        # determine if this stix object needs to be added to the list with version changes or if it's unchanged
-
                         # Version number didn't change
                         if new_version == old_version:
                             # check for modification date increase but not version
@@ -216,7 +215,6 @@ class StixDiff:
                         new_description = new_stix_obj["description"].split()
 
                         if old_description != new_description:
-                            # handle case where the object "shouldn't" have changed but the description is different
                             if stix_id not in version_changes:
                                 logger.debug(
                                     "Object has a description change without the version "
@@ -229,12 +227,11 @@ class StixDiff:
                             new_stix_obj["description_diff"] = self._get_text_diff(
                                 old_description, new_description
                             )
-                        # look more specifically for mitigation and detection changes for techniques
                         if new_stix_obj["type"] == "attack-pattern":
                             self.find_technique_mitigation_changes(new_stix_obj, domain)
                             self.find_technique_detection_changes(new_stix_obj, domain)
 
-                # New objects: add to new list and update metadata
+                # New objects
                 for stix_id in additions:
                     new_stix_obj = new_attack_objects[stix_id]
                     attack_id = get_attack_id(new_stix_obj)
@@ -251,8 +248,8 @@ class StixDiff:
                             f"Expected version 1.0 for new object, but got {x_mitre_version} "
                             f"instead: {stix_id} ({attack_id})"
                         )
-                
-                # Deleted objects: make list
+
+                # Deleted objects
                 for stix_id in deletions:
                     old_stix_obj = old_attack_objects[stix_id]
                     attack_id = get_attack_id(old_stix_obj)
@@ -261,7 +258,6 @@ class StixDiff:
                 if obj_type not in self.data["changes"]:
                     self.data["changes"][obj_type] = {}
 
-                # sort changes into categories
                 self.data["changes"][obj_type][domain] = {
                     "additions": sorted(
                         [new_attack_objects[stix_id] for stix_id in additions],
@@ -394,20 +390,36 @@ class StixDiff:
             An ATT&CK domain from the following list ["enterprise-attack", "mobile-attack", "ics-attack"]
         """
         stix_id = new_stix_obj["id"]
-        all_old_domain_datasources = self.data["old"][domain]["attack_objects"]["datasources"]
-        all_old_domain_datacomponents = self.data["old"][domain]["attack_objects"]["datacomponents"]
-        all_old_domain_detectionstrategies = self.data["old"][domain]["attack_objects"]["detectionstrategies"]
-        all_new_domain_datasources = self.data["new"][domain]["attack_objects"]["datasources"]
-        all_new_domain_datacomponents = self.data["new"][domain]["attack_objects"]["datacomponents"]
-        all_new_domain_detectionstrategies = self.data["new"][domain]["attack_objects"]["detectionstrategies"]
+        all_old_domain_datasources = self.data["old"][domain]["attack_objects"][
+            "datasources"
+        ]
+        all_old_domain_datacomponents = self.data["old"][domain]["attack_objects"][
+            "datacomponents"
+        ]
+        all_old_domain_detectionstrategies = self.data["old"][domain]["attack_objects"][
+            "detectionstrategies"
+        ]
+        all_new_domain_datasources = self.data["new"][domain]["attack_objects"][
+            "datasources"
+        ]
+        all_new_domain_datacomponents = self.data["new"][domain]["attack_objects"][
+            "datacomponents"
+        ]
+        all_new_domain_detectionstrategies = self.data["new"][domain]["attack_objects"][
+            "detectionstrategies"
+        ]
 
         old_datacomponent_detections = {}
         old_detectionstrategy_detections = {}
         new_datacomponent_detections = {}
         new_detectionstrategy_detections = {}
 
-        for _, detection_relationship in self.data["old"][domain]["relationships"]["detections"].items():
-            if detection_relationship.get("x_mitre_deprecated") or detection_relationship.get("revoked"):
+        for _, detection_relationship in self.data["old"][domain]["relationships"][
+            "detections"
+        ].items():
+            if detection_relationship.get(
+                "x_mitre_deprecated"
+            ) or detection_relationship.get("revoked"):
                 continue
             if stix_id == detection_relationship["target_ref"]:
                 old_sourceref_id = detection_relationship["source_ref"]
@@ -418,25 +430,42 @@ class StixDiff:
                     old_datasource_id = old_datacomponent.get("x_mitre_data_source_ref")
                     if not old_datasource_id:
                         # Best-effort fallback: try to resolve a parent datasource from available datasource objects.
-                        old_datasource_id = resolve_datacomponent_parent(old_datacomponent, all_old_domain_datasources)
-                    if old_datasource_id and old_datasource_id in all_old_domain_datasources:
-                        old_datasource = all_old_domain_datasources[old_datasource_id]
-                        old_datasource_attack_id = get_attack_id(stix_obj=old_datasource)
-                        old_datacomponent_detections[old_sourceref_id] = (
-                            f"{old_datasource_attack_id}: {old_datasource['name']} ({old_datacomponent['name']})"
+                        old_datasource_id = resolve_datacomponent_parent(
+                            old_datacomponent, all_old_domain_datasources
                         )
+                    if (
+                        old_datasource_id
+                        and old_datasource_id in all_old_domain_datasources
+                    ):
+                        old_datasource = all_old_domain_datasources[old_datasource_id]
+                        old_datasource_attack_id = get_attack_id(
+                            stix_obj=old_datasource
+                        )
+                        old_datacomponent_detections[
+                            old_sourceref_id
+                        ] = f"{old_datasource_attack_id}: {old_datasource['name']} ({old_datacomponent['name']})"
                     else:
                         # No parent datasource identified — show the datacomponent name as standalone.
-                        old_datacomponent_detections[old_sourceref_id] = f"{old_datacomponent['name']}"
+                        old_datacomponent_detections[
+                            old_sourceref_id
+                        ] = f"{old_datacomponent['name']}"
                 if old_sourceref_id in all_old_domain_detectionstrategies:
-                    old_detectionstrategy = all_old_domain_detectionstrategies[old_sourceref_id]
-                    old_detectionstrategy_attack_id = get_attack_id(stix_obj=old_detectionstrategy)
-                    old_detectionstrategy_detections[old_sourceref_id] = (
-                        f"{old_detectionstrategy_attack_id}: {old_detectionstrategy['name']}"
+                    old_detectionstrategy = all_old_domain_detectionstrategies[
+                        old_sourceref_id
+                    ]
+                    old_detectionstrategy_attack_id = get_attack_id(
+                        stix_obj=old_detectionstrategy
                     )
+                    old_detectionstrategy_detections[
+                        old_sourceref_id
+                    ] = f"{old_detectionstrategy_attack_id}: {old_detectionstrategy['name']}"
 
-        for _, detection_relationship in self.data["new"][domain]["relationships"]["detections"].items():
-            if detection_relationship.get("x_mitre_deprecated") or detection_relationship.get("revoked"):
+        for _, detection_relationship in self.data["new"][domain]["relationships"][
+            "detections"
+        ].items():
+            if detection_relationship.get(
+                "x_mitre_deprecated"
+            ) or detection_relationship.get("revoked"):
                 continue
             if stix_id == detection_relationship["target_ref"]:
                 new_sourceref_id = detection_relationship["source_ref"]
@@ -446,62 +475,104 @@ class StixDiff:
                     new_datasource_id = new_datacomponent.get("x_mitre_data_source_ref")
                     if not new_datasource_id:
                         # Best-effort fallback lookup into datasources
-                        new_datasource_id = resolve_datacomponent_parent(new_datacomponent, all_new_domain_datasources)
-                    if new_datasource_id and new_datasource_id in all_new_domain_datasources:
-                        new_datasource = all_new_domain_datasources[new_datasource_id]
-                        new_datasource_attack_id = get_attack_id(stix_obj=new_datasource)
-                        new_datacomponent_detections[new_sourceref_id] = (
-                            f"{new_datasource_attack_id}: {new_datasource['name']} ({new_datacomponent['name']})"
+                        new_datasource_id = resolve_datacomponent_parent(
+                            new_datacomponent, all_new_domain_datasources
                         )
+                    if (
+                        new_datasource_id
+                        and new_datasource_id in all_new_domain_datasources
+                    ):
+                        new_datasource = all_new_domain_datasources[new_datasource_id]
+                        new_datasource_attack_id = get_attack_id(
+                            stix_obj=new_datasource
+                        )
+                        new_datacomponent_detections[
+                            new_sourceref_id
+                        ] = f"{new_datasource_attack_id}: {new_datasource['name']} ({new_datacomponent['name']})"
                     else:
                         # No parent datasource identified — show the datacomponent name as standalone.
-                        new_datacomponent_detections[new_sourceref_id] = f"{new_datacomponent['name']}"
+                        new_datacomponent_detections[
+                            new_sourceref_id
+                        ] = f"{new_datacomponent['name']}"
                 if new_sourceref_id in all_new_domain_detectionstrategies:
-                    new_detectionstrategy = all_new_domain_detectionstrategies[new_sourceref_id]
-                    new_detectionstrategy_attack_id = get_attack_id(stix_obj=new_detectionstrategy)
-                    new_detectionstrategy_detections[new_sourceref_id] = (
-                        f"{new_detectionstrategy_attack_id}: {new_detectionstrategy['name']}"
+                    new_detectionstrategy = all_new_domain_detectionstrategies[
+                        new_sourceref_id
+                    ]
+                    new_detectionstrategy_attack_id = get_attack_id(
+                        stix_obj=new_detectionstrategy
                     )
+                    new_detectionstrategy_detections[
+                        new_sourceref_id
+                    ] = f"{new_detectionstrategy_attack_id}: {new_detectionstrategy['name']}"
 
-        shared_datacomponent_detections = old_datacomponent_detections.keys() & new_datacomponent_detections.keys()
-        brand_new_datacomponent_detections = new_datacomponent_detections.keys() - old_datacomponent_detections.keys()
-        dropped_datacomponent_detections = old_datacomponent_detections.keys() - new_datacomponent_detections.keys()
+        shared_datacomponent_detections = (
+            old_datacomponent_detections.keys() & new_datacomponent_detections.keys()
+        )
+        brand_new_datacomponent_detections = (
+            new_datacomponent_detections.keys() - old_datacomponent_detections.keys()
+        )
+        dropped_datacomponent_detections = (
+            old_datacomponent_detections.keys() - new_datacomponent_detections.keys()
+        )
 
         new_stix_obj["changelog_datacomponent_detections"] = {
             "shared": sorted(
-                [f"{new_datacomponent_detections[stix_id]}" for stix_id in shared_datacomponent_detections]
+                [
+                    f"{new_datacomponent_detections[stix_id]}"
+                    for stix_id in shared_datacomponent_detections
+                ]
             ),
             "new": sorted(
-                [f"{new_datacomponent_detections[stix_id]}" for stix_id in brand_new_datacomponent_detections]
+                [
+                    f"{new_datacomponent_detections[stix_id]}"
+                    for stix_id in brand_new_datacomponent_detections
+                ]
             ),
             "dropped": sorted(
-                [f"{old_datacomponent_detections[stix_id]}" for stix_id in dropped_datacomponent_detections]
+                [
+                    f"{old_datacomponent_detections[stix_id]}"
+                    for stix_id in dropped_datacomponent_detections
+                ]
             ),
         }
 
         shared_detectionstrategy_detections = (
-            old_detectionstrategy_detections.keys() & new_detectionstrategy_detections.keys()
+            old_detectionstrategy_detections.keys()
+            & new_detectionstrategy_detections.keys()
         )
         brand_new_detectionstrategy_detections = (
-            new_detectionstrategy_detections.keys() - old_detectionstrategy_detections.keys()
+            new_detectionstrategy_detections.keys()
+            - old_detectionstrategy_detections.keys()
         )
         dropped_detectionstrategy_detections = (
-            old_detectionstrategy_detections.keys() - new_detectionstrategy_detections.keys()
+            old_detectionstrategy_detections.keys()
+            - new_detectionstrategy_detections.keys()
         )
 
         new_stix_obj["changelog_detectionstrategy_detections"] = {
             "shared": sorted(
-                [f"{new_detectionstrategy_detections[stix_id]}" for stix_id in shared_detectionstrategy_detections]
+                [
+                    f"{new_detectionstrategy_detections[stix_id]}"
+                    for stix_id in shared_detectionstrategy_detections
+                ]
             ),
             "new": sorted(
-                [f"{new_detectionstrategy_detections[stix_id]}" for stix_id in brand_new_detectionstrategy_detections]
+                [
+                    f"{new_detectionstrategy_detections[stix_id]}"
+                    for stix_id in brand_new_detectionstrategy_detections
+                ]
             ),
             "dropped": sorted(
-                [f"{old_detectionstrategy_detections[stix_id]}" for stix_id in dropped_detectionstrategy_detections]
+                [
+                    f"{old_detectionstrategy_detections[stix_id]}"
+                    for stix_id in dropped_detectionstrategy_detections
+                ]
             ),
         }
 
-    def resolve_datacomponent_parent(datacomponent: dict, datasources: typing.Dict[str, dict]) -> typing.Optional[str]:
+    def resolve_datacomponent_parent(
+        datacomponent: dict, datasources: typing.Dict[str, dict]
+    ) -> typing.Optional[str]:
         """Best-effort resolution of a datacomponent's parent datasource when an explicit x_mitre_data_source_ref is not present.
 
         Strategy:
@@ -539,9 +610,7 @@ class StixDiff:
             if not data_store:
                 data_store = MemoryStore()
                 data_store.load_from_file(stix_file)
-            # set self.data with domain information
             self.data[datastore_version][domain]["stix_datastore"] = data_store
-            # with that new data, parse it
             self.parse_extra_data(
                 data_store=data_store,
                 domain=domain,
@@ -572,7 +641,6 @@ class StixDiff:
         }
         for object_type, stix_filters in attack_type_to_stix_filter.items():
             raw_data = []
-            # get a list of each object type from the stix type field
             for stix_filter in stix_filters:
                 temp_filtered_list = data_store.query(stix_filter)
                 raw_data.extend(temp_filtered_list)
@@ -581,7 +649,6 @@ class StixDiff:
             self.data[datastore_version][domain]["attack_objects"][object_type] = {
                 attack_object["id"]: attack_object for attack_object in raw_data
             }
-        # get the subtechniques from the data store and list them in data
         subtechnique_relationships = data_store.query(
             [
                 Filter("type", "=", "relationship"),
@@ -592,7 +659,6 @@ class StixDiff:
             relationship["id"]: relationship
             for relationship in subtechnique_relationships
         }
-        # get revocations
         revoked_by_relationships = data_store.query(
             [
                 Filter("type", "=", "relationship"),
@@ -615,7 +681,6 @@ class StixDiff:
             self.data[datastore_version][domain]["relationships"]["revoked-by"][
                 source_id
             ].append(relationship)
-        # get mitigations and add them to the data
         mitigating_relationships = data_store.query(
             [
                 Filter("type", "=", "relationship"),
@@ -626,7 +691,6 @@ class StixDiff:
             relationship["id"]: relationship
             for relationship in mitigating_relationships
         }
-        # get detections and add them to the store
         detection_relationships = data_store.query(
             [
                 Filter("type", "=", "relationship"),
@@ -1595,6 +1659,8 @@ def main():
         "mitigations",
         "datasources",
         "datacomponents",
+        "detectionstrategies",
+        "analytics"
     ]
     parser.add_argument(
         "-t",
