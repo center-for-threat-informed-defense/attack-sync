@@ -1660,7 +1660,7 @@ def main():
         "datasources",
         "datacomponents",
         "detectionstrategies",
-        "analytics"
+        "analytics",
     ]
     parser.add_argument(
         "-t",
