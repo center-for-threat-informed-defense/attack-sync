@@ -13,8 +13,6 @@ from difflib import SequenceMatcher
 from operator import itemgetter
 from pathlib import Path
 
-# import mitreattack-python as a submodule- allows us to choose a branch
-sys.path.insert(0, "libs/mitreattack")
 import stix2
 from dateutil import parser as dateparser
 from deepdiff import DeepDiff
