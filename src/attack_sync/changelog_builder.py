@@ -15,12 +15,11 @@ from pathlib import Path
 
 # import mitreattack-python as a submodule- allows us to choose a branch
 sys.path.insert(0, "libs/mitreattack")
-from mitreattack import release_info
-
 import stix2
 from dateutil import parser as dateparser
 from deepdiff import DeepDiff
 from loguru import logger
+from mitreattack import release_info
 from stix2 import Filter, MemoryStore
 
 from .template import ATTACK_DATA_DIR, PUBLIC_DIR, load_template
