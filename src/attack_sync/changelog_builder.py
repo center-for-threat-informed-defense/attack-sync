@@ -1492,6 +1492,9 @@ def _get_attack_title(
         )
         if parent_object:
             title = f"{parent_object.get('name')}: {stix_object['name']}"
+        #  v18 and on, there is no parent object anymore for data sources
+        elif stix_object["type"] == "x-mitre-data-component":
+            title = stix_object['name']
         else:
             logger.warning(f"[{stix_object['id']}] {attack_id} has no parent!")
             title = f"{stix_object['name']} (No parent object identified. It is likely revoked or deprecated)"
@@ -1500,10 +1503,6 @@ def _get_attack_title(
 
     return title
 
-
-def get_analytics_from_detection_strategy(detection_strategy):
-    """Build a lookup map for all analytics from the given detection strategy."""
-    
 
 def _build_accordion_item(stix_object, attack_id, title, change_type) -> dict:
     """
