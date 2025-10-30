@@ -251,7 +251,6 @@ class StixDiff:
                     if new_stix_obj["type"] == "x-mitre-detection-strategy":
                         self.find_analytics_changes(new_stix_obj, {}, domain)
 
-
                 # Deleted objects
                 for stix_id in deletions:
                     old_stix_obj = old_attack_objects[stix_id]
@@ -320,11 +319,13 @@ class StixDiff:
                     edits.append({"text": new, "disposition": "unchanged"})
 
         return edits
-    
-    def find_analytics_changes(self, new_stix_obj: dict, old_stix_object: dict, domain: str):
+
+    def find_analytics_changes(
+        self, new_stix_obj: dict, old_stix_object: dict, domain: str
+    ):
         """
-        Find changes in the relationships between Detection Strategies and Analytics. 
-       
+        Find changes in the relationships between Detection Strategies and Analytics.
+
         Args:
             new_stix_obj: An ATT&CK Technique (attack-pattern) STIX Domain Object (SDO).
             domain: An ATT&CK domain from the following list ["enterprise-attack", "mobile-attack", "ics-attack"]
@@ -338,13 +339,12 @@ class StixDiff:
         ]
         old_analytics = {}
         new_analytics = {}
-        
+
         for analytic_id in new_stix_obj["x_mitre_analytic_refs"]:
             new_analytic = all_new_domain_analytics.get(analytic_id)
             new_analytics[analytic_id] = new_analytic
 
-
-        if (old_stix_object):
+        if old_stix_object:
             for analytic_id in old_stix_object["x_mitre_analytic_refs"]:
                 old_analytic = all_old_domain_analytics.get(analytic_id)
                 old_analytics[analytic_id] = old_analytic
@@ -352,10 +352,10 @@ class StixDiff:
         brand_new_analytics = new_analytics.keys() - old_analytics.keys()
         dropped_analytics = old_analytics.keys() - new_analytics.keys()
         shared_analytics = new_analytics.keys() & old_analytics.keys()
-        
+
         new_stix_obj["changelog_analytics"] = {
-             "shared": [
-                  f"{get_attack_id(stix_obj=new_analytics[stix_id])}: {new_analytics[stix_id]['name']}"
+            "shared": [
+                f"{get_attack_id(stix_obj=new_analytics[stix_id])}: {new_analytics[stix_id]['name']}"
                 for stix_id in shared_analytics
             ],
             "new": [
@@ -363,13 +363,10 @@ class StixDiff:
                 for stix_id in brand_new_analytics
             ],
             "dropped": [
-                 f"{get_attack_id(stix_obj=old_analytics[stix_id])}: {old_analytics[stix_id]['name']}"
+                f"{get_attack_id(stix_obj=old_analytics[stix_id])}: {old_analytics[stix_id]['name']}"
                 for stix_id in dropped_analytics
             ],
         }
-
-
-
 
     def find_technique_mitigation_changes(self, new_stix_obj: dict, domain: str):
         """
@@ -693,14 +690,12 @@ class StixDiff:
             "analytics": [Filter("type", "=", "x-mitre-analytic")],
         }
         for object_type, stix_filters in attack_type_to_stix_filter.items():
-            
             raw_data = []
             for stix_filter in stix_filters:
                 temp_filtered_list = data_store.query(stix_filter)
                 raw_data.extend(temp_filtered_list)
-                if object_type == "analytics" :
+                if object_type == "analytics":
                     logger.info("inside analytics list {}", len(temp_filtered_list))
-                
 
             raw_data = deep_copy_stix(raw_data)
             self.data[datastore_version][domain]["attack_objects"][object_type] = {
@@ -1494,7 +1489,7 @@ def _get_attack_title(
             title = f"{parent_object.get('name')}: {stix_object['name']}"
         #  v18 and on, there is no parent object anymore for data sources
         elif stix_object["type"] == "x-mitre-data-component":
-            title = stix_object['name']
+            title = stix_object["name"]
         else:
             logger.warning(f"[{stix_object['id']}] {attack_id} has no parent!")
             title = f"{stix_object['name']} (No parent object identified. It is likely revoked or deprecated)"
