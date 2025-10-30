@@ -149,7 +149,10 @@
                         {% endif %}
                     {% endif %}
                     {%- if item.stix_object.get("changelog_detections") %}
-                    {% set detections = item.stix_object.changelog_detections.get("new") %}
+                        {% set detections = item.stix_object.changelog_detections.get("new") %}
+                        {%- if item.stix_object.get("changelog_datacomponent_detections") %}
+                            {% set detections = item.stix_object.changelog_detections.get("new") + item.stix_object.changelog_datacomponent_detections.get("new") %}
+                        {% endif %}
                     {% if detections %}
                     <p><b>New Detections</b>:</p>
                     <ul>
@@ -159,6 +162,9 @@
                     </ul>
                     {% endif %}
                     {% set detections = item.stix_object.changelog_detections.get("dropped")%}
+                        {%- if item.stix_object.get("changelog_datacomponent_detections") %}
+                            {% set detections = item.stix_object.changelog_detections.get("dropped") + item.stix_object.changelog_datacomponent_detections.get("dropped") %}
+                        {% endif %}
                     {% if detections %}
                     <p><b>Dropped Detections</b>:</p>
                     <ul>
