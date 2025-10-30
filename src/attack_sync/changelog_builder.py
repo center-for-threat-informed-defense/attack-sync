@@ -339,7 +339,7 @@ class StixDiff:
         ]
         old_analytics = {}
         new_analytics = {}
-        if len(new_stix_obj.get("x_mitre_analytic_refs")) < 1:
+        if new_stix_obj.get("x_mitre_analytic_refs") is None:
             return
 
         for analytic_id in new_stix_obj.get("x_mitre_analytic_refs"):
