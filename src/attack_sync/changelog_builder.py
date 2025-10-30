@@ -340,7 +340,7 @@ class StixDiff:
         old_analytics = {}
         new_analytics = {}
 
-        for analytic_id in new_stix_obj["x_mitre_analytic_refs"]:
+        for analytic_id in new_stix_obj.get("x_mitre_analytic_refs"):
             new_analytic = all_new_domain_analytics.get(analytic_id)
             new_analytics[analytic_id] = new_analytic
 
@@ -694,8 +694,6 @@ class StixDiff:
             for stix_filter in stix_filters:
                 temp_filtered_list = data_store.query(stix_filter)
                 raw_data.extend(temp_filtered_list)
-                if object_type == "analytics":
-                    logger.info("inside analytics list {}", len(temp_filtered_list))
 
             raw_data = deep_copy_stix(raw_data)
             self.data[datastore_version][domain]["attack_objects"][object_type] = {
