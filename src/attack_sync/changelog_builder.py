@@ -557,6 +557,36 @@ class StixDiff:
                         new_sourceref_id
                     ] = f"{new_detectionstrategy_attack_id}: {new_detectionstrategy['name']}"
 
+        shared_datacomponent_detections = (
+            old_datacomponent_detections.keys() & new_datacomponent_detections.keys()
+        )
+        brand_new_datacomponent_detections = (
+            new_datacomponent_detections.keys() - old_datacomponent_detections.keys()
+        )
+        dropped_datacomponent_detections = (
+            old_datacomponent_detections.keys() - new_datacomponent_detections.keys()
+        )
+
+        new_stix_obj["changelog_datacomponent_detections"] = {
+            "shared": sorted(
+                [
+                    f"{new_datacomponent_detections[stix_id]}"
+                    for stix_id in shared_datacomponent_detections
+                ]
+            ),
+            "new": sorted(
+                [
+                    f"{new_datacomponent_detections[stix_id]}"
+                    for stix_id in brand_new_datacomponent_detections
+                ]
+            ),
+            "dropped": sorted(
+                [
+                    f"{old_datacomponent_detections[stix_id]}"
+                    for stix_id in dropped_datacomponent_detections
+                ]
+            ),
+        }
 
         shared_detectionstrategy_detections = (
             old_detectionstrategy_detections.keys()
@@ -565,16 +595,10 @@ class StixDiff:
         brand_new_detectionstrategy_detections = (
             new_detectionstrategy_detections.keys()
             - old_detectionstrategy_detections.keys()
-        ) + (
-            new_datacomponent_detections.keys()
-            - old_datacomponent_detections.keys()
         )
         dropped_detectionstrategy_detections = (
             old_detectionstrategy_detections.keys()
             - new_detectionstrategy_detections.keys()
-        ) + (
-            old_datacomponent_detections.keys()
-            - new_datacomponent_detections.keys()
         )
 
         new_stix_obj["changelog_detections"] = {

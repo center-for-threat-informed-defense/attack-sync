@@ -150,25 +150,32 @@
                     {% endif %}
                     {%- if item.stix_object.get("changelog_detections") %}
                         {% set detections = item.stix_object.changelog_detections.get("new") %}
-                        {% if detections %}
-                        <p><b>New Detections</b>:</p>
-                        <ul>
-                            {%- for detection in detections %}
-                            <li>{{ detection }}</li>
-                            {% endfor %}
-                        </ul>
+                        {%- if item.stix_object.get("changelog_datacomponent_detections") %}
+                            {% set detections = item.stix_object.changelog_detections.get("new") + item.stix_object.changelog_datacomponent_detections.get("new") %}
                         {% endif %}
-                        {% set detections = item.stix_object.changelog_detections.get("dropped")%}
-                        {% if detections %}
-                            <p><b>Dropped Detections</b>:</p>
-                            <ul>
-                                {%- for detection in detections %}
-                                <li>{{ detection }}</li>
-                                {% endfor %}
-                            </ul>
+                    {% if detections %}
+                    <p><b>New Detections</b>:</p>
+                    <ul>
+                        {%- for detection in detections %}
+                        <li>{{ detection }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% set detections = item.stix_object.changelog_detections.get("dropped")%}
+                        {%- if item.stix_object.get("changelog_datacomponent_detections") %}
+                            {% set detections = item.stix_object.changelog_detections.get("dropped") + item.stix_object.changelog_datacomponent_detections.get("dropped") %}
                         {% endif %}
+                    {% if detections %}
+                    <p><b>Dropped Detections</b>:</p>
+                    <ul>
+                        {%- for detection in detections %}
+                        <li>{{ detection }}</li>
+                        {% endfor %}
+                    </ul>
                     {% endif %}
                     {% endif %}
+                    {% endif %}
+                    
                     {% if item.stix_object.get("changelog_analytics") %}
                         {% set analytics = item.stix_object.changelog_analytics.get("new") %}
                         {% if analytics %}
