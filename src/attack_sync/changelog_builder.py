@@ -93,7 +93,6 @@ class StixDiff:
 
         for domain in self.domains:
             for datastore_version in ["old", "new"]:
-                # initialize empty structure for each file
                 self.data[datastore_version][domain] = {
                     "attack_objects": {},
                     "attack_release_version": None,
@@ -109,7 +108,6 @@ class StixDiff:
 
         for domain in self.domains:
             self.load_domain(domain=domain)
-            # data now contains all of the relationship data in addition to the objects in the list above
 
             logger.info("Diffing domain: {domain}", domain=domain)
             for obj_type in self.types:
@@ -121,12 +119,10 @@ class StixDiff:
                 new_attack_objects = self.data["new"][domain]["attack_objects"][
                     obj_type
                 ]
-                # find the additions, deletions, and intersections (need to be checked for changes)
                 intersection = old_attack_objects.keys() & new_attack_objects.keys()
                 additions = new_attack_objects.keys() - old_attack_objects.keys()
                 deletions = old_attack_objects.keys() - new_attack_objects.keys()
 
-                # sets to store the ids of objects for each section
                 version_changes = set()
                 revocations = set()
                 deprecations = set()
@@ -137,7 +133,6 @@ class StixDiff:
                     old_stix_obj = old_attack_objects[stix_id]
                     new_stix_obj = new_attack_objects[stix_id]
                     attack_id = get_attack_id(new_stix_obj)
-                    # run a deep comparison of the items contained in both versions
                     ddiff = DeepDiff(
                         old_stix_obj, new_stix_obj, ignore_order=True, verbose_level=2
                     )
@@ -170,15 +165,13 @@ class StixDiff:
                                     f"{stix_id} revoked by {revoked_by_key}, but {revoked_by_key} not found in new STIX bundle!!"
                                 )
                                 continue
-                            # link the revoking object to the new stix object
                             revoking_object = new_attack_objects[revoked_by_key]
                             new_stix_obj["revoked_by"] = revoking_object
-                            # add to list of revocations
                             revocations.add(stix_id)
 
                     # Newly deprecated objects
                     elif new_stix_obj.get("x_mitre_deprecated"):
-                        # if previously deprecated, not a change, add to the list of deprecations
+                        # if previously deprecated, not a change
                         if "x_mitre_deprecated" not in old_stix_obj:
                             deprecations.add(stix_id)
 
@@ -1419,7 +1412,7 @@ def render_changelog_detail_page(
         changelog = changelog_dict[sync_change_type]
 
         for stix_object in change_data:
-            attack_id = get_attack_id(stix_object) or "Missing ATT&CK ID"
+            attack_id = get_attack_id(stix_object) or ""
             title = _get_attack_title(
                 stix_diff, stix_object, attack_id, datastore_version, domain
             )
