@@ -60,16 +60,45 @@
                                 {% endfor %}
                                 </ul>
                         </li>
-                         <li class="nav-item dropstart">
-                            <div class="nav-item-header">Data Components</div>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Detections
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item dropstart">
+                            <div class="nav-item-header">Detection Strategies</div>
                             <ul>
                             {% for domain in domains %}
                                 <li><a class="dropdown-item"
-                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datacomponents">{{domain.split("-")[0].upper()}}
+                                        href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/detectionstrategies">{{domain.split("-")[0].upper()}}
                                         ATT&amp;CK</a>
                                 </li>
                             {% endfor %}
                             </ul>
+                        </li>
+                        <li class="nav-item dropstart">
+                                <div class="nav-item-header">Analytics</div>
+                                <ul>
+                                {% for domain in domains %}
+                                    <li><a class="dropdown-item"
+                                            href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/analytics">{{domain.split("-")[0].upper()}}
+                                            ATT&amp;CK</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                        </li>
+                         <li class="nav-item dropstart">
+                                <div class="nav-item-header">Data Components</div>
+                                <ul>
+                                {% for domain in domains %}
+                                    <li><a class="dropdown-item"
+                                            href="{{ url_prefix }}/v{{old_version}}-v{{new_version}}/{{domain}}/datacomponents">{{domain.split("-")[0].upper()}}
+                                            ATT&amp;CK</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
                         </li>
                     </ul>
                 </li>

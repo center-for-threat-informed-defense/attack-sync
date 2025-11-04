@@ -114,6 +114,8 @@ def main():
         (16, 0),
         (16, 1),
         (17, 0),
+        (17, 1),
+        (18, 0),
     ]
     domains = [
         "enterprise-attack",
@@ -133,6 +135,8 @@ def main():
         "mitigations",
         "datasources",
         "datacomponents",
+        "detectionstrategies",
+        "analytics",
     ]
 
     # Copy static files.

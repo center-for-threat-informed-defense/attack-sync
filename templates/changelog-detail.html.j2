@@ -101,6 +101,7 @@
                     {%- elif item.change_type in ("additions", "revocations", "deprecations")
                     or
                     (not item.stix_object.old_description and item.stix_object.description) %}
+                    {% if item.stix_object.description %}
                     <table>
                         <tr>
                             <th>Description</th>
@@ -109,6 +110,7 @@
                             <td>{{ item.stix_object.description | attack_markdown(item.stix_object.external_references) }}</td>
                         </tr>
                     </table>
+                    {% endif %}
                     {% endif %}
                     {%- if item.change_type == "revocations"%}
                     <h5 style="margin-top: 20px;">Replaced by: {{ item.revoked_by_id }} {{
@@ -126,28 +128,31 @@
                     {% endif %}
                     {% endif %}
                     {%- if current_type == "techniques" %}
-                    {% if item.stix_object.get("changelog_mitigations") %}
-                    {% set mitigations = item.stix_object.changelog_mitigations.get("new") %}
-                    {% if mitigations %}
-                    <p><b>New Mitigations</b>:</p>
-                    <ul>
-                        {%- for mitigation in mitigations %}
-                        <li>{{ mitigation }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {% set mitigations = item.stix_object.changelog_mitigations.get("dropped")%}
-                    {% if mitigations %}
-                    <p><b>Dropped Mitigations</b>:</p>
-                    <ul>
-                        {%- for mitigation in mitigations %}
-                        <li>{{ mitigation }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
+                        {% if item.stix_object.get("changelog_mitigations") %}
+                            {% set mitigations = item.stix_object.changelog_mitigations.get("new") %}
+                            {% if mitigations %}
+                                <p><b>New Mitigations</b>:</p>
+                                <ul>
+                                    {%- for mitigation in mitigations %}
+                                    <li>{{ mitigation }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {% set mitigations = item.stix_object.changelog_mitigations.get("dropped")%}
+                            {% if mitigations %}
+                            <p><b>Dropped Mitigations</b>:</p>
+                            <ul>
+                                {%- for mitigation in mitigations %}
+                                <li>{{ mitigation }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     {% endif %}
                     {%- if item.stix_object.get("changelog_detections") %}
-                    {% set detections = item.stix_object.changelog_detections.get("new") %}
+                        {% set detections = item.stix_object.changelog_detections.get("new") %}
+                        {%- if item.stix_object.get("changelog_datacomponent_detections") %}
+                            {% set detections = item.stix_object.changelog_detections.get("new") + item.stix_object.changelog_datacomponent_detections.get("new") %}
+                        {% endif %}
                     {% if detections %}
                     <p><b>New Detections</b>:</p>
                     <ul>
@@ -157,6 +162,9 @@
                     </ul>
                     {% endif %}
                     {% set detections = item.stix_object.changelog_detections.get("dropped")%}
+                        {%- if item.stix_object.get("changelog_datacomponent_detections") %}
+                            {% set detections = item.stix_object.changelog_detections.get("dropped") + item.stix_object.changelog_datacomponent_detections.get("dropped") %}
+                        {% endif %}
                     {% if detections %}
                     <p><b>Dropped Detections</b>:</p>
                     <ul>
@@ -167,6 +175,27 @@
                     {% endif %}
                     {% endif %}
                     {% endif %}
+                    
+                    {% if item.stix_object.get("changelog_analytics") %}
+                        {% set analytics = item.stix_object.changelog_analytics.get("new") %}
+                        {% if analytics %}
+                            <p><b>New Analytics</b>:</p>
+                            <ul>
+                                {%- for analytic in analytics %}
+                                <li>{{analytic}}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% set analytics = item.stix_object.changelog_analytics.get("dropped") %}
+                        {% if analytics %}
+                            <p><b>Dropped Analytics</b>:</p>
+                            <ul>
+                                {%- for analytic in analytics %}
+                                <li>{{analytic}}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endif%}
                     {%- if item.detailed_diff %}
                     <details>
                         <summary>Details</summary>

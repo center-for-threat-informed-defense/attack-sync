@@ -217,7 +217,7 @@ def main():
                                     "Modified Description",
                                     CellRichText(cell_contents),
                                 )
-
+            # logger.warning("HI IM HERE")
             changelog_mitigations = changed_technique.get("changelog_mitigations")
             if changelog_mitigations:
                 if changelog_mitigations["new"]:
@@ -241,10 +241,20 @@ def main():
                         CellRichText([TextBlock(del_style, new_value.strip())]),
                     )
             changelog_detections = changed_technique.get("changelog_detections")
+
             if changelog_detections:
-                if changelog_detections["new"]:
+                new_detections = changelog_detections["new"]
+                if changed_technique.get(
+                    "changelog_datacomponent_detections"
+                ) and changed_technique["changelog_datacomponent_detections"].get(
+                    "new"
+                ):
+                    new_detections += changed_technique[
+                        "changelog_datacomponent_detections"
+                    ]["new"]
+                if new_detections:
                     new_value = ""
-                    for new_detection in changelog_detections["new"]:
+                    for new_detection in new_detections:
                         new_value += f"{new_detection}\n"
                     current_col += write_change(
                         row,
@@ -252,10 +262,20 @@ def main():
                         "New Detections",
                         CellRichText([TextBlock(add_style, new_value.strip())]),
                     )
-                if changelog_detections["dropped"]:
+
+                dropped_detections = changelog_detections["dropped"]
+                if changed_technique.get(
+                    "changelog_datacomponent_detections"
+                ) and changed_technique["changelog_datacomponent_detections"].get(
+                    "dropped"
+                ):
+                    dropped_detections += changed_technique[
+                        "changelog_datacomponent_detections"
+                    ]["dropped"]
+                if dropped_detections:
                     new_value = ""
-                    for dropped_detections in changelog_detections["dropped"]:
-                        new_value += f"{dropped_detections}\n"
+                    for dropped_detection in dropped_detections:
+                        new_value += f"{dropped_detection}\n"
                     current_col += write_change(
                         row,
                         current_col,
