@@ -16,6 +16,7 @@ projects, and we believe it will be highly valuable to many other organizations 
 - [Getting Involved](#getting-involved)
 - [Questions and Feedback](#questions-and-feedback)
 - [How Do I Contribute?](#how-do-i-contribute)
+- [Developer Instructions](#developer-instructions)
 - [Notice](#notice)
 
 ## Getting Started
@@ -63,6 +64,10 @@ general inquiries.
 We welcome your feedback and contributions to help advance Attack Sync. Please see the
 guidance for contributors if are you interested in [contributing or simply reporting
 issues.](/CONTRIBUTING.md)
+
+## Developer Instructions
+
+For information on how to run ATT&CK Sync as a developer, check out the [Project Wiki](https://github.com/center-for-threat-informed-defense/attack-sync/wiki/Developers).
 
 ## Notice
 
