@@ -18,6 +18,6 @@ def test_version_pairs():
         (15, 1): [(15, 2), (16, 1)],
         (15, 2): [(16, 1)],
         (16, 0): [(16, 1)],
-        (16, 1): []
+        (16, 1): [],
     }
     assert expected_pairs == get_version_pairs(versions)
