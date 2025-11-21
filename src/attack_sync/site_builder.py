@@ -85,6 +85,14 @@ def get_version_pairs(
         for minor1, minor2 in combinations(minors, 2):
             pairs[(major, minor1)].append((major, minor2))
 
+    latest_version = versions[len(versions) -1]
+    # Add all minor versions > 10 compared to the latest version
+    for major, minors in major_groups.items():
+        if major >= 10:
+            for minor in minors:
+                if latest_version not in pairs[(major, minor)] and latest_version != (major, minor):
+                    pairs[(major, minor)].append(latest_version)
+
     return pairs
 
 
