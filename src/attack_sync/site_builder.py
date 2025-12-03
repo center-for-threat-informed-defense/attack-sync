@@ -78,34 +78,6 @@ def get_version_pairs(
             ):
                 pairs[(major1, minor1)].append((major2, minor2))
 
-    # Group by major version
-    # major_groups = defaultdict(list)
-    # for major, minor in sorted(versions):
-    #     major_groups[major].append(minor)
-
-    # # Yield pairs of major versions
-    # for major1, major2 in combinations(major_groups.keys(), 2):
-    #     minor1 = major_groups[major1][-1]
-    #     minor2 = major_groups[major2][-1]
-    #     pairs[(major1, minor1)].append((major2, minor2))
-
-    # # Yields pairs of minor versions within each major version
-    # for major, minors in major_groups.items():
-    #     for minor1, minor2 in combinations(minors, 2):
-    #         pairs[(major, minor1)].append((major, minor2))
-
-    # latest_version = versions[len(versions) - 1]
-    # # Add all minor versions > 10 compared to the latest version
-    # for major, minors in major_groups.items():
-    #     if major >= 10:
-    #         for minor in minors:
-    #             if latest_version not in pairs[(major, minor)] and latest_version != (
-    #                 major,
-    #                 minor,
-    #             ):
-    #                 pairs[(major, minor)].append(latest_version)
-
-    print("pairs ", pairs)
     return pairs
 
 
