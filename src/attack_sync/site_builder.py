@@ -69,21 +69,14 @@ def get_version_pairs(
     """
     pairs: list[Version] = defaultdict(list)
 
-    # Group by major version
-    major_groups = defaultdict(list)
-    for major, minor in sorted(versions):
-        major_groups[major].append(minor)
-
-    # Yield pairs of major versions
-    for major1, major2 in combinations(major_groups.keys(), 2):
-        minor1 = major_groups[major1][-1]
-        minor2 = major_groups[major2][-1]
-        pairs[(major1, minor1)].append((major2, minor2))
-
-    # Yields pairs of minor versions within each major version
-    for major, minors in major_groups.items():
-        for minor1, minor2 in combinations(minors, 2):
-            pairs[(major, minor1)].append((major, minor2))
+    for major1, minor1 in sorted(versions):
+        for major2, minor2 in sorted(versions):
+            if (
+                major1 != minor2
+                and minor1 != minor2
+                and (major1, minor1) not in pairs[(major2, minor2)]
+            ):
+                pairs[(major1, minor1)].append((major2, minor2))
 
     return pairs
 
