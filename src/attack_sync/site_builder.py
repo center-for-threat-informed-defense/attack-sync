@@ -61,7 +61,7 @@ def get_version_pairs(
         for major2, minor2 in sorted(versions):
             if (
                 (major1 != minor2 or minor1 != minor2)
-                and  (major1, minor1) !=  (major2, minor2)
+                and (major1, minor1) != (major2, minor2)
                 and (major1, minor1) not in pairs[(major2, minor2)]
             ):
                 pairs[(major1, minor1)].append((major2, minor2))
