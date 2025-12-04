@@ -46,19 +46,7 @@ def get_version_pairs(
     """
     Create pairs of versions that we want to render.
 
-    Rendering all version pairs is expensive and usually not neccesssary. Minor
-    ATT&CK versions typically only update citations, not actually change
-    content. And from a user perspective, if you want to migrate to v16, there's
-    no reason to choose v16.0 over v16.1.
-
-    This function uses the following logic: 1. Create pairs for each combination
-    of major versions, using the most reent minor release in each version. 2.
-    For each major version, create pairs for each combination of its minor
-    versions.
-
-    The first rule will generate pairs like (15.1, 16.1), but not (15.0, 16.1)
-    or (15.1, 16.0). The second rule will generate pairs like (11.0, 11.1) and
-    (11.0, 11.2), etc.
+    Currently, we are generating every version combination. However, in the past we have only generated major version comparisons.
 
     Args:
         versions - a list of (major, minor) version tuples
@@ -72,8 +60,8 @@ def get_version_pairs(
     for major1, minor1 in sorted(versions):
         for major2, minor2 in sorted(versions):
             if (
-                major1 != minor2
-                and minor1 != minor2
+                (major1 != minor2 or minor1 != minor2)
+                and  (major1, minor1) !=  (major2, minor2)
                 and (major1, minor1) not in pairs[(major2, minor2)]
             ):
                 pairs[(major1, minor1)].append((major2, minor2))
