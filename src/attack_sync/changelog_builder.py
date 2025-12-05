@@ -204,26 +204,29 @@ class StixDiff:
                             ] = f"{old_version} → {new_version}"
 
                         # Description changes
-                        old_description = old_stix_obj["description"].split()
-                        new_description = new_stix_obj["description"].split()
+                        try:
+                            old_description = old_stix_obj["description"].split()
+                            new_description = new_stix_obj["description"].split()
 
-                        if old_description != new_description:
-                            if stix_id not in version_changes:
-                                logger.debug(
-                                    "Object has a description change without the version "
-                                    "being incremented or the last modified date changing: "
-                                    f"{stix_id} ({attack_id})"
+                            if old_description != new_description:
+                                if stix_id not in version_changes:
+                                    logger.debug(
+                                        "Object has a description change without the version "
+                                        "being incremented or the last modified date changing: "
+                                        f"{stix_id} ({attack_id})"
+                                    )
+                                    version_changes.add(stix_id)
+
+                                new_stix_obj["old_description"] = " ".join(old_description)
+                                new_stix_obj["description_diff"] = self._get_text_diff(
+                                    old_description, new_description
                                 )
-                                version_changes.add(stix_id)
-
-                            new_stix_obj["old_description"] = " ".join(old_description)
-                            new_stix_obj["description_diff"] = self._get_text_diff(
-                                old_description, new_description
-                            )
-                        if new_stix_obj["type"] == "attack-pattern":
-                            self.find_technique_mitigation_changes(new_stix_obj, domain)
-                            self.find_technique_detection_changes(new_stix_obj, domain)
-
+                            if new_stix_obj["type"] == "attack-pattern":
+                                self.find_technique_mitigation_changes(new_stix_obj, domain)
+                                self.find_technique_detection_changes(new_stix_obj, domain)
+                        except KeyError:
+                                logger.error("An error occured with getting the descriptions for one of the two objects: "+ old_stix_obj["id"] + " or " + new_stix_obj["id"]) # This will not execute
+                           
                 # New objects
                 for stix_id in additions:
                     new_stix_obj = new_attack_objects[stix_id]
