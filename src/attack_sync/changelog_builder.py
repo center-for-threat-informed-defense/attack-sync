@@ -217,16 +217,27 @@ class StixDiff:
                                     )
                                     version_changes.add(stix_id)
 
-                                new_stix_obj["old_description"] = " ".join(old_description)
+                                new_stix_obj["old_description"] = " ".join(
+                                    old_description
+                                )
                                 new_stix_obj["description_diff"] = self._get_text_diff(
                                     old_description, new_description
                                 )
                             if new_stix_obj["type"] == "attack-pattern":
-                                self.find_technique_mitigation_changes(new_stix_obj, domain)
-                                self.find_technique_detection_changes(new_stix_obj, domain)
+                                self.find_technique_mitigation_changes(
+                                    new_stix_obj, domain
+                                )
+                                self.find_technique_detection_changes(
+                                    new_stix_obj, domain
+                                )
                         except KeyError:
-                                logger.error("An error occured with getting the descriptions for one of the two objects: "+ old_stix_obj["id"] + " or " + new_stix_obj["id"]) # This will not execute
-                           
+                            logger.error(
+                                "An error occured with getting the descriptions for one of the two objects: "
+                                + old_stix_obj["id"]
+                                + " or "
+                                + new_stix_obj["id"]
+                            )  # This will not execute
+
                 # New objects
                 for stix_id in additions:
                     new_stix_obj = new_attack_objects[stix_id]
