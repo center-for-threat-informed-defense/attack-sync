@@ -610,13 +610,13 @@ files = [
 
 [[package]]
 name = "mitreattack-python"
-version = "5.3.0"
+version = "5.5.0"
 description = "MITRE ATT&CK python library"
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "mitreattack_python-5.3.0-py3-none-any.whl", hash = "sha256:1087dbf3ffffc31f4db196104fb099d4d12a2326ebdc7a310d212afb8895b420"},
-    {file = "mitreattack_python-5.3.0.tar.gz", hash = "sha256:ee28a4957224266e27bd7e420adbac5be0c94c9500e0bbe77b6d3b81ef545c89"},
+    {file = "mitreattack_python-5.5.0-py3-none-any.whl", hash = "sha256:caf2dd4463afe94541a71daa4f85c2448958d8a89d65218b4e16116fa5053f19"},
+    {file = "mitreattack_python-5.5.0.tar.gz", hash = "sha256:84710b6a82b26ff9a5f3a24a990132583b68a5c4c4f7708afb4f1043a8d6316c"},
 ]
 
 [package.dependencies]
@@ -624,11 +624,11 @@ colour = ">=0.1.5"
 deepdiff = ">=6.6.0"
 drawsvg = ">=2.4.0"
 loguru = ">=0.6.0"
-Markdown = ">=3.5"
+markdown = ">=3.5"
 numpy = ">=1.26.1"
 openpyxl = ">=3.1.2"
 pandas = ">=2.1.1"
-Pillow = ">=10.1.0"
+pillow = ">=10.1.0"
 pooch = ">=1.7.0"
 python-dateutil = ">=2.8.2"
 requests = ">=2.31.0"
@@ -637,8 +637,14 @@ stix2 = ">=3.0.1"
 tabulate = ">=0.9.0"
 tqdm = ">=4.66.1"
 typer = ">=0.9.0"
+typing-extensions = ">=4.0.0"
 wheel = ">=0.41.2"
 xlsxwriter = ">=3.1.8"
+
+[package.extras]
+ci = ["uv (>=0.10.4)"]
+dev = ["check-wheel-contents (>=0.6.1)", "commitizen (>=4.9.1)", "pre-commit (>=4.0.0)", "pytest (>=8.4.2)", "pytest-cov (>=7.0.0)", "pytest-dotenv (>=0.5.2)", "python-semantic-release (>=10.5.0)", "responses (>=0.25.8)", "ruff (>=0.14.2)"]
+docs = ["sphinx (>=8.2.3)", "sphinx-rtd-theme (>=3.0.2)"]
 
 [[package]]
 name = "mypy"
@@ -1536,4 +1542,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "6be5345c899fcb6be263940e3249fb6f7121695504ecac4b0996a4b3981f8c33"
+content-hash = "0000789a3bb9f866b5e77d5a47c71a9e388b77ecda12542b9f170056780459e6"
