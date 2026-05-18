@@ -74,8 +74,6 @@ def main():
     args = parse_args()
     url_prefix = args.url_prefix.rstrip("/")
     versions: list[Version] = [
-        (8, 0),
-        (8, 1),
         (8, 2),
         (9, 0),
         (10, 0),
