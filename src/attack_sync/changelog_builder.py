@@ -354,7 +354,7 @@ class StixDiff:
             new_analytics[analytic_id] = new_analytic
 
         if old_stix_object:
-            for analytic_id in old_stix_object["x_mitre_analytic_refs"]:
+            for analytic_id in old_stix_object.get("x_mitre_analytic_refs"):
                 old_analytic = all_old_domain_analytics.get(analytic_id)
                 old_analytics[analytic_id] = old_analytic
 
