@@ -98,6 +98,7 @@ def main():
         (19, 1),
         (19, 2),
         (20, 0),
+        (20, 1),
     ]
     domains = [
         "enterprise-attack",
