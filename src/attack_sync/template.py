@@ -7,7 +7,7 @@ from markdown2 import markdown
 from markupsafe import Markup
 
 ROOT_DIR = Path(__file__).parents[2]
-ATTACK_DATA_DIR = ROOT_DIR / "data" / "attack" / "stix-2.0"
+ATTACK_DATA_DIR = ROOT_DIR / "data" / "attack" / "stix-2.1"
 PUBLIC_DIR = ROOT_DIR / "public"
 TEMPLATE_DIR = ROOT_DIR / "templates"
 CITATION_TEXT = "(Citation: "
