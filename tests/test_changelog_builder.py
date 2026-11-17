@@ -1,11 +1,14 @@
 import json
+from pathlib import Path
 
 import pytest
 from deepdiff import DeepDiff
 
 from attack_sync.changelog_builder import (
     StixDiff,
+    _get_attack_source_path,
     _load_stix_with_homeland_justice_date_fix,
+    build_changelog,
     deep_copy_stix,
 )
 
@@ -163,3 +166,73 @@ def test_correct_campaign_date_is_left_alone(
         store.get(homeland_justice_bundle["objects"][0]["id"])["last_seen"].year == 2023
     )
     assert not warnings
+
+
+@pytest.mark.parametrize("version", ["v11.0", "v11.1", "v11.2"])
+def test_mobile_beta_comparison_keeps_numeric_urls(tmp_path, monkeypatch, version):
+    data_dir = tmp_path / "stix-2.1"
+    public_dir = tmp_path / "public"
+    (data_dir / version).mkdir(parents=True)
+    beta_dir = data_dir / f"{version}-beta"
+    beta_dir.mkdir()
+    final_dir = data_dir / "v11.3"
+    final_dir.mkdir()
+    bundle = {
+        "type": "bundle",
+        "id": "bundle--22cc8244-0209-46b4-97d4-9b55c1bfc6b4",
+        "objects": [],
+    }
+    for directory in (beta_dir, final_dir):
+        (directory / "mobile-attack.json").write_text(json.dumps(bundle))
+    monkeypatch.setattr("attack_sync.changelog_builder.ATTACK_DATA_DIR", data_dir)
+    monkeypatch.setattr("attack_sync.changelog_builder.PUBLIC_DIR", public_dir)
+    releases = []
+
+    def detect_release(**kwargs):
+        releases.append(kwargs)
+        return Path(kwargs["stix_file"]).parent.name.removeprefix("v")
+
+    monkeypatch.setattr(
+        "attack_sync.changelog_builder.release_info.get_attack_version", detect_release
+    )
+
+    build_changelog(
+        old=version,
+        new="v11.3",
+        domains=["mobile-attack"],
+        types=["techniques"],
+        url_prefix="",
+        google_analytics_tag=None,
+    )
+
+    assert [r["stix_file"] for r in releases] == [
+        str(beta_dir / "mobile-attack.json"),
+        str(final_dir / "mobile-attack.json"),
+    ]
+    assert all(r["stix_version"] == "2.1" for r in releases)
+    output = public_dir / f"{version}-v11.3"
+    for page in ["mobile-attack/index.html", "mobile-attack/techniques/index.html"]:
+        html = (output / page).read_text()
+        assert f"{version}-beta beta release" in html
+        assert f"/{version}-v11.3/" in html
+    assert (output / f"attack-changelog-{version}-v11.3.json.gz").exists()
+    assert not (data_dir / version / "mobile-attack.json").exists()
+
+
+@pytest.mark.parametrize(
+    "format_,version,domain",
+    [
+        ("stix-2.1", "v11.0", "enterprise-attack"),
+        ("stix-2.1", "v11.1", "ics-attack"),
+        ("stix-2.0", "v11.0", "mobile-attack"),
+        ("stix-2.1", "v11.3", "mobile-attack"),
+        ("stix-2.1", "v12.0", "mobile-attack"),
+    ],
+)
+def test_other_sources_are_not_mapped(tmp_path, format_, version, domain):
+    directory = tmp_path / format_ / version
+    assert _get_attack_source_path(directory, domain) == directory / f"{domain}.json"
+    diff = StixDiff.__new__(StixDiff)
+    diff.old_path = directory
+    diff.new_path = directory.with_name("v20.1")
+    assert diff.get_source_notes(domain) == []

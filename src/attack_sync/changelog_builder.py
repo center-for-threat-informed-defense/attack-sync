@@ -5,7 +5,6 @@ import datetime
 import gzip
 import json
 import math
-import os
 import re
 import sys
 import typing
@@ -42,6 +41,25 @@ TYPE_NAME_TO_LABEL = {
 
 # The deepdiff library displays differences with a prefix of: root['<top-level-key-we-care-about>']
 STIX_KEY_RE = re.compile(r"^root\['(?P<top_stix_key>[^\']*)'\](?P<the_rest>.*)$")
+
+MOBILE_STIX21_SOURCE_VERSIONS = {
+    "v11.0": "v11.0-beta",
+    "v11.1": "v11.1-beta",
+    "v11.2": "v11.2-beta",
+}
+
+
+def _get_attack_source_path(directory: Path, domain: str) -> Path:
+    """Resolve numeric Mobile v11.0-v11.2 to their upstream STIX 2.1 beta folders.
+
+    Comparison versions and URLs stay numeric. Enterprise, ICS, STIX 2.0,
+    and all other releases retain their existing source paths.
+    """
+    if directory.parent.name == "stix-2.1" and domain == "mobile-attack":
+        directory = directory.with_name(
+            MOBILE_STIX21_SOURCE_VERSIONS.get(directory.name, directory.name)
+        )
+    return directory / f"{domain}.json"
 
 
 def _load_stix_with_homeland_justice_date_fix(stix_file: Path) -> MemoryStore:
@@ -714,6 +732,18 @@ class StixDiff:
         # nothing matched
         return None
 
+    def get_source_notes(self, domain: str) -> typing.List[str]:
+        """Explain upstream beta names without changing comparison labels."""
+        notes = []
+        for directory in (self.old_path, self.new_path):
+            source_path = _get_attack_source_path(directory, domain)
+            if source_path.parent != directory:
+                notes.append(
+                    f"Mobile ATT&CK {directory.name} uses MITRE's "
+                    f"{source_path.parent.name} beta release."
+                )
+        return notes
+
     def load_domain(self, domain: str):
         """
         Load data from directory according to domain.
@@ -723,11 +753,22 @@ class StixDiff:
         """
         for datastore_version in ["old", "new"]:
             directory = self.old_path if datastore_version == "old" else self.new_path
-            stix_file = os.path.join(directory, f"{domain}.json")
+            source_path = _get_attack_source_path(directory, domain)
+            if source_path.parent != directory:
+                logger.info(
+                    "Mapping {} {} to upstream {} source: {}",
+                    domain,
+                    directory.name,
+                    source_path.parent.name,
+                    source_path,
+                )
+            stix_file = str(source_path)
             logger.info("Loading domain: {}", stix_file)
 
             attack_version = release_info.get_attack_version(
-                domain=domain, stix_file=stix_file
+                domain=domain,
+                stix_version="2.1" if directory.parent.name == "stix-2.1" else "2.0",
+                stix_file=stix_file,
             )
             self.data[datastore_version][domain][
                 "attack_release_version"
@@ -1428,6 +1469,7 @@ def render_changelog_landing_page(
     # Render the page.
     template = load_template("changelog-landing.html.j2")
     stream = template.stream(
+        source_notes=stix_diff.get_source_notes(domain),
         url_prefix=url_prefix,
         old_version=old_version,
         new_version=new_version,
@@ -1531,6 +1573,7 @@ def render_changelog_detail_page(
         other_domains=list(set(stix_diff.domains) - {domain}),
         domain_name_to_label=DOMAIN_NAME_TO_LABEL,
         current_domains=domain,
+        source_notes=stix_diff.get_source_notes(domain),
         current_type=type_,
         types=stix_diff.types,
         other_types=list(set(stix_diff.types) - {type_}),

@@ -13,6 +13,9 @@
     <h4 class="eyebrow">Version {{ old_version }} <i class="bi bi-arrow-right"></i> {{ new_version }}</h4>
     <h2>{{ type_name_to_label[current_type] }} : {{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog
     </h2>
+    {% for note in source_notes %}
+    <p class="source-note">{{ note }}</p>
+    {% endfor %}
     {{ macros.floating_buttons(current_domain) }}
     <div class="subnav">
         <ul>
