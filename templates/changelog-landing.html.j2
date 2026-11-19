@@ -11,6 +11,9 @@
             src="{{ url_prefix }}/static/logo-blue.svg" class="logo-small" alt="Center for Threat-Informed Defense"></a>
     <h4 class="eyebrow">Version {{ old_version }} to {{ new_version }}</h4>
     <h2>{{ domain_name_to_label[current_domain] }} ATT&amp;CK Changelog</h2>
+    {% for note in source_notes %}
+    <p class="source-note">{{ note }}</p>
+    {% endfor %}
     {{ macros.floating_buttons(current_domain) }}
     <div class="subnav">
         <ul>

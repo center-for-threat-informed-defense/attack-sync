@@ -5,7 +5,6 @@ import datetime
 import gzip
 import json
 import math
-import os
 import re
 import sys
 import typing
@@ -19,6 +18,7 @@ from deepdiff import DeepDiff
 from loguru import logger
 from mitreattack import release_info
 from stix2 import Filter, MemoryStore
+from stix2.utils import parse_into_datetime
 
 from .template import ATTACK_DATA_DIR, PUBLIC_DIR, load_template
 
@@ -41,6 +41,92 @@ TYPE_NAME_TO_LABEL = {
 
 # The deepdiff library displays differences with a prefix of: root['<top-level-key-we-care-about>']
 STIX_KEY_RE = re.compile(r"^root\['(?P<top_stix_key>[^\']*)'\](?P<the_rest>.*)$")
+
+MOBILE_STIX21_SOURCE_VERSIONS = {
+    "v11.0": "v11.0-beta",
+    "v11.1": "v11.1-beta",
+    "v11.2": "v11.2-beta",
+}
+
+
+def _get_attack_source_path(directory: Path, domain: str) -> Path:
+    """Resolve numeric Mobile v11.0-v11.2 to their upstream STIX 2.1 beta folders.
+
+    Comparison versions and URLs stay numeric. Enterprise, ICS, STIX 2.0,
+    and all other releases retain their existing source paths.
+    """
+    if directory.parent.name == "stix-2.1" and domain == "mobile-attack":
+        directory = directory.with_name(
+            MOBILE_STIX21_SOURCE_VERSIONS.get(directory.name, directory.name)
+        )
+    return directory / f"{domain}.json"
+
+
+def _load_stix_with_homeland_justice_date_fix(stix_file: Path) -> MemoryStore:
+    """Load STIX while preserving HomeLand Justice's invalid v16.0 source date.
+
+    In v16.0/enterprise-attack.json, the STIX 2.1 campaign
+    campaign--7e21077d-2589-43a7-a5f9-490061289526 has first_seen
+    2021-05-01T04:00:00.000Z but last_seen 2002-09-01T04:00:00.000Z.
+    The STIX 2.1 parser rejects this inverted date range, stopping the build.
+
+    Only when the release directory, filename, object type, STIX version, ID,
+    and both dates match, temporarily set last_seen to the deliberately fake
+    date 9999-12-31T00:00:00.000Z so parsing can complete. Then restore the
+    original 2002 timestamp in the parsed Python object's internal storage
+    before returning the MemoryStore. Log this narrowly scoped validation
+    workaround. Comparisons and exports must see the original date, including
+    its eventual correction in later releases, never the fake date.
+
+    The source file and its release hash remain unchanged. This deliberately
+    bypasses the date-order constraint for this object only; other objects
+    still undergo normal STIX parser validation.
+
+    Args:
+        stix_file: Path to a downloaded ATT&CK domain bundle.
+
+    Returns:
+        A MemoryStore containing the parsed bundle.
+    """
+    if stix_file.parent.name == "v16.0" and stix_file.name == "enterprise-attack.json":
+        with stix_file.open() as source:
+            bundle = json.load(source)
+        campaign_to_restore = None
+        for obj in bundle["objects"]:
+            if (
+                obj.get("type") == "campaign"
+                and obj.get("spec_version") == "2.1"
+                and obj.get("id") == "campaign--7e21077d-2589-43a7-a5f9-490061289526"
+                and obj.get("first_seen") == "2021-05-01T04:00:00.000Z"
+                and obj.get("last_seen") == "2002-09-01T04:00:00.000Z"
+            ):
+                campaign_to_restore = (obj["id"], obj["last_seen"])
+                obj["last_seen"] = "9999-12-31T00:00:00.000Z"
+        data_store = MemoryStore(stix_data=bundle)
+        if campaign_to_restore:
+            campaign_id, original_last_seen = campaign_to_restore
+            campaign = data_store.get(campaign_id)
+            # STIX objects are immutable through their public API. This one
+            # intentional internal mutation restores the invalid source value
+            # without triggering the same validation a second time. Keep the
+            # parsed timestamp type used by querying and serialization.
+            campaign._inner["last_seen"] = parse_into_datetime(
+                original_last_seen, precision="millisecond"
+            )
+            logger.warning(
+                "Bypassed known ATT&CK v16.0 STIX 2.1 campaign date error in {}: "
+                "{} temporarily used last_seen 9999-12-31 for parsing only; "
+                "restored original {} in memory before comparison/export. "
+                "Source file unchanged.",
+                stix_file,
+                campaign_id,
+                original_last_seen,
+            )
+        return data_store
+
+    data_store = MemoryStore()
+    data_store.load_from_file(str(stix_file))
+    return data_store
 
 
 class StixDiff:
@@ -646,6 +732,18 @@ class StixDiff:
         # nothing matched
         return None
 
+    def get_source_notes(self, domain: str) -> typing.List[str]:
+        """Explain upstream beta names without changing comparison labels."""
+        notes = []
+        for directory in (self.old_path, self.new_path):
+            source_path = _get_attack_source_path(directory, domain)
+            if source_path.parent != directory:
+                notes.append(
+                    f"Mobile ATT&CK {directory.name} uses MITRE's "
+                    f"{source_path.parent.name} beta release."
+                )
+        return notes
+
     def load_domain(self, domain: str):
         """
         Load data from directory according to domain.
@@ -655,11 +753,22 @@ class StixDiff:
         """
         for datastore_version in ["old", "new"]:
             directory = self.old_path if datastore_version == "old" else self.new_path
-            stix_file = os.path.join(directory, f"{domain}.json")
+            source_path = _get_attack_source_path(directory, domain)
+            if source_path.parent != directory:
+                logger.info(
+                    "Mapping {} {} to upstream {} source: {}",
+                    domain,
+                    directory.name,
+                    source_path.parent.name,
+                    source_path,
+                )
+            stix_file = str(source_path)
             logger.info("Loading domain: {}", stix_file)
 
             attack_version = release_info.get_attack_version(
-                domain=domain, stix_file=stix_file
+                domain=domain,
+                stix_version="2.1" if directory.parent.name == "stix-2.1" else "2.0",
+                stix_file=stix_file,
             )
             self.data[datastore_version][domain][
                 "attack_release_version"
@@ -667,8 +776,7 @@ class StixDiff:
 
             data_store = self.domain_cache.get(str(stix_file))
             if not data_store:
-                data_store = MemoryStore()
-                data_store.load_from_file(stix_file)
+                data_store = _load_stix_with_homeland_justice_date_fix(Path(stix_file))
             self.data[datastore_version][domain]["stix_datastore"] = data_store
             self.parse_extra_data(
                 data_store=data_store,
@@ -1361,6 +1469,7 @@ def render_changelog_landing_page(
     # Render the page.
     template = load_template("changelog-landing.html.j2")
     stream = template.stream(
+        source_notes=stix_diff.get_source_notes(domain),
         url_prefix=url_prefix,
         old_version=old_version,
         new_version=new_version,
@@ -1464,6 +1573,7 @@ def render_changelog_detail_page(
         other_domains=list(set(stix_diff.domains) - {domain}),
         domain_name_to_label=DOMAIN_NAME_TO_LABEL,
         current_domains=domain,
+        source_notes=stix_diff.get_source_notes(domain),
         current_type=type_,
         types=stix_diff.types,
         other_types=list(set(stix_diff.types) - {type_}),
