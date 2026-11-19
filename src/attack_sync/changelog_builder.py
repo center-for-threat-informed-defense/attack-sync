@@ -902,6 +902,17 @@ class StixDiff:
                     }
                 )
 
+        # Keep children even when their parent relationship or parent object is
+        # absent (for example, after a sub-technique has been revoked).
+        grouped_child_ids = {
+            child["id"] for grouping in groupings for child in grouping["children"]
+        }
+        for child_id, child in children.items():
+            if child_id not in grouped_child_ids:
+                groupings.append(
+                    {"parent": child, "parentInSection": True, "children": []}
+                )
+
         groupings = sorted(groupings, key=lambda grouping: grouping["parent"]["name"])
         return groupings
 
